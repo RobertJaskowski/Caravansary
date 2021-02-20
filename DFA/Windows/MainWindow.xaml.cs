@@ -43,6 +43,7 @@ namespace DFA
         int penTrackingResetCounter = 0;
         int penTrackingResetCounterLimitAsOfPenTrackingErrorOffset = 0;
 
+
         //   int refreshArtistStateTickTimerInMiliseconds = 6;//, 10 * 1000 = 10 secs , 1000 = ,1 sec
 
         TimeSpan refreshArtistStateTickTimer = TimeSpan.FromMilliseconds(1000);
@@ -59,6 +60,8 @@ namespace DFA
 
         public int graphicalProgressBarUpdateInMiliseconds = 20;
         private bool receivedInputFromPenOnLastWndProc = false;
+
+        public bool pausedState = false;
 
 
 
@@ -250,30 +253,51 @@ namespace DFA
 
 
 
-
-            if (!ArtistActive)
-                changed = CheckArtistStateChanged();
-            else
+            if (pausedState)
             {
-                currentCheckingAfkTime++;
-                if (currentCheckingAfkTime > maxSecAfkTime)
-                {
-                    changed = CheckArtistStateChanged();
+                ArtistState = ArtistState.INACTIVE;
+                return;
+            }
+            else if (!ArtistActive)
+            {
+                changed = CheckArtistStateChanged();
 
-                    if (changed)
-                        currentCheckingAfkTime = 0;
-                }
 
             }
+            else//active
+            {
+                var lastInputState = TickTimerGetNewArtistStateBasedOnInput();
 
+                if (lastInputState == ArtistState.ACTIVE)
+                {
+                    currentCheckingAfkTime = 0;
+                }
+                else
+                {
+                    currentCheckingAfkTime++;
+                    if (currentCheckingAfkTime > maxSecAfkTime)
+                    {
+                        currentCheckingAfkTime = 0;
+                        ArtistState = lastInputState;
+                        DisplayArtistStateInUI("INACTIVE");
+
+                        OnArtistStateInactiveActivated();
+                        
+                    }
+                }
+            }
+        }
+
+        private void DisplayArtistStateInUI(string state)
+        {
+            label2.Content = state;
 
         }
 
         private bool CheckArtistStateChanged()
         {
             ArtistState newState = TickTimerGetNewArtistStateBasedOnInput();
-
-            label2.Content = newState.ToString();
+            DisplayArtistStateInUI(newState.ToString());
 
             bool changed;
 
@@ -436,7 +460,8 @@ namespace DFA
 
         private void TimerArtistStateTick(object sender, EventArgs e)
         {
-
+            if (pausedState)
+                return;
 
             if (ArtistActive)
                 OnArtistStateActiveTick();
@@ -786,7 +811,22 @@ namespace DFA
         }
 
 
+        private void Label2_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (!pausedState)
+            {
+                pausedState = true;
+                label2.Content = "PAUSED";
+                label3.Content = "|| " + label3.Content;
 
+                ArtistState = ArtistState.INACTIVE;
+                OnArtistStateInactiveActivated();
+            }
+            else
+            {
+                pausedState = false;
+            }
+        }
 
 
         private void Label3_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -807,5 +847,7 @@ namespace DFA
             if (result == true)
                 SetDailyGoal(dialog.returnTime);
         }
+
+
     }
 }
