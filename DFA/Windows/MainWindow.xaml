@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DFA"
         mc:Ignorable="d"
         Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="#FF141414" 
-        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
+        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Loaded="window_Loaded" Closing="window_Closing">
     <Window.Resources>
         <Color x:Key="DefaultFgColor">#FFBB8FCE</Color>
     </Window.Resources>

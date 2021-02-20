@@ -86,6 +86,7 @@ namespace DFA
 
 
         //public HandleRef HWnd { get; set; }
+        const int MYACTION_HOTKEY_ID = 1;
 
         public MainWindow()
         {
@@ -117,6 +118,13 @@ namespace DFA
 
             CreateMilestoneSystem();
             CreateNotificationSystem();
+
+
+            // Modifier keys codes: Alt = 1, Ctrl = 2, Shift = 4, Win = 8
+            // Compute the addition of each combination of the keys you want to be pressed
+            // ALT+CTRL = 1 + 2 = 3 , CTRL+SHIFT = 2 + 4 = 6...
+           // RegisterHotKey(CurrentHandleWindow, MYACTION_HOTKEY_ID, 2, (int)Keys.Z);
+
         }
 
 
@@ -128,6 +136,7 @@ namespace DFA
             label1.Content = "";
             label2.Content = "";
             label3.Content = "00:00:00.00";
+            label4.Content = "";
             label5.Content = "Set daily goal!";
         }
 
@@ -240,12 +249,36 @@ namespace DFA
             timerArtistStateTick.Tick += new EventHandler(TimerArtistStateTick);
             timerArtistStateTick.Start();
 
-
+            //DispatcherTimer timerHotkey = new DispatcherTimer();
+            //timerHotkey.Interval = TimeSpan.FromMilliseconds(500);
+            //timerHotkey.Tick += new EventHandler(TimerHotkeyModule);
+            //timerHotkey.Start();
         }
+
+        int ctrlZCounter = 0;
+
+
+        private KeyboardListener _listener;
+
+
+
+        private void TimerHotkeyModule(object sender, EventArgs e)
+        {
+            //label1.Content = ctrlZCounter+"";
+
+
+            //NativeMessage msg = new NativeMessage();
+            //PeekMessage(out msg, IntPtr.Zero, 0x0100, 0, 0x0000);//handle to null
+            //label4.Content = msg.msg + " " + msg.wParam;
+            //if (msg.msg == 0x0312 && msg.wParam.ToInt32() == MYACTION_HOTKEY_ID)
+            //{
+            //    ctrlZCounter++;
+
+            //}
+        }
+
         private const int maxSecAfkTime = 5;
         private int currentCheckingAfkTime = 0;
-
-
 
         private void TimerArtistStateCheck(object sender, EventArgs e)
         {
@@ -282,7 +315,7 @@ namespace DFA
                         DisplayArtistStateInUI("INACTIVE");
 
                         OnArtistStateInactiveActivated();
-                        
+
                     }
                 }
             }
@@ -337,12 +370,12 @@ namespace DFA
                 if (lastInputInfo.dwTime != lastActive)
                 {
                     lastActive = lastInputInfo.dwTime;
-                    label4.Content = "T" + lastInputInfo.dwTime;
+                    //label4.Content = "T" + lastInputInfo.dwTime;
                     return ArtistState.ACTIVE;
                 }
             }
-            else
-                label4.Content = "F";
+            //else
+            // label4.Content = "F";
 
 
             return ArtistState.INACTIVE;
@@ -848,6 +881,28 @@ namespace DFA
                 SetDailyGoal(dialog.returnTime);
         }
 
+        private void window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _listener = new KeyboardListener();
+            _listener.OnKeyPressed += _listener_OnKeyPressed;
 
+
+            _listener.HookKeyboard();
+        }
+        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
+        {
+            if(
+                //e.KeyPressed== System.Windows.Input.Key.LeftCtrl && 
+                e.KeyPressed == System.Windows.Input.Key.Z)
+            {
+                ctrlZCounter++;
+                label1.Content = ctrlZCounter;
+            }
+        }
+
+        private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _listener.UnHookKeyboard();
+        }
     }
 }

@@ -89,6 +89,10 @@ namespace DFA
             return keyState.Skip(8).Any(state => (state & 0x80) != 0);
         }
 
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

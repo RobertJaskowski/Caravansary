@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="KeyboardListener.cs" />
     <Compile Include="ProgressBarExtensions.cs" />
     <Compile Include="Windows\DailyGoalWindow.xaml.cs">
       <DependentUpon>DailyGoalWindow.xaml</DependentUpon>
