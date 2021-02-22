@@ -90,6 +90,9 @@ namespace DFA
 
         public MainWindow()
         {
+            Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+
+            //throw new Exception("testtt");
             if (Instance == null)
                 Instance = this;
             InitializeComponent();
@@ -130,8 +133,13 @@ namespace DFA
             // ALT+CTRL = 1 + 2 = 3 , CTRL+SHIFT = 2 + 4 = 6...
             // RegisterHotKey(CurrentHandleWindow, MYACTION_HOTKEY_ID, 2, (int)Keys.Z);
 
-        }
 
+        }
+        private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            System.Windows.MessageBox.Show("Unhandled exception occurred: \n" + e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        }
         private void LoadSettings()
         {
             var key = Registry.CurrentUser.OpenSubKey("DFA", false);
@@ -139,16 +147,15 @@ namespace DFA
             {
                 ShowInTaskbar = (int)key.GetValue("ShowInTaskbar", 0) == 1;
 
-                if (!((int)key.GetValue("CheckBoxBottomBar", 1)==1))
+                if (!((int)key.GetValue("CheckBoxBottomBar", 1) == 1))
                 {
                     progressBarBottomMost.Visibility = Visibility.Collapsed;
                 }
 
                 int d = (int)key.GetValue("BackgroundTransparency", 100);
-                window.Background.Opacity = (double)d/100;
-
+                window.Background.Opacity = (double)d / 100;
+                key?.Close();
             }
-            key.Close();
         }
 
         private void ClearLabels()
@@ -213,7 +220,8 @@ namespace DFA
 
             key.SetValue("ShowInTaskbar", window.ShowInTaskbar);
 
-            key.Close();
+            if (key != null)
+                key.Close();
         }
 
         private void TrayStayOnTop(object sender, EventArgs e)
@@ -228,7 +236,7 @@ namespace DFA
         {
             Settings dialog = new Settings();
             bool? result = dialog.ShowDialog();
-           // if (result == true)
+            // if (result == true)
 
         }
 
@@ -248,7 +256,7 @@ namespace DFA
             if (e.Button == MouseButtons.Left)
             {
 
-                if(Visibility== Visibility.Collapsed)
+                if (Visibility == Visibility.Collapsed)
                 {
                     Visibility = Visibility.Visible;
                 }
@@ -265,7 +273,7 @@ namespace DFA
                 //{
                 //    window.WindowState = WindowState.Minimized;
                 //}
-               
+
 
             }
         }
@@ -298,8 +306,10 @@ namespace DFA
 
 
                 }
+
+                key?.Close();
+
             }
-            key.Close();
         }
 
 
@@ -810,7 +820,8 @@ namespace DFA
             key.SetValue("DFAMainWindowPositionX", x);
             key.SetValue("DFAMainWindowPositionY", y);
 
-            key.Close();
+
+            key?.Close();
         }
 
         //  private void formmouseup(object sender, system.windows.forms.mouseeventargs e)
