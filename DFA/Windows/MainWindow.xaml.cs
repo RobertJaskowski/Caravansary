@@ -123,7 +123,7 @@ namespace DFA
             // Modifier keys codes: Alt = 1, Ctrl = 2, Shift = 4, Win = 8
             // Compute the addition of each combination of the keys you want to be pressed
             // ALT+CTRL = 1 + 2 = 3 , CTRL+SHIFT = 2 + 4 = 6...
-           // RegisterHotKey(CurrentHandleWindow, MYACTION_HOTKEY_ID, 2, (int)Keys.Z);
+            // RegisterHotKey(CurrentHandleWindow, MYACTION_HOTKEY_ID, 2, (int)Keys.Z);
 
         }
 
@@ -885,24 +885,63 @@ namespace DFA
         {
             _listener = new KeyboardListener();
             _listener.OnKeyPressed += _listener_OnKeyPressed;
+            _listener.OnKeyReleased += _listener_OnKeyReleased;
 
 
             _listener.HookKeyboard();
         }
-        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
+
+        #region KeyCombination
+
+
+        private bool ZPressed = false;
+        private bool CtrlPressed = false;
+
+        void _listener_OnKeyReleased(object sender, KeyReleasedArgs e)
         {
-            if(
-                //e.KeyPressed== System.Windows.Input.Key.LeftCtrl && 
-                e.KeyPressed == System.Windows.Input.Key.Z)
+            if (e.KeyReleased == System.Windows.Input.Key.LeftCtrl)
+            {
+                CtrlPressed = false;
+
+            }
+            else if (e.KeyReleased == System.Windows.Input.Key.Z)
+            {
+                ZPressed = false;
+
+            }
+
+
+        }
+
+        private void CheckForCtrlZCombination()
+        {
+            if (CtrlPressed && ZPressed)
             {
                 ctrlZCounter++;
                 label1.Content = ctrlZCounter;
             }
         }
 
+        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
+        {
+            if (e.KeyPressed == System.Windows.Input.Key.LeftCtrl)
+            {
+                CtrlPressed = true;
+                CheckForCtrlZCombination();
+            }
+            else if (e.KeyPressed == System.Windows.Input.Key.Z)
+            {
+                ZPressed = true;
+                CheckForCtrlZCombination();
+            }
+
+
+        }
+
         private void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             _listener.UnHookKeyboard();
         }
+        #endregion
     }
 }
