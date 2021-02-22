@@ -1,0 +1,39 @@
+﻿<Window x:Class="DFA.Windows.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DFA.Windows"
+        mc:Ignorable="d"
+        Title="Settings" Height="450" Width="400" Topmost="True" Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <SolidColorBrush Color="#FF141414"/>
+    </Window.Background>
+    <StackPanel>
+        <StackPanel>
+            <CheckBox x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30" FontFamily="Verdana" Unchecked="CheckBox_BottomBar_Unchecked" Checked="CheckBox_BottomBar_Checked">
+                <CheckBox.BorderBrush>
+                    <SolidColorBrush Color="{DynamicResource DefaultForeground}"/>
+                </CheckBox.BorderBrush>
+                <CheckBox.Background>
+                    <SolidColorBrush Color="{DynamicResource DefaultBgDark}"/>
+                </CheckBox.Background>
+                <CheckBox.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForeground}"/>
+                </CheckBox.Foreground>
+            </CheckBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label Width="180" FontFamily="Verdana" Padding="0" FontSize="15" Content="Transparency" HorizontalContentAlignment="Center">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForeground}"/>
+                </Label.Foreground> </Label>
+            <Slider x:Name="slider_transparency" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="200" Value="50" Maximum="100" ValueChanged="Slider_Transparency_ValueChanged">
+                <Slider.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForeground}"/>
+                </Slider.Foreground>
+            </Slider>
+        </StackPanel>
+
+    </StackPanel>
+</Window>

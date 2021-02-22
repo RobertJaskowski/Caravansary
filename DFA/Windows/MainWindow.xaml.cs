@@ -23,7 +23,7 @@ namespace DFA
     /// </summary>
     public partial class MainWindow : Window, IMainWindow
     {
-
+        public static MainWindow Instance;
         public enum MsgType
         {
             WM_INPUT = 0x00FF
@@ -90,7 +90,12 @@ namespace DFA
 
         public MainWindow()
         {
+            if (Instance == null)
+                Instance = this;
             InitializeComponent();
+
+
+            LoadSettings();
 
             CurrentHandleWindow = new WindowInteropHelper(this).Handle;
 
@@ -127,8 +132,24 @@ namespace DFA
 
         }
 
+        private void LoadSettings()
+        {
+            var key = Registry.CurrentUser.OpenSubKey("DFA", false);
+            if (key != null)
+            {
+                ShowInTaskbar = (int)key.GetValue("ShowInTaskbar", 0) == 1;
 
+                if (!((int)key.GetValue("CheckBoxBottomBar", 1)==1))
+                {
+                    progressBarBottomMost.Visibility = Visibility.Collapsed;
+                }
 
+                int d = (int)key.GetValue("BackgroundTransparency", 100);
+                window.Background.Opacity = (double)d/100;
+
+            }
+            key.Close();
+        }
 
         private void ClearLabels()
         {
@@ -172,12 +193,44 @@ namespace DFA
 
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, TrayOnExitClicked);
-            trayIcon.ContextMenuStrip.Items.Add(new ToolStripDropDownButton("Settings...", null,
-                new ToolStripLabel("Reset position", null, false, TrayResetPosition)
+            trayIcon.ContextMenuStrip.Items.Add("Settings", null, TrayOnSettingsClicked);
+            trayIcon.ContextMenuStrip.Items.Add(new ToolStripDropDownButton("Quick...", null,
+                new ToolStripLabel("Reset position", null, false, TrayResetPosition),
+                new ToolStripLabel("Stay On Top", null, false, TrayStayOnTop),
+                new ToolStripLabel("Show in taskbar", null, false, TrayShowInTaskBar)
                 ));
             trayIcon.Visible = true;
         }
 
+        private void TrayShowInTaskBar(object sender, EventArgs e)
+        {
+            window.ShowInTaskbar = !window.ShowInTaskbar;
+
+            RegistryKey key;
+            key = Registry.CurrentUser.OpenSubKey("DFA", true);
+            if (key == null)
+                key = Registry.CurrentUser.CreateSubKey("DFA", true);
+
+            key.SetValue("ShowInTaskbar", window.ShowInTaskbar);
+
+            key.Close();
+        }
+
+        private void TrayStayOnTop(object sender, EventArgs e)
+        {
+            this.Topmost = !this.Topmost;
+
+            if (Topmost)
+                Activate();
+        }
+
+        private void TrayOnSettingsClicked(object sender, EventArgs e)
+        {
+            Settings dialog = new Settings();
+            bool? result = dialog.ShowDialog();
+           // if (result == true)
+
+        }
 
         private void TrayResetPosition(object sender, EventArgs e)
         {
@@ -194,11 +247,25 @@ namespace DFA
 
             if (e.Button == MouseButtons.Left)
             {
-                this.Topmost = !this.Topmost;
 
-                if (Topmost)
-                    Activate();
-                //todo change this method
+                if(Visibility== Visibility.Collapsed)
+                {
+                    Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+
+                //if(window.WindowState == WindowState.Minimized)
+                //{
+                //    window.WindowState = WindowState.Normal;
+                //}
+                //else
+                //{
+                //    window.WindowState = WindowState.Minimized;
+                //}
+               
 
             }
         }
@@ -232,7 +299,7 @@ namespace DFA
 
                 }
             }
-
+            key.Close();
         }
 
 

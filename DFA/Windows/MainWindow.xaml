@@ -5,11 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DFA"
         mc:Ignorable="d"
-        Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="#FF141414" 
+        Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
         MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Loaded="window_Loaded" Closing="window_Closing">
     <Window.Resources>
         <Color x:Key="DefaultFgColor">#FFBB8FCE</Color>
     </Window.Resources>
+    <Window.Background>
+        <SolidColorBrush Color="#FF141414"/>
+    </Window.Background>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo Description="testtbiteminfo" ProgressValue="69" ProgressState="Indeterminate"/>
     </Window.TaskbarItemInfo>
@@ -59,16 +62,10 @@
             </Label>
         </StackPanel>
         <ProgressBar x:Name="progressBarBottomMost" MinHeight="8" 
-                         MaxHeight="8" MinWidth="1000" Value="50">
+                         MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}">
             <ProgressBar.Foreground>
                 <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
             </ProgressBar.Foreground>
-            <ProgressBar.BorderBrush>
-                <SolidColorBrush Color="{DynamicResource DefaultBgDark}"/>
-            </ProgressBar.BorderBrush>
-            <ProgressBar.Background>
-                <SolidColorBrush Color="{DynamicResource DefaultBgDark}"/>
-            </ProgressBar.Background>
         </ProgressBar>
         <StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28">
             <Label x:Name="labelNotification"  FontFamily="Verdana" 

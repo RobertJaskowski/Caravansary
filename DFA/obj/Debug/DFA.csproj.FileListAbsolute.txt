@@ -34,3 +34,5 @@ C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\DFA.csproj.GenerateResource.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\DFA.csproj.CoreCompileInputs.cache
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\DFA.exe
 C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\DFA.pdb
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\Windows\Settings.g.cs
+C:\Users\Robert\Desktop\WORK\DFA\DFA\obj\Debug\Windows\Settings.baml
