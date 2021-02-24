@@ -16,6 +16,7 @@ using Application = System.Windows.Application;
 using Label = System.Windows.Controls.Label;
 using ProgressBar = System.Windows.Controls.ProgressBar;
 
+
 namespace DFA
 {
     /// <summary>
@@ -234,7 +235,7 @@ namespace DFA
 
         private void TrayOnSettingsClicked(object sender, EventArgs e)
         {
-            Settings dialog = new Settings();
+            SettingsWindow dialog = new SettingsWindow();
             bool? result = dialog.ShowDialog();
             // if (result == true)
 
@@ -676,6 +677,7 @@ namespace DFA
                 float rest = (float)(activatedFullTime.TotalSeconds % (timeSecToFillTopBar));
                 topPercentFilled = Utils.ToProcentage(rest, 0, timeSecToFillTopBar);
                 progressBarTopMost.SetValueWithAnimation(topPercentFilled, true);
+
 
                 //   topDesiredBarValue = (int)Utils.ProcentToProgressBarValue(progressBarTopMost, topPercentFilled);
                 //  progressBarTopMost.Value = topDesiredBarValue;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DFA.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +57,10 @@ namespace DFA.Windows
 
         public static bool GetDailyGoalTimespan(out TimeSpan result)
         {
-            var key = Registry.CurrentUser.OpenSubKey("DFA", true);
-            if (key != null)
-            {
 
 
-                int hours = (int)key.GetValue("DFADailyGoalHour", 0);
-                int minutes = (int)key.GetValue("DFADailyGoalMinutes", 0);
+            int hours = Settings.Default.DailyGoalHour;
+            int minutes = Settings.Default.DailyGoalMinutes;
 
                 if (hours + minutes > 0)
                 {
@@ -73,7 +71,6 @@ namespace DFA.Windows
                 }
 
 
-            }
             result = TimeSpan.FromMilliseconds(0);
             return false;
         }

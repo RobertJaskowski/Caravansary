@@ -49,7 +49,7 @@ namespace DFA
             TimeSpan ts = TimeSpan.FromMilliseconds((100 - value) * 10);
 
             DoubleAnimation animation = new DoubleAnimation(value, ts);
-            progressBar.BeginAnimation(ProgressBar.ValueProperty, animation,HandoffBehavior.Compose);
+            progressBar.BeginAnimation(ProgressBar.ValueProperty, animation, HandoffBehavior.Compose);
 
             //if (!jumpOnLowerValue)
             //{

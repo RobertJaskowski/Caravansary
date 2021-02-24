@@ -7,6 +7,7 @@ namespace DFA
     public enum ArtistState
     {
         ACTIVE,
-        INACTIVE
+        INACTIVE,
+        PAUSED
     }
 }
