@@ -6,11 +6,15 @@
         xmlns:local="clr-namespace:DFA"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        
-        Title="Settings" Height="450" Width="400" Topmost="True" WindowStartupLocation="CenterScreen">
+        Title="Settings" Height="450" Width="400" Topmost="True" WindowStartupLocation="CenterScreen" >
+    <Window.Foreground>
+        <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+    </Window.Foreground>
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
     </Window.Background>
+
+
 
 
     <i:Interaction.Behaviors>
@@ -18,7 +22,7 @@
     </i:Interaction.Behaviors>
     <StackPanel>
         <StackPanel>
-            <CheckBox Foreground="{DynamicResource DefaultForeground}" IsChecked="{Binding Path=CheckboxBottomBar,Mode=TwoWay}"  x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30" FontFamily="Verdana" >
+            <CheckBox Foreground="{DynamicResource DefaultForeground}" IsChecked="{Binding Path=CheckboxBottomBar,Mode=TwoWay}"  x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30"  >
                 <CheckBox.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </CheckBox.BorderBrush>
@@ -28,12 +32,12 @@
             </CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="180" FontFamily="Verdana" Padding="0" FontSize="15" Content="Transparency" HorizontalContentAlignment="Center">
+            <Label Width="180"  Padding="0"  Content="Transparency" HorizontalContentAlignment="Center">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </Label.Foreground>
             </Label>
-            <Slider Value="{Binding BackgroundTransparency}" x:Name="slider_transparency" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="200"  Maximum="100" >
+            <Slider Value="{Binding BackgroundTransparency}" x:Name="slider_transparency" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="200"  Maximum="1" >
                 <Slider.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </Slider.Foreground>

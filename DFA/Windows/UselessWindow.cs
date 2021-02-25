@@ -869,7 +869,7 @@ namespace DFA
 
         private void LoadDailyGoal()
         {
-            if (DailyGoalWindow.GetDailyGoalTimespan(out TimeSpan result))
+            if (DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result))
                 SetDailyGoal(result);
         }
 
@@ -957,10 +957,10 @@ namespace DFA
 
         private void Label5_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            DailyGoalWindow dialog = new DailyGoalWindow();
-            bool? result = dialog.ShowDialog();
-            if (result == true)
-                SetDailyGoal(dialog.returnTime);
+            //DailyGoalWindow dialog = new DailyGoalWindow();
+            //bool? result = dialog.ShowDialog();
+            //if (result == true)
+            //    SetDailyGoal(dialog.returnTime);
         }
 
         private void window_Loaded(object sender, RoutedEventArgs e)

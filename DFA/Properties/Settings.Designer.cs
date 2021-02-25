@@ -37,10 +37,10 @@ namespace DFA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int BackgroundTransparency {
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double BackgroundTransparency {
             get {
-                return ((int)(this["BackgroundTransparency"]));
+                return ((double)(this["BackgroundTransparency"]));
             }
             set {
                 this["BackgroundTransparency"] = value;
@@ -50,9 +50,9 @@ namespace DFA.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int MainWindowPositionX {
+        public double MainWindowPositionX {
             get {
-                return ((int)(this["MainWindowPositionX"]));
+                return ((double)(this["MainWindowPositionX"]));
             }
             set {
                 this["MainWindowPositionX"] = value;
@@ -62,9 +62,9 @@ namespace DFA.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int MainWindowPositionY {
+        public double MainWindowPositionY {
             get {
-                return ((int)(this["MainWindowPositionY"]));
+                return ((double)(this["MainWindowPositionY"]));
             }
             set {
                 this["MainWindowPositionY"] = value;

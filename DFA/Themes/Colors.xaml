@@ -16,4 +16,23 @@
     <Color x:Key="DefaultForegroundColor">#FFBB8FCE</Color>
 
 
+
+    <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">
+        <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+
+    </Style>
+
+    <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource BaseStyle}"/>
+    
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"/>
+    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"/>
+
 </ResourceDictionary>

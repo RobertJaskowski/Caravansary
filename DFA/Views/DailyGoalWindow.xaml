@@ -3,43 +3,47 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:DFA"
         mc:Ignorable="d"
         AllowsTransparency="true"
     Title="DailyGoalWindow" Height="185" Width="300" WindowStyle="None" Topmost="True" WindowStartupLocation="CenterScreen" Foreground="{x:Null}">
-    
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
     </Window.Background>
+    <i:Interaction.Behaviors>
+        <local:CloseWindowOnKey Key="Esc"/>
+    </i:Interaction.Behaviors>
 
     <Border BorderThickness="1" CornerRadius="8">
         <Border.BorderBrush>
             <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
         </Border.BorderBrush>
         <StackPanel UseLayoutRounding="False" OpacityMask="Black">
-            <TextBlock Name="label1" Text="Input daily goal time (HH:MM ex.8:00)" 
-                   FontFamily="Verdana" FontSize="15" FontWeight="Bold" UseLayoutRounding="False"
+            <TextBlock Name="label1" Text="{Binding TextFeedback,FallbackValue=Input daily goal time \&#x0a; (HH:MM ex.8:00)}" 
+                    FontSize="15" FontWeight="Bold" UseLayoutRounding="False"
                    VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,25" TextAlignment="Center">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBox x:Name="textBoxInputTime" Background="{x:Null}" Width="100" Height="28" FontFamily="Verdana" FontSize="15" FontWeight="Bold" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" TextChanged="TextBoxInputTime_TextChanged_1" >
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
-                </TextBox.Foreground>
+            <TextBox Text="{Binding TextBoxInput,UpdateSourceTrigger=PropertyChanged}" Background="{x:Null}" Width="100" Height="28"  FontSize="15" FontWeight="Bold" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="White" >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </TextBox.BorderBrush>
             </TextBox>
 
-            <Button Name="buttonAccept" Background="{x:Null}" FontFamily="Verdana" FontWeight="Bold" FontSize="20" Content="Accept" IsDefault="True" Cursor="Hand" Margin="90,15,90,0" UseLayoutRounding="False" Click="ButtonAccept_Click" >
-                <Button.Foreground>
-                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
-                </Button.Foreground>
+            <Button Name="buttonAccept" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" 
+                    Command="{Binding AcceptTimeButton,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" 
+                    Background="{x:Null}" Visibility="{Binding ButtonAcceptVisibility, Converter={StaticResource BoolToVisibilityConverter}}"  FontWeight="Bold" FontSize="20" Content="Accept" IsDefault="True" Cursor="Hand" Margin="90,15,90,0" UseLayoutRounding="False"  >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </Button.BorderBrush>
+
             </Button>
 
         </StackPanel>

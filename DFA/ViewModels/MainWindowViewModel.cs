@@ -144,8 +144,8 @@ namespace DFA
             }
         }
 
-        private int _backgroundTransparency;
-        public int BackgroundTransparency
+        private double _backgroundTransparency;
+        public double BackgroundTransparency
         {
             get
             {
@@ -343,11 +343,11 @@ namespace DFA
 
             Application.Current.MainWindow.ShowInTaskbar = Settings.Default.ShowInTaskbar;
 
-            BackgroundTransparency = Settings.Default.BackgroundTransparency / 100;
+            BackgroundTransparency = Settings.Default.BackgroundTransparency;
 
             Window.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-            int posX = Settings.Default.MainWindowPositionX;
-            int posY = Settings.Default.MainWindowPositionY;
+            double posX = Settings.Default.MainWindowPositionX;
+            double posY = Settings.Default.MainWindowPositionY;
 
 
             if (posX != 0 || posY != 0)
@@ -446,26 +446,18 @@ namespace DFA
                     Window.GetAssociatedWindow.Visibility = Visibility.Collapsed;
                 }
 
-                //if(window.WindowState == WindowState.Minimized)
-                //{
-                //    window.WindowState = WindowState.Normal;
-                //}
-                //else
-                //{
-                //    window.WindowState = WindowState.Minimized;
-                //}
 
 
             }
         }
-        public int DefaultWindowX => (int)((System.Windows.SystemParameters.WorkArea.Width / 2) - (Window.GetAssociatedWindow.Width / 2));// Screen.FromControl(this).WorkingArea.Width / 2;
+        public int DefaultWindowX => (int)((SystemParameters.WorkArea.Width / 2) - (Window.GetAssociatedWindow.Width / 2));// Screen.FromControl(this).WorkingArea.Width / 2;
         public int DefaultWindowY => 0;
         public void ResetWindowPosition()
         {
             Window.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
             SetWindowPosition(DefaultWindowX, DefaultWindowY);
         }
-        public void SetWindowPosition(int leftX, int topY)
+        public void SetWindowPosition(double leftX, double topY)
         {
             Window.GetAssociatedWindow.Left = leftX;
             Window.GetAssociatedWindow.Top = topY;
@@ -686,9 +678,10 @@ namespace DFA
                        {
 
                            DailyGoalWindow dialog = new DailyGoalWindow();
-                           bool? result = dialog.ShowDialog();
-                           if (result == true)
-                               SetDailyGoal(dialog.returnTime);
+                           dialog.DataContext = new DailyGoalViewModel();
+                           dialog.ShowDialog();
+                           DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result);
+                           SetDailyGoal(result);
 
                        },
                        (object o) =>
@@ -704,7 +697,7 @@ namespace DFA
         private void LoadDailyGoal()
         {
 
-            if (DailyGoalWindow.GetDailyGoalTimespan(out TimeSpan result))
+            if (DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result))
                 SetDailyGoal(result);
             else
                 DailyGoalText = "Set daily goal! ";

@@ -5,13 +5,13 @@
     <Setting Name="ShowInTaskbar" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="BackgroundTransparency" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+    <Setting Name="BackgroundTransparency" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="MainWindowPositionX" Type="System.Int32" Scope="User">
+    <Setting Name="MainWindowPositionX" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="MainWindowPositionY" Type="System.Int32" Scope="User">
+    <Setting Name="MainWindowPositionY" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="DailyGoalHour" Type="System.Int32" Scope="User">

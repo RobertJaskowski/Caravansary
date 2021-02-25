@@ -30,31 +30,31 @@
             </ProgressBar.Background>
         </ProgressBar>
         <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
-            <Label Name="label1" Content="label1" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+            <Label Name="label1" Content="label1"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
                 </Label.Foreground>
 
             </Label>
-            <Label Name="label2" Content="label2" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label2_MouseLeftButtonDown">
+            <Label Name="label2" Content="label2"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label2_MouseLeftButtonDown">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
                 </Label.Foreground>
 
             </Label>
-            <Label Name="label3" Content="label3" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label3_MouseLeftButtonDown">
+            <Label Name="label3" Content="label3"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label3_MouseLeftButtonDown">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
                 </Label.Foreground>
 
             </Label>
-            <Label Name="label4" Content="label4" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label4_MouseLeftButtonDown">
+            <Label Name="label4" Content="label4"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label4_MouseLeftButtonDown">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
                 </Label.Foreground>
 
             </Label>
-            <Label Name="label5" Content="label5" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label5_MouseLeftButtonDown">
+            <Label Name="label5" Content="label5"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label5_MouseLeftButtonDown">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
                 </Label.Foreground>
@@ -68,7 +68,7 @@
             </ProgressBar.Foreground>
         </ProgressBar>
         <StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28">
-            <Label x:Name="labelNotification"  FontFamily="Verdana" 
+            <Label x:Name="labelNotification"   
                    FontWeight="Bold" Content="TestStartingnotification" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" MinWidth="1000" 
                    HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Center" >
