@@ -1,14 +1,6 @@
-﻿using DFA.ViewModels;
-using DFA.Views;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Interop;
-using System.Windows.Threading;
 
 namespace DFA
 {
@@ -22,7 +14,7 @@ namespace DFA
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            TopWindow wnd = new TopWindow();
+            MainWindow wnd = new MainWindow();
             wnd.InitializeComponent();
             Application.Current.MainWindow = wnd;
             CurrentHandleWindow = new WindowInteropHelper(wnd).Handle;

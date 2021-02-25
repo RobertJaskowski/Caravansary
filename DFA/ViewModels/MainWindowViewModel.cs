@@ -1,5 +1,5 @@
 ﻿
-namespace DFA.ViewModels
+namespace DFA
 {
     using System;
     using System.ComponentModel;
@@ -9,14 +9,11 @@ namespace DFA.ViewModels
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
-    using DFA.Commands;
     using DFA.Properties;
-    using DFA.Windows;
-    using Models;
     using static DFA.WinApi;
     using Settings = Properties.Settings;
 
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : BaseViewModel
     {
 
         private ArtistModel _artistModel;
@@ -58,12 +55,25 @@ namespace DFA.ViewModels
                 OnPropertyChanged(nameof(ArtistTimeString));
             }
         }
-     
 
+        private bool _botBarEnabled;
+
+        public bool BotBarEnabled
+        {
+            get
+            {
+                return _botBarEnabled;
+            }
+            set
+            {
+                _botBarEnabled = value;
+            }
+
+        }
         internal void MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Pressed)
-                view.window.DragMove();
+                Window.GetAssociatedWindow.DragMove();
         }
 
         internal void MouseUp(object sender, MouseButtonEventArgs e)
@@ -190,11 +200,12 @@ namespace DFA.ViewModels
                     _activeTimeClicked = new RelayCommand(
                        (object o) =>
                        {
-                           if(Artist.ArtistState == ArtistState.PAUSED)
+                           if (Artist.ArtistState == ArtistState.PAUSED)
                            {
                                ArtistActivate.Execute(null);
-                           }else
-                           ArtistPause.Execute(null);
+                           }
+                           else
+                               ArtistPause.Execute(null);
 
                        },
                        (object o) =>
@@ -299,7 +310,7 @@ namespace DFA.ViewModels
             }
         }
 
-        IView view;
+        public IWindow Window;
 
         private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
@@ -307,10 +318,10 @@ namespace DFA.ViewModels
 
         }
 
-        public MainWindowViewModel(IntPtr handle, IView view)
+        public MainWindowViewModel(IntPtr handle, IWindow window)
         {
             Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
-            this.view = view;
+            this.Window = window;
             CurrentHandleWindow = handle;
             _artistModel = new ArtistModel(TimeSpan.FromSeconds(0));
 
@@ -334,17 +345,17 @@ namespace DFA.ViewModels
 
             BackgroundTransparency = Settings.Default.BackgroundTransparency / 100;
 
+            Window.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
             int posX = Settings.Default.MainWindowPositionX;
             int posY = Settings.Default.MainWindowPositionY;
 
 
-            if (posX > 0 && posY > 0)
+            if (posX != 0 || posY != 0)
             {
 
                 SetWindowPosition(posX, posY);
                 //window.WindowStartupLocation = WindowStartupLocation.Manual;
 
-                // SetWindowPosition(posX, posY);
 
 
             }
@@ -386,23 +397,24 @@ namespace DFA.ViewModels
 
         private void TrayShowInTaskBar(object sender, EventArgs e)
         {
-            view.window.ShowInTaskbar = !view.window.ShowInTaskbar;
+            Window.GetAssociatedWindow.ShowInTaskbar = !Window.GetAssociatedWindow.ShowInTaskbar;
 
-            Settings.Default.ShowInTaskbar = view.window.ShowInTaskbar;
-
+            Settings.Default.ShowInTaskbar = Window.GetAssociatedWindow.ShowInTaskbar;
+            Settings.Default.Save();
         }
 
         private void TrayStayOnTop(object sender, EventArgs e)
         {
-            view.window.Topmost = !view.window.Topmost;
+            Window.GetAssociatedWindow.Topmost = !Window.GetAssociatedWindow.Topmost;
 
-            if (view.window.Topmost)
-                view.window.Activate();
+            if (Window.GetAssociatedWindow.Topmost)
+                Window.GetAssociatedWindow.Activate();
         }
 
         private void TrayOnSettingsClicked(object sender, EventArgs e)
         {
-            DFA.Windows.SettingsWindow dialog = new DFA.Windows.SettingsWindow();
+            SettingsWindow dialog = new SettingsWindow(Window);
+            dialog.DataContext = new SettingsWindowViewModel();
 
             bool? result = dialog.ShowDialog();
             // if (result == true)
@@ -425,13 +437,13 @@ namespace DFA.ViewModels
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
 
-                if (view.window.Visibility == Visibility.Collapsed)
+                if (Window.GetAssociatedWindow.Visibility == Visibility.Collapsed)
                 {
-                    view.window.Visibility = Visibility.Visible;
+                    Window.GetAssociatedWindow.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    view.window.Visibility = Visibility.Collapsed;
+                    Window.GetAssociatedWindow.Visibility = Visibility.Collapsed;
                 }
 
                 //if(window.WindowState == WindowState.Minimized)
@@ -446,17 +458,17 @@ namespace DFA.ViewModels
 
             }
         }
-        public int DefaultWindowX => (int)((System.Windows.SystemParameters.WorkArea.Width / 2) - (view.window.Width / 2));// Screen.FromControl(this).WorkingArea.Width / 2;
+        public int DefaultWindowX => (int)((System.Windows.SystemParameters.WorkArea.Width / 2) - (Window.GetAssociatedWindow.Width / 2));// Screen.FromControl(this).WorkingArea.Width / 2;
         public int DefaultWindowY => 0;
         public void ResetWindowPosition()
         {
-            view.window.WindowStartupLocation = WindowStartupLocation.Manual;
+            Window.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
             SetWindowPosition(DefaultWindowX, DefaultWindowY);
         }
         public void SetWindowPosition(int leftX, int topY)
         {
-            view.window.Left = leftX;
-            view.window.Top = topY;
+            Window.GetAssociatedWindow.Left = leftX;
+            Window.GetAssociatedWindow.Top = topY;
         }
 
         private void CreateArtistStateTimers()
@@ -652,14 +664,15 @@ namespace DFA.ViewModels
         public int mouseinY;
 
 
-        
+
         private void SaveWindowPosition()
         {
 
-            int x = (int)view.window.Left;
-            int y = (int)view.window.Top;
+            int x = (int)Window.GetAssociatedWindow.Left;
+            int y = (int)Window.GetAssociatedWindow.Top;
             Settings.Default.MainWindowPositionX = x;
             Settings.Default.MainWindowPositionY = y;
+            Settings.Default.Save();
         }
 
         private ICommand _dailyGoalClicked;
@@ -687,7 +700,7 @@ namespace DFA.ViewModels
 
             }
         }
-        
+
         private void LoadDailyGoal()
         {
 
@@ -716,7 +729,7 @@ namespace DFA.ViewModels
         //    progressBarBottomMost.BeginAnimation(ProgressBar.ValueProperty, animation);
         //}
 
-     
+
 
 
         #region KeyCombination
@@ -724,7 +737,7 @@ namespace DFA.ViewModels
 
         private KeyboardListener _listener;
 
-        private int _ctrlZCounterString=0;
+        private int _ctrlZCounterString = 0;
         public int CtrlZCounter
         {
             get
@@ -734,7 +747,7 @@ namespace DFA.ViewModels
             }
             set
             {
-                
+
                 _ctrlZCounterString = value;
                 OnPropertyChanged(nameof(CtrlZCounter));
             }
@@ -809,20 +822,6 @@ namespace DFA.ViewModels
 
         #endregion
 
-        #region INotifyPropertyChanged Members;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
 
 
     }

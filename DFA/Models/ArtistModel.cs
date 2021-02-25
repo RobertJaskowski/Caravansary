@@ -1,4 +1,4 @@
-﻿namespace DFA.Models
+﻿namespace DFA
 {
     using System;
     using System.ComponentModel;

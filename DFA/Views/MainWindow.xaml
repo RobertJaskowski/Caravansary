@@ -1,0 +1,117 @@
+﻿<Window x:Name="window" x:Class="DFA.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DFA"
+        mc:Ignorable="d"
+        
+
+
+
+        Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
+        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight"
+        >
+
+
+    <!--<intr:Interaction.Triggers>
+        <intr:EventTrigger EventName="Loaded">
+            <intr:InvokeCommandAction Command="{Binding WindowLoaded}"/>
+        </intr:EventTrigger>
+        --><!--<intr:EventTrigger EventName="Closed">
+            <intr:InvokeCommandAction Command="{Binding WindowClosing}"/>
+        </intr:EventTrigger>--><!--
+    </intr:Interaction.Triggers>-->
+    <!--MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" Loaded="window_Loaded" Closing="window_Closing"-->
+
+    <Window.Resources>
+        <!--<Color x:Key="DefaultFgColor">#FFBB8FCE</Color>
+        <Color x:Key="DefaultRedColor">#FFD41919</Color>
+        <Color x:Key="DefaultGreenColor">#FF64B421</Color>-->
+    </Window.Resources>
+
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}" Opacity="{Binding BackgroundTransparency}"/>
+    </Window.Background>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Description="testtbiteminfo" ProgressValue="69" ProgressState="Indeterminate"/>
+    </Window.TaskbarItemInfo>
+
+    <StackPanel x:Name="stackParent" VerticalAlignment="Top">
+
+
+        <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed"/>
+
+
+        <ProgressBar local:ProgressBarSmoother.SmoothValue="{Binding ProgressTopBar}" x:Name="progressBarTopMost"  MinHeight="2" MinWidth="1000" Value="50" MaxHeight="2" Height="2"  >
+            <ProgressBar.Background>
+                <SolidColorBrush Color="{Binding DataContext.TopBarStateColor, Source={x:Reference ProxyElement}, UpdateSourceTrigger=PropertyChanged}"/>
+            </ProgressBar.Background>
+            <ProgressBar.BorderBrush>
+                <SolidColorBrush Color="{Binding DataContext.TopBarStateColor, Source={x:Reference ProxyElement} , UpdateSourceTrigger=PropertyChanged}"/>
+            </ProgressBar.BorderBrush>
+            <ProgressBar.Foreground>
+                <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+            </ProgressBar.Foreground>
+
+        </ProgressBar>
+        <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
+            <Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding CtrlZClicked}" MouseAction="LeftClick" />
+                </Label.InputBindings>
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label2" Content="label2" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding ActiveTimeClicked}" MouseAction="LeftClick" />
+                </Label.InputBindings>
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label4" Content="label4" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"  FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+                <Label.InputBindings>
+                    <MouseBinding Command="{Binding DailyGoalClicked}" MouseAction="LeftClick" />
+                </Label.InputBindings>
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+
+            </Label>
+        </StackPanel>
+        <ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
+                         MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">
+            <ProgressBar.Foreground>
+                <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+            </ProgressBar.Foreground>
+        </ProgressBar>
+        <StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28">
+            <Label x:Name="labelNotification"  FontFamily="Verdana" 
+                   FontWeight="Bold" Content="TestStartingnotification" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" MinWidth="1000" 
+                   HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Center" >
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                </Label.Foreground>
+            </Label>
+        </StackPanel>
+    </StackPanel>
+
+</Window>

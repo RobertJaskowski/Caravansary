@@ -13,7 +13,7 @@ namespace DFA
     {
         public static NotificationSystem Instance;
 
-        private MainWindow mainWindow;
+        private UselessWindow mainWindow;
 
         public LinkedList<Notification> notificationQueue;
 
@@ -28,7 +28,7 @@ namespace DFA
         private bool isShowing = false;
         //DispatcherTimer notificationTimer;
 
-        public NotificationSystem(MainWindow mainForm)
+        public NotificationSystem(UselessWindow mainForm)
         {
             if (Instance == null)
             {

@@ -1,0 +1,82 @@
+﻿<Window x:Name="window" x:Class="DFA.UselessWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DFA"
+        mc:Ignorable="d"
+        Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" 
+        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" MouseDown="Window_MouseDown" MouseUp="Window_MouseUp" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Loaded="window_Loaded" Closing="window_Closing">
+    <Window.Resources>
+        <Color x:Key="DefaultFgColor">#FFBB8FCE</Color>
+    </Window.Resources>
+    <Window.Background>
+        <SolidColorBrush Color="#FF141414"/>
+    </Window.Background>
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Description="testtbiteminfo" ProgressValue="69" ProgressState="Indeterminate"/>
+    </Window.TaskbarItemInfo>
+
+    <StackPanel x:Name="stackParent" VerticalAlignment="Top">
+        <ProgressBar x:Name="progressBarTopMost" MinHeight="2" MinWidth="1000" Value="50" MaxHeight="2" Height="2" >
+            <ProgressBar.BorderBrush>
+                <SolidColorBrush Color="{DynamicResource DefaultRedColor}"/>
+            </ProgressBar.BorderBrush>
+            <ProgressBar.Foreground>
+                <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+            </ProgressBar.Foreground>
+            <ProgressBar.Background>
+                <SolidColorBrush Color="{DynamicResource DefaultRedColor}"/>
+            </ProgressBar.Background>
+        </ProgressBar>
+        <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
+            <Label Name="label1" Content="label1" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label2" Content="label2" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label2_MouseLeftButtonDown">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label3" Content="label3" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label3_MouseLeftButtonDown">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label4" Content="label4" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label4_MouseLeftButtonDown">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+
+            </Label>
+            <Label Name="label5" Content="label5" FontFamily="Verdana" FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" MouseLeftButtonDown="Label5_MouseLeftButtonDown">
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+
+            </Label>
+        </StackPanel>
+        <ProgressBar x:Name="progressBarBottomMost" MinHeight="8" 
+                         MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ProgressBar.Foreground>
+                <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+            </ProgressBar.Foreground>
+        </ProgressBar>
+        <StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28">
+            <Label x:Name="labelNotification"  FontFamily="Verdana" 
+                   FontWeight="Bold" Content="TestStartingnotification" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" MinWidth="1000" 
+                   HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Center" >
+                <Label.Foreground>
+                    <SolidColorBrush Color="{DynamicResource DefaultFgColor}"/>
+                </Label.Foreground>
+            </Label>
+        </StackPanel>
+    </StackPanel>
+
+</Window>

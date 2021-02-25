@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Robert\Desktop\WORK\DFA\DFA\App.xaml
-4720640209
+9-165166726
 
-352019226283
-17-1029522908
-Windows\DailyGoalWindow.xaml;Windows\MainWindow.xaml;Windows\SettingsWindow.xaml;Views\TopWindow.xaml;
+341289792554
+16-1340840256
+Themes\Buttons.xaml;Themes\Colors.xaml;Themes\Windows.xaml;Themes\Fonts.xaml;Themes\Texts.xaml;Windows\DailyGoalWindow.xaml;Windows\UselessWindow.xaml;Views\SettingsWindow.xaml;Views\MainWindow.xaml;
 
-False
+True
 

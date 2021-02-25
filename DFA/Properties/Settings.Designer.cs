@@ -37,7 +37,7 @@ namespace DFA.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int BackgroundTransparency {
             get {
                 return ((int)(this["BackgroundTransparency"]));
@@ -92,6 +92,18 @@ namespace DFA.Properties {
             }
             set {
                 this["DailyGoalMinutes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckBoxBottomBar {
+            get {
+                return ((bool)(this["CheckBoxBottomBar"]));
+            }
+            set {
+                this["CheckBoxBottomBar"] = value;
             }
         }
     }

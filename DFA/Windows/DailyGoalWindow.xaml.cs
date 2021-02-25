@@ -1,20 +1,10 @@
 ﻿using DFA.Properties;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace DFA.Windows
+namespace DFA
 {
     /// <summary>
     /// Interaction logic for DailyGoalWindow.xaml
@@ -39,19 +29,13 @@ namespace DFA.Windows
 
 
 
-            RegistryKey key;
-            key = Registry.CurrentUser.OpenSubKey("DFA", true);
-            if (key == null)
-                key = Registry.CurrentUser.CreateSubKey("DFA", true);
-
             int hours = timeSpan.Hours;
             int minutes = timeSpan.Minutes;
-            key.SetValue("DFADailyGoalHour", hours);
-            key.SetValue("DFADailyGoalMinutes", minutes);
 
-            key.Close();
+            Settings.Default.DailyGoalHour = hours;
+            Settings.Default.DailyGoalMinutes = minutes;
 
-
+            Settings.Default.Save();
 
         }
 
