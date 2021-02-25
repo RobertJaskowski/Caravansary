@@ -63,9 +63,6 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.9.5.1\lib\net461\FluentValidation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -93,7 +90,6 @@
     </ApplicationDefinition>
     <Compile Include="Behaviours\CloseWindowOnKey.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="EnumToColorConverter.cs" />
     <Compile Include="IWindow.cs" />
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="Models\ArtistModel.cs" />
@@ -108,7 +104,7 @@
     <Compile Include="Views\DailyGoalWindow.xaml.cs">
       <DependentUpon>DailyGoalWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\IMainWindow.cs" />
+    <Compile Include="ViewModels\IMainWindow.cs" />
     <Compile Include="MilestoneCoreModule\MilestoneSystem.cs" />
     <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\Milestone.cs" />
     <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\TimespanMilestone.cs" />
