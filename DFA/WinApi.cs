@@ -12,7 +12,12 @@ namespace DFA
     class WinApi
     {
 
-        
+        [DllImport("kernel32.dll")]
+        static extern uint GetLastError();
+
+        [DllImport("kernel32.dll")]
+        static extern uint GetCurrentThreadId();
+
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -30,8 +35,6 @@ namespace DFA
         public static extern IntPtr GetActiveWindow();
 
 
-        // [DllImport("user32.dll")]
-        // public static extern HandleRef GetActiveWindow();
 
         [DllImport("user32.dll")]
         public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE pRawInputDevices, uint uiNumDevices, uint cbSize);

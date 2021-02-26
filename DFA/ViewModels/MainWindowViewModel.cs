@@ -339,7 +339,6 @@ namespace DFA
 
             artistTimeController = new ArtistTimeController(this);
 
-            artistTimeController.HookWindowFocus();
 
 
             CreateMilestoneSystem();
