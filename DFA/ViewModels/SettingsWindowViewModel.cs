@@ -26,7 +26,7 @@ namespace DFA
             get => Settings.Default.BackgroundTransparency;
             set
             {
-                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).Window.GetAssociatedWindow.Background.Opacity = value;
+                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;
 
                 Settings.Default.BackgroundTransparency = value;
                 Settings.Default.Save();

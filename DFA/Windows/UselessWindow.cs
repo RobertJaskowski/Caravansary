@@ -237,7 +237,7 @@ namespace DFA
 
         private void TrayOnSettingsClicked(object sender, EventArgs e)
         {
-            SettingsWindow dialog = new SettingsWindow(this.window);
+            SettingsWindow dialog = new SettingsWindow();
             bool? result = dialog.ShowDialog();
             // if (result == true)
 
