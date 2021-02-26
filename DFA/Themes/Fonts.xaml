@@ -6,6 +6,8 @@
     <FontFamily x:Key="LatoRegular">pack://application;,,,/Fonts/#Late Black</FontFamily>
     <FontFamily x:Key="LatoHairline">pack://application;,,,/Fonts/#Late-Hairline</FontFamily>
     <FontFamily x:Key="FredokaOne">pack://application;,,,/Fonts/#Fredoka One</FontFamily>
+    <FontFamily x:Key="FontAwesome">/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
+
 
 
 

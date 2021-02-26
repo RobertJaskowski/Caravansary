@@ -6,6 +6,9 @@
     <SolidColorBrush  x:Key="DefaultBgDark">#FF141414</SolidColorBrush>
     <Color  x:Key="DefaultBgDarkColor">#FF141414</Color>
 
+    <SolidColorBrush  x:Key="DefaultBgLighterDark">#FF1D1D1D</SolidColorBrush>
+    <Color x:Key="DefaultBgLighterDarkColor">#FF1D1D1D</Color>
+
     <SolidColorBrush  x:Key="DefaultGreen">#FFB2FF59</SolidColorBrush>
     <Color  x:Key="DefaultGreenColor">#FFB2FF59</Color>
 
@@ -24,15 +27,66 @@
 
     <Style TargetType="{x:Type TextBlock}" x:Key="BaseTextBlockStyle">
         <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
 
     </Style>
 
     <Style TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource BaseStyle}"/>
-    
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}"/>
+
+    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="{StaticResource DefaultBgDark}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DefaultForeground}"/>
+    </Style>
     <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseStyle}"/>
     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource BaseStyle}"/>
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}"/>
     <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"/>
+    <Style  TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseStyle}">
+        <Setter Property="Background" Value="{StaticResource DefaultBgDark}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource DefaultForeground}"/>
+    </Style>
+
+    <!--<Style x:Key="GridBase" TargetType="{x:Type Grid}">
+        --><!--<Setter Property="Background" Value="AntiqueWhite"></Setter>--><!--
+        <Style.Resources>
+
+            <Style TargetType="{x:Type TextBlock}" >
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseCheckBoxStyle}">
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+        </Style.Resources>
+    </Style>-->
+
+    <Style x:Key="SettingsList" TargetType="StackPanel">
+        <!--<Setter Property="Background" Value="AntiqueWhite"></Setter>-->
+        <Style.Resources>
+            
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseCheckBoxStyle}">
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <ContextMenu x:Key="ContextMenuStyle">
+        <ContextMenu.Resources>
+
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Background" Value="{StaticResource DefaultBgDark}"/>
+                <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
+            </Style>
+        </ContextMenu.Resources>
+        <MenuItem/>
+    </ContextMenu>
+
 
 </ResourceDictionary>

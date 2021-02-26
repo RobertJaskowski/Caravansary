@@ -32,7 +32,7 @@
             </CheckBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Label Width="180"  Padding="0"  Content="Transparency" HorizontalContentAlignment="Center">
+            <Label Width="180"  Margin="5" Content="Transparency" HorizontalContentAlignment="Center">
                 <Label.Foreground>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </Label.Foreground>
@@ -42,6 +42,45 @@
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
                 </Slider.Foreground>
             </Slider>
+        </StackPanel>
+
+
+        <StackPanel>
+            <StackPanel.Background>
+                <!--<SolidColorBrush Color="{StaticResource DefaultBgLighterDarkColor}"/>-->
+                <SolidColorBrush />
+            </StackPanel.Background>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition  Height="Auto"/>
+                    <RowDefinition  Height="5"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="300" />
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" ToolTip="Blacklists timmer runnning when user on specific processes"  Text="Blacklist active" HorizontalAlignment="Center"/>
+                <CheckBox Grid.Row="0" Grid.Column="1" x:Name="BlacklistEnableCheckbox"  IsChecked="{Binding BlacklistEnabled,FallbackValue=true, Mode=TwoWay}"  />
+                <Button Content="&#xf067;" FontFamily="{StaticResource FontAwesome}" Width="25" Grid.Row="0" Grid.Column="1" Command="{Binding CreateNewBlacklistItem}" FontWeight="Normal"  >
+                    <Button.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
+                    </Button.BorderBrush>
+                    <Button.Background>
+                        <SolidColorBrush Color="{DynamicResource DefaultBgLighterDarkColor}"/>
+                    </Button.Background>
+                </Button>
+                <Line Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="22" Fill="#FFC52828" Stroke="#FF47DA1C"></Line>
+            </Grid>
+
+            <StackPanel Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked}"  Style="{StaticResource SettingsList}" Orientation="Horizontal">
+
+                <TextBlock   Text="safd"/>
+                <CheckBox  HorizontalAlignment="Center"/>
+            </StackPanel>
+
+
         </StackPanel>
 
     </StackPanel>
