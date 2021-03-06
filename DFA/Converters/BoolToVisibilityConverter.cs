@@ -7,6 +7,49 @@ namespace DFA
 {
     class BoolToVisibilityConverter : IValueConverter
     {
+        //public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        //{
+        //    if (value is Visibility)
+        //    {
+        //        Visibility v = (Visibility)value;
+        //        if (v == Visibility.Visible) 
+        //            return true;
+        //        else 
+        //            return false;
+        //    }
+        //    else if (value is bool)
+        //    {
+        //        bool v = (bool)value;
+        //        if (v)
+        //            return Visibility.Visible;
+        //        else
+        //            return Visibility.Collapsed;
+        //    }
+
+        //    return value;
+        //}
+
+        //public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        //{
+        //    if (value is Visibility)
+        //    {
+        //        Visibility v = (Visibility)value;
+        //        if (v == Visibility.Visible)
+        //            return true;
+        //        else 
+        //            return false;
+        //    }
+        //    else if (value is bool)
+        //    {
+        //        bool v = (bool)value;
+        //        if (v)
+        //            return Visibility.Visible;
+        //        else
+        //            return Visibility.Collapsed;
+        //    }
+
+        //    return value;
+        //}
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var v = (bool)value;

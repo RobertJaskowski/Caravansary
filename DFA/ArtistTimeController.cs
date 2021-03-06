@@ -1,15 +1,19 @@
-﻿using System;
+﻿using DFA.Properties;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Threading;
 using static DFA.WinApi;
+using System.Linq;
+using System.Windows.Automation;
 
 namespace DFA
 {
     class ArtistTimeController
     {
-       
+
 
         WinEventDelegate dele = null;
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
@@ -42,7 +46,166 @@ namespace DFA
 
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            Debug.WriteLine(GetActiveWindowTitle() + "\r\n");
+
+
+
+            if (!Settings.Default.CheckBoxBlacklistEnabled) return;
+            if (!(GlobalSettings.SettingsBlackListItems.Count > 0)) return;
+
+
+
+            var windowTitle = GetActiveWindowTitle().ToLower().Trim();
+            Debug.WriteLine(windowTitle + "\r\n");
+
+
+
+            //if (IsChrome(windowTitle))
+            //{
+            for (int i = 0; i < GlobalSettings.SettingsBlackListItems.Count; i++)
+            {
+
+                BlacklistItem item = GlobalSettings.SettingsBlackListItems[i];
+                if (IsChrome(windowTitle))//called alot in debug
+                {
+                    if (IsChromeTab(item.Rule.ToLower(), out string settingsTabUrl))
+                    {
+
+                        var ActiveTabUrl = GetActiveTabUrl();
+                        if (ActiveTabUrl.Contains(settingsTabUrl))
+                        {
+                            mainWindow.ArtistDeactivate.Execute(null);
+                            Debug.WriteLine("stopping");
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    if (windowTitle.Contains(item.Rule.ToLower()))
+                    {
+                        mainWindow.ArtistDeactivate.Execute(null);
+                        return;
+                    }
+                }
+                //SplitProcessAndParameter(item.Rule.ToLower(), out string proc, out string param);
+                //if (ActiveTabUrl.Contains(param))
+                //{
+                //    mainWindow.ArtistDeactivate.Execute(null);
+                //    return;
+                //}
+
+                //if (i == GlobalSettings.SettingsBlackListItems.Count - 1)
+                //{
+
+                //}
+            }
+
+            //bool checkForChromeTabs = false;
+
+            //foreach (var item in GlobalSettings.SettingsBlackListItems)
+            //{
+            //    if (IsChromeTab(item.Rule))
+            //        checkForChromeTabs = true;
+            //}
+
+            //if (checkForChromeTabs)
+            //{
+            //    var ActiveTabUrl = GetActiveTabUrl();
+            //    Debug.WriteLine(ActiveTabUrl);
+
+
+            //}
+            //else
+            //{
+
+            //}
+            //}
+            //else
+            //{
+            //    foreach (var item in GlobalSettings.SettingsBlackListItems)
+            //    {
+            //        if (windowTitle.Contains(item.Rule.ToLower()))
+            //        {
+            //            mainWindow.ArtistDeactivate.Execute(null);
+            //            return;
+            //        }
+            //    }
+            //}
+
+        }
+
+        private void SplitProcessAndParameter(string title, out string process, out string parameter)
+        {
+            if (title.Contains(':'))
+            {
+
+
+                List<string> spl = title.Split(':').ToList<string>();
+                if (spl[1].Length > 0)
+                {
+                    process = spl[0];
+                    parameter = spl[1];
+                }
+                else
+                {
+                    process = spl[0];
+                    parameter = "";
+                }
+
+            }
+            else
+            {
+                process = title;
+                parameter = "";
+            }
+
+
+        }
+
+        public static string GetActiveTabUrl()
+        {
+            Process[] procsChrome = Process.GetProcessesByName("chrome");
+
+            if (procsChrome.Length <= 0)
+                return null;
+
+            foreach (Process proc in procsChrome)
+            {
+                // the chrome process must have a window 
+                if (proc.MainWindowHandle == IntPtr.Zero)
+                    continue;
+
+                // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+                AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
+                var SearchBar = root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
+                if (SearchBar != null)
+                    return (string)SearchBar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+            }
+
+            return null;
+        }
+        private bool IsChrome(string title)
+        {
+            return title.Contains("chrome");
+        }
+
+        private bool IsChromeTab(string title)
+        {
+            if (!IsChrome(title)) return false;
+
+            SplitProcessAndParameter(title, out string process, out string param);
+            return !string.IsNullOrEmpty(param);
+        }
+
+        private bool IsChromeTab(string title, out string url)
+        {
+            if (!IsChrome(title))
+            {
+                url = "";
+                return false;
+            }
+            SplitProcessAndParameter(title, out string process, out url);
+            return !string.IsNullOrEmpty(url);
         }
 
 
@@ -85,8 +248,8 @@ namespace DFA
 
         }
 
-      
-     
+
+
 
 
         private void CreateArtistStateTimers()
@@ -100,7 +263,7 @@ namespace DFA
         }
         private void TimerTick(object sender, EventArgs e)
         {
-           
+
 
             // ActiveTimeUpdate.Execute(null);
 

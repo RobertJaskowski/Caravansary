@@ -310,6 +310,54 @@ namespace DFA
 
             }
         }
+        private ICommand _showSettings;
+
+        public ICommand ShowSettings
+        {
+            get
+            {
+                if (_showSettings == null)
+                    _showSettings = new RelayCommand(
+                       (object o) =>
+                       {
+
+                           SettingsWindow dialog = new SettingsWindow();
+                           dialog.DataContext = new SettingsWindowViewModel();
+
+                           bool? result = dialog.ShowDialog();
+
+                       },
+                       (object o) =>
+                       {
+                           return true;
+                       });
+
+                return _showSettings;
+            }
+        }
+        private ICommand _quitApp;
+
+        public ICommand QuitApp
+        {
+            get
+            {
+                if (_quitApp == null)
+                    _quitApp = new RelayCommand(
+                       (object o) =>
+                           {
+                               Application.Current.Shutdown();
+
+
+                           },
+                       (object o) =>
+                       {
+                           return true;
+                       });
+
+                return _quitApp;
+            }
+        }
+
 
         #endregion
 
@@ -363,7 +411,7 @@ namespace DFA
             if (posX != 0 || posY != 0)
             {
 
-                WindowHelper.SetWindowPosition(CurrentWindow.GetAssociatedWindow,posX, posY);
+                WindowHelper.SetWindowPosition(CurrentWindow.GetAssociatedWindow, posX, posY);
 
             }
             else
@@ -375,8 +423,8 @@ namespace DFA
             LoadDailyGoal();
         }
 
-        
-        
+
+
 
         #region daily goal
         private string _dailyGoalText;
@@ -506,7 +554,7 @@ namespace DFA
             Settings.Default.Save();
         }
 
-    
+
 
 
         //private void StartAnimatingBottomBar()

@@ -9,6 +9,32 @@
         Title="DFA" Width="1000" WindowStartupLocation="CenterScreen" 
         MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/DFA;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None"
         >
+    <Window.Resources>
+        <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
+            <StackPanel Margin="-20,0,0,0">
+                <StackPanel.Background>
+                    <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
+                </StackPanel.Background>
+            </StackPanel>
+        </ItemsPanelTemplate>
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
+        </Style>
+        <Style TargetType="{x:Type ContextMenu}">
+            <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
+        </Style>
+    </Window.Resources>
+    <Window.ContextMenu>
+        <ContextMenu >
+            <ContextMenu.Background>
+                <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
+            </ContextMenu.Background>
+
+            <MenuItem Header="Settings" Icon="{x:Null}" Command="{Binding ShowSettings}"/>
+            <MenuItem Header="Exit" Command="{Binding QuitApp}"/>
+
+        </ContextMenu>
+    </Window.ContextMenu>
 
 
     <Window.Background>

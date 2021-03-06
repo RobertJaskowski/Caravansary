@@ -106,5 +106,30 @@ namespace DFA.Properties {
                 this["CheckBoxBottomBar"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CheckBoxBlacklistEnabled {
+            get {
+                return ((bool)(this["CheckBoxBlacklistEnabled"]));
+            }
+            set {
+                this["CheckBoxBlacklistEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+
+        public BlacklistItems BlacklistItems {
+            get {
+                return ((BlacklistItems)(this["BlacklistItems"]));
+            }
+            set {
+                this["BlacklistItems"] = value;
+            }
+        }
     }
 }

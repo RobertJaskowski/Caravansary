@@ -21,6 +21,7 @@
 
 
     <Style TargetType="{x:Type Control}" x:Key="BaseStyle">
+        <Setter Property="Background" Value="{x:Null}"/>
         <Setter Property="Foreground" Value="{StaticResource DefaultForeground}"/>
 
     </Style>
@@ -47,30 +48,16 @@
         <Setter Property="BorderBrush" Value="{StaticResource DefaultForeground}"/>
     </Style>
 
-    <!--<Style x:Key="GridBase" TargetType="{x:Type Grid}">
-        --><!--<Setter Property="Background" Value="AntiqueWhite"></Setter>--><!--
-        <Style.Resources>
-
-            <Style TargetType="{x:Type TextBlock}" >
-                <Setter Property="Width" Value="300"/>
-                <Setter Property="TextAlignment" Value="Center"/>
-            </Style>
-            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseCheckBoxStyle}">
-                <Setter Property="Width" Value="100"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-            </Style>
-        </Style.Resources>
-    </Style>-->
+   
 
     <Style x:Key="SettingsList" TargetType="StackPanel">
-        <!--<Setter Property="Background" Value="AntiqueWhite"></Setter>-->
         <Style.Resources>
             
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
                 <Setter Property="Width" Value="300"/>
                 <Setter Property="TextAlignment" Value="Center"/>
             </Style>
-            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseCheckBoxStyle}">
+            <Style TargetType="{x:Type CheckBox}" >
                 <Setter Property="Width" Value="100"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
             </Style>

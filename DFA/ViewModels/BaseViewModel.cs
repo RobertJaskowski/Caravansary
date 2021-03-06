@@ -3,11 +3,8 @@ namespace DFA
 {
     using System.ComponentModel;
 
-    class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
-
-
-
 
 
         #region INotifyPropertyChanged Members;
