@@ -130,10 +130,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ArtistTimeController.cs" />
     <Compile Include="Behaviours\CloseWindowOnKey.cs" />
     <Compile Include="BlacklistItems.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="CoreModule.cs" />
+    <Compile Include="CoreModules\ActiveTimer\ViewModel\ActiveTimerViewModel.cs" />
+    <Compile Include="CoreModules\ActiveTimer\View\ActiveTimerView.xaml.cs">
+      <DependentUpon>ActiveTimerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoreModules\DailyGoal\ViewModel\DailyGoalViewModel.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="IWindow.cs" />
@@ -153,15 +158,15 @@
       <DependentUpon>DailyGoalWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\IMainWindow.cs" />
-    <Compile Include="MilestoneCoreModule\MilestoneSystem.cs" />
-    <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\Milestone.cs" />
-    <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\TimespanMilestone.cs" />
-    <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Interface\IMilestoneModule.cs" />
-    <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\Interface\ITimespanMilestone.cs" />
-    <Compile Include="MilestoneCoreModule\Modules\TimespanMilestoneModule\TimespanMilestoneModule.cs" />
-    <Compile Include="NotificationSystem\INotification.cs" />
-    <Compile Include="NotificationSystem\Notification.cs" />
-    <Compile Include="NotificationSystem\NotificationSystem.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\MilestoneSystem.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\Milestone.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\TimespanMilestone.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Interface\IMilestoneModule.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Interface\ITimespanMilestone.cs" />
+    <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\TimespanMilestoneModule.cs" />
+    <Compile Include="CoreModules\NotificationSystem\INotification.cs" />
+    <Compile Include="CoreModules\NotificationSystem\Notification.cs" />
+    <Compile Include="CoreModules\NotificationSystem\NotificationSystem.cs" />
     <Compile Include="RAWINPUTDEVICE.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="WinApi.cs" />
@@ -171,6 +176,10 @@
     <Compile Include="Views\MainWindow.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="CoreModules\ActiveTimer\View\ActiveTimerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Buttons.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -204,6 +213,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ArtistState.cs" />
+    <Compile Include="WindowsWindowApi.cs" />
     <Compile Include="Windows\UselessWindow.cs">
       <DependentUpon>UselessWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -297,6 +307,10 @@
     <Content Include="Fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CoreModules\DailyGoal\View\" />
+    <Folder Include="CoreModules\KeyCounter\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

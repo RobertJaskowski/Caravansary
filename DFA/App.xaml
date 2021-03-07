@@ -2,6 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:DFA" ShutdownMode="OnMainWindowClose"
+             
+             xmlns:atV="clr-namespace:DFA.CoreModules.ActiveTimer.View"
+             xmlns:atVM="clr-namespace:DFA.CoreModules.ActiveTimer.ViewModel"
              >
     <Application.Resources>
 
@@ -17,11 +20,13 @@
                 
             </ResourceDictionary.MergedDictionaries>
 
-           
+            <DataTemplate DataType="{x:Type atVM:ActiveTimerViewModel}">
+                <atV:ActiveTimerView/>
+            </DataTemplate>
+
         </ResourceDictionary>
 
-            
-
+        
 
     </Application.Resources>
 </Application>

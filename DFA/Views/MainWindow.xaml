@@ -60,36 +60,50 @@
 
 
         </ProgressBar>
+        
+        
         <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
-            <Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+
+            <ContentControl Content="{Binding Mod1}"/>
+            <ContentControl Content="{Binding Mod2}"/>
+            <ContentControl Content="{Binding Mod3}"/>
+            <ContentControl Content="{Binding Mod4}"/>
+            <ContentControl Content="{Binding Mod5}"/>
+
+            <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding CtrlZClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
-            </Label>
-            <Label  Name="label2"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+            </Label>-->
+            
+            <!--<Label  Name="label2"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
 
 
-            </Label>
-            <Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+            </Label>-->
+            
+            
+            <!--<Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding ActiveTimeClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
-            </Label>
-            <Label Name="label4"   FontWeight="Bold" MinWidth="200" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+            </Label>-->
+            
+            <!--<Label Name="label4"   FontWeight="Bold" MinWidth="200" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
 
 
-            </Label>
-            <Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"   FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+            </Label>-->
+            
+            <!--<Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"   FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding DailyGoalClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
-            </Label>
+            </Label>-->
         </StackPanel>
         <ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
                          MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">

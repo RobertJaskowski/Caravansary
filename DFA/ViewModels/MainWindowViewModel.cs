@@ -1,10 +1,13 @@
 ﻿
 namespace DFA
 {
+    using DFA.CoreModules.ActiveTimer.ViewModel;
     using System;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
@@ -14,44 +17,7 @@ namespace DFA
     {
         #region properties
 
-        private ArtistModel _artistModel;
-        public ArtistModel Artist
-        {
-            get
-            {
-                return _artistModel;
-            }
-            set
-            {
-                _artistModel = value;
-            }
-
-        }
-
-        private string _artistTimeString;
-        public String ArtistTimeString
-        {
-            get
-            {
-                return _artistTimeString;
-            }
-            set
-            {
-                switch (Artist.ArtistState)
-                {
-                    case ArtistState.ACTIVE:
-                        _artistTimeString = value;
-                        break;
-                    case ArtistState.INACTIVE:
-                        _artistTimeString = value;
-                        break;
-                    case ArtistState.PAUSED:
-                        _artistTimeString = "|| " + value;
-                        break;
-                }
-                OnPropertyChanged(nameof(ArtistTimeString));
-            }
-        }
+       
 
         private bool _botBarEnabled;
         public bool BotBarEnabled
@@ -169,147 +135,6 @@ namespace DFA
         #region Commands
 
 
-        private ICommand _activeTimeUpdate;
-        public ICommand ActiveTimeUpdate1Sec
-        {
-            get
-            {
-                if (_activeTimeUpdate == null)
-                    _activeTimeUpdate = new RelayCommand(
-                       (object o) =>
-                       {
-                           Artist.ActiveTime += TimeSpan.FromSeconds(1);
-
-                           ArtistTimeString = Artist.ActiveTime.ToString();
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _activeTimeUpdate;
-
-            }
-        }
-
-        private ICommand _activeTimeClicked;
-        public ICommand ActiveTimeClicked
-        {
-            get
-            {
-                if (_activeTimeClicked == null)
-                    _activeTimeClicked = new RelayCommand(
-                       (object o) =>
-                       {
-                           if (Artist.ArtistState == ArtistState.PAUSED)
-                           {
-                               ArtistActivate.Execute(null);
-                           }
-                           else
-                               ArtistPause.Execute(null);
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _activeTimeClicked;
-
-            }
-        }
-
-        private ICommand _artistActivate;
-        public ICommand ArtistActivate
-        {
-            get
-            {
-                if (_artistActivate == null)
-                    _artistActivate = new RelayCommand(
-                       (object o) =>
-                       {
-                           Artist.ArtistState = ArtistState.ACTIVE;
-
-                           Color c = Color.FromArgb(255, 178, 255, 89);
-                           TopBarStateColor = c;
-
-                           //  StartAnimatingBottomBar();
-
-
-                           //timeSecToFillTopBar = 20;
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _artistActivate;
-
-            }
-        }
-
-        private ICommand _artistDeactivate;
-        public ICommand ArtistDeactivate
-        {
-            get
-            {
-                if (_artistDeactivate == null)
-                    _artistDeactivate = new RelayCommand(
-                       (object o) =>
-                       {
-
-                           Artist.ArtistState = ArtistState.INACTIVE;
-                           ArtistTimeString = Artist.ActiveTime.ToString();
-
-
-                           Color c = Color.FromArgb(255, 221, 44, 0);
-
-                           TopBarStateColor = c;
-
-
-                           //   progressBarBottomMost.StopAnimation();
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _artistDeactivate;
-
-            }
-        }
-        private ICommand _artistPause;
-        public ICommand ArtistPause
-        {
-            get
-            {
-                if (_artistPause == null)
-                    _artistPause = new RelayCommand(
-                       (object o) =>
-                       {
-
-                           Artist.ArtistState = ArtistState.PAUSED;
-                           ArtistTimeString = Artist.ActiveTime.ToString();
-
-
-                           Color c = Color.FromArgb(255, 221, 44, 0);
-
-                           TopBarStateColor = c;
-
-
-                           //   progressBarBottomMost.StopAnimation();
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _artistPause;
-
-            }
-        }
         private ICommand _showSettings;
 
         public ICommand ShowSettings
@@ -370,27 +195,108 @@ namespace DFA
         public IWindow CurrentWindow;
         TrayIcon trayIcon;
 
-        ArtistTimeController artistTimeController;
+
+
+
+        //private ObservableCollection<CoreModule> _myCoreModules;
+
+        //public ObservableCollection<CoreModule> CoreModules
+        //{
+        //    get { return _myCoreModules; }
+        //    set
+        //    {
+        //        _myCoreModules = value;
+        //        OnPropertyChanged(nameof(CoreModule));
+        //    }
+        //}
+
+        private CoreModule _mod1;
+
+        public CoreModule Mod1
+        {
+            get { return _mod1; }
+            set
+            {
+                _mod1 = value;
+                OnPropertyChanged(nameof(Mod1));
+            }
+        }
+
+        private CoreModule _mod2;
+
+        public CoreModule Mod2
+        {
+            get { return _mod2; }
+            set
+            {
+                _mod2 = value;
+                OnPropertyChanged(nameof(Mod2));
+            }
+        }
+
+        private CoreModule _mod3;
+
+        public CoreModule Mod3
+        {
+            get { return _mod3; }
+            set
+            {
+                _mod3 = value;
+                OnPropertyChanged(nameof(Mod3));
+            }
+        }
+
+        private CoreModule _mod4;
+
+        public CoreModule Mod4
+        {
+            get { return _mod4; }
+            set
+            {
+                _mod4 = value;
+                OnPropertyChanged(nameof(Mod4));
+            }
+        }
+
+        private CoreModule _mod5;
+
+        public CoreModule Mod5
+        {
+            get { return _mod5; }
+            set
+            {
+                _mod5 = value;
+                OnPropertyChanged(nameof(Mod5));
+            }
+        }
+
+
+
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
             Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
             this.CurrentWindow = window;
             CurrentHandleWindow = handle;
-            _artistModel = new ArtistModel(TimeSpan.FromSeconds(0));
-
             trayIcon = new TrayIcon();
-            trayIcon.CreateTrayMenu();
+
+            Mod3 = new ActiveTimerViewModel();
+
+
+
 
 
 
             LoadSettings();
 
-            artistTimeController = new ArtistTimeController(this);
+
+
+            //LoadDailyGoal();
 
 
 
-            CreateMilestoneSystem();
-            CreateNotificationSystem();
+
+            //CreateMilestoneSystem();
+            //CreateNotificationSystem();
 
 
         }
@@ -420,74 +326,12 @@ namespace DFA
             }
 
 
-            LoadDailyGoal();
         }
 
 
 
 
-        #region daily goal
-        private string _dailyGoalText;
-        public string DailyGoalText
-        {
-            get
-            {
-
-                return _dailyGoalText;
-            }
-            set
-            {
-
-                _dailyGoalText = value;
-                OnPropertyChanged(nameof(DailyGoalText));
-            }
-        }
-        public void SetDailyGoal(TimeSpan time)
-        {
-            //label5.Content = "Daily goal: " + time.ToString();
-
-            DailyGoalText = "Daily goal: " + time.ToString();
-
-            timeSecToFillTopBar = (int)time.TotalSeconds;
-        }
-        private ICommand _dailyGoalClicked;
-        public ICommand DailyGoalClicked
-        {
-            get
-            {
-                if (_dailyGoalClicked == null)
-                    _dailyGoalClicked = new RelayCommand(
-                       (object o) =>
-                       {
-
-                           DailyGoalWindow dialog = new DailyGoalWindow();
-                           dialog.DataContext = new DailyGoalViewModel();
-                           dialog.ShowDialog();
-                           DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result);
-                           SetDailyGoal(result);
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _dailyGoalClicked;
-
-            }
-        }
-
-        private void LoadDailyGoal()
-        {
-
-            if (DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result))
-                SetDailyGoal(result);
-            else
-                DailyGoalText = "Set daily goal! ";
-
-        }
-
-        #endregion
+        
 
         float topPercentFilled = 0;
         public int timeSecToFillTopBar = 0;
@@ -498,10 +342,10 @@ namespace DFA
         {
             if (timeSecToFillTopBar == 0)
                 return;
-            if (Artist.ArtistActive)
+            if ((Mod3 as ActiveTimerViewModel).Artist.ArtistActive)
             {
 
-                float rest = (float)(Artist.ActiveTime.TotalSeconds % (timeSecToFillTopBar));
+                float rest = (float)((Mod3 as ActiveTimerViewModel).Artist.ActiveTime.TotalSeconds % (timeSecToFillTopBar));
                 topPercentFilled = Utils.ToProcentage(rest, 0, timeSecToFillTopBar);
 
                 ProgressTopBar = topPercentFilled;

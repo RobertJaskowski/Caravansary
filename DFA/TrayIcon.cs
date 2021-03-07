@@ -9,6 +9,12 @@ namespace DFA
         private System.Windows.Forms.NotifyIcon trayIcon;
 
         private Window mainWindow;
+
+
+        public TrayIcon()
+        {
+            CreateTrayMenu();
+        }
         public void CreateTrayMenu()
         {
             mainWindow = Application.Current.MainWindow;
