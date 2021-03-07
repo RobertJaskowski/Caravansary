@@ -133,6 +133,7 @@
     <Compile Include="ArtistTimeController.cs" />
     <Compile Include="Behaviours\CloseWindowOnKey.cs" />
     <Compile Include="BlacklistItems.cs" />
+    <Compile Include="Chrome.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />

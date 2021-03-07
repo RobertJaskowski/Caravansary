@@ -28,6 +28,23 @@ namespace DFA
 
         }
 
+
+        private string _label2;
+        public String Label2
+        {
+            get
+            {
+                return _label2;
+            }
+            set
+            {
+                _label2 = value;
+                OnPropertyChanged(nameof(Label2));
+            }
+        }
+
+        public string PausedReason = "";
+
         private string _artistTimeString;
         public String ArtistTimeString
         {
@@ -46,7 +63,7 @@ namespace DFA
                         _artistTimeString = value;
                         break;
                     case ArtistState.PAUSED:
-                        _artistTimeString = "|| " + value;
+                        _artistTimeString = "|| " + value + " by " + PausedReason;
                         break;
                 }
                 OnPropertyChanged(nameof(ArtistTimeString));
