@@ -8,7 +8,6 @@ using System.Windows.Threading;
 using static DFA.WinApi;
 using System.Linq;
 using System.Windows.Automation;
-using DFA.ViewModel;
 
 namespace DFA
 {

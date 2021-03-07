@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel;
 
-    public class ArtistModel : INotifyPropertyChanged
+    class ArtistModel : INotifyPropertyChanged
     {
 
         ArtistState _currentArtistState;

@@ -1,5 +1,5 @@
 ﻿
-namespace DFA.Views
+namespace DFA
 {
     using System.Windows;
 

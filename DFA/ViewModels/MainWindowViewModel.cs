@@ -1,7 +1,6 @@
 ﻿
-namespace DFA.ViewModel
+namespace DFA
 {
-    using GalaSoft.MvvmLight;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -11,7 +10,7 @@ namespace DFA.ViewModel
     using System.Windows.Threading;
     using Settings = Properties.Settings;
 
-    public class MainWindowViewModel : ViewModelBase
+    class MainWindowViewModel : BaseViewModel
     {
         #region properties
 
@@ -50,7 +49,7 @@ namespace DFA.ViewModel
                         _artistTimeString = "|| " + value;
                         break;
                 }
-                RaisePropertyChanged();
+                OnPropertyChanged(nameof(ArtistTimeString));
             }
         }
 
@@ -79,8 +78,7 @@ namespace DFA.ViewModel
             set
             {
                 _topBarStateColor = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged("TopBarStateColor");
             }
         }
 
@@ -94,8 +92,7 @@ namespace DFA.ViewModel
             set
             {
                 _progressTopBar = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged(nameof(ProgressTopBar));
             }
         }
 
@@ -109,8 +106,7 @@ namespace DFA.ViewModel
             set
             {
                 _progressBotBar = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged(nameof(ProgressBotBar));
             }
         }
 
@@ -124,8 +120,7 @@ namespace DFA.ViewModel
             set
             {
                 _backgroundTransparency = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged(nameof(BackgroundTransparency));
             }
         }
         #endregion
@@ -444,8 +439,7 @@ namespace DFA.ViewModel
             {
 
                 _dailyGoalText = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged(nameof(DailyGoalText));
             }
         }
         public void SetDailyGoal(TimeSpan time)
@@ -599,8 +593,7 @@ namespace DFA.ViewModel
             {
 
                 _ctrlZCounterString = value;
-                RaisePropertyChanged();
-
+                OnPropertyChanged(nameof(CtrlZCounter));
             }
         }
 
