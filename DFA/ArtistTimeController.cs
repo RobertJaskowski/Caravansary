@@ -46,7 +46,7 @@ namespace DFA
 
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            //TODO refactor and make async
+
 
 
             if (!Settings.Default.CheckBoxBlacklistEnabled) return;
@@ -54,13 +54,8 @@ namespace DFA
 
 
 
-            var windowTitle = GetActiveWindowTitle();
-
-            if (windowTitle == null) return;
-
-
-            windowTitle = windowTitle.ToLower().Trim();
-            Debug.WriteLine("window Title " + windowTitle + "\r\n");
+            var windowTitle = GetActiveWindowTitle().ToLower().Trim();
+            Debug.WriteLine(windowTitle + "\r\n");
 
 
 
@@ -75,49 +70,12 @@ namespace DFA
                     if (IsChromeTab(item.Rule.ToLower(), out string settingsTabUrl))
                     {
 
-                        Process procWithWindow = null;
-                        string sURL = null;
-                        Process[] procsChrome = Process.GetProcessesByName("chrome");
-                        foreach (Process chrome in procsChrome)
-                        {
-                            if (chrome.MainWindowHandle == IntPtr.Zero)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                procWithWindow = chrome;
-                            }
-                        }
-
-                        if (procWithWindow == null) continue;
-
-
-                        var ActiveTabUrl = "";
-
-
-                        ActiveTabUrl = GetActiveTabUrl(procWithWindow.Handle);
-
-
-                        //mainWindow.Label2 = "itu " + ActiveTabUrl.Substring(0, 10);
-
-
+                        var ActiveTabUrl = GetActiveTabUrl();
                         if (ActiveTabUrl.Contains(settingsTabUrl))
                         {
-                            mainWindow.PausedReason = settingsTabUrl;
-                            mainWindow.ArtistPause.Execute(null);
-                            Debug.WriteLine("pausing");
+                            mainWindow.ArtistDeactivate.Execute(null);
+                            Debug.WriteLine("stopping");
                             return;
-                        }
-                        else
-                        {
-                            if (mainWindow.Artist.ArtistState == ArtistState.PAUSED)
-                            {
-                                mainWindow.PausedReason = "";
-
-                                mainWindow.ArtistActivate.Execute(null);
-
-                            }
                         }
                     }
                 }
@@ -125,46 +83,57 @@ namespace DFA
                 {
                     if (windowTitle.Contains(item.Rule.ToLower()))
                     {
-                        mainWindow.PausedReason = item.Rule;
-
-                        mainWindow.ArtistPause.Execute(null);
-                        return;
-                    }
-
-                    if (mainWindow.Artist.ArtistState == ArtistState.PAUSED)
-                    {
-                        mainWindow.PausedReason = "";
-
-                        mainWindow.ArtistActivate.Execute(null);
+                        mainWindow.ArtistDeactivate.Execute(null);
                         return;
                     }
                 }
+                //SplitProcessAndParameter(item.Rule.ToLower(), out string proc, out string param);
+                //if (ActiveTabUrl.Contains(param))
+                //{
+                //    mainWindow.ArtistDeactivate.Execute(null);
+                //    return;
+                //}
+
+                //if (i == GlobalSettings.SettingsBlackListItems.Count - 1)
+                //{
+
+                //}
             }
 
+            //bool checkForChromeTabs = false;
+
+            //foreach (var item in GlobalSettings.SettingsBlackListItems)
+            //{
+            //    if (IsChromeTab(item.Rule))
+            //        checkForChromeTabs = true;
+            //}
+
+            //if (checkForChromeTabs)
+            //{
+            //    var ActiveTabUrl = GetActiveTabUrl();
+            //    Debug.WriteLine(ActiveTabUrl);
+
+
+            //}
+            //else
+            //{
+
+            //}
+            //}
+            //else
+            //{
+            //    foreach (var item in GlobalSettings.SettingsBlackListItems)
+            //    {
+            //        if (windowTitle.Contains(item.Rule.ToLower()))
+            //        {
+            //            mainWindow.ArtistDeactivate.Execute(null);
+            //            return;
+            //        }
+            //    }
+            //}
+
         }
-        private string GetActiveTabUrl(IntPtr process)
-        {
-            string sURL = null;
-            Process[] procsChrome = Process.GetProcessesByName("chrome");
-            foreach (Process chrome in procsChrome)
-            {
-                if (chrome.MainWindowHandle == IntPtr.Zero)
-                {
-                    continue;
-                }
-                AutomationElement element = AutomationElement.FromHandle(chrome.MainWindowHandle);
-                AutomationElement elm1 = element.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, "Google Chrome"));
-                AutomationElement elm2 = TreeWalker.RawViewWalker.GetLastChild(elm1);
-                AutomationElement elm3 = elm2.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, ""));
-                AutomationElement elm4 = elm3.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.ToolBar));
-                AutomationElement elementx = elm1.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Pasek adresu i wyszukiwania"));
-                if (!(bool)elementx.GetCurrentPropertyValue(AutomationElement.HasKeyboardFocusProperty))
-                {
-                    sURL = ((ValuePattern)elementx.GetCurrentPattern(ValuePattern.Pattern)).Current.Value as string;
-                }
-            }
-            return sURL;
-        }
+
         private void SplitProcessAndParameter(string title, out string process, out string parameter)
         {
             if (title.Contains(':'))
@@ -193,9 +162,28 @@ namespace DFA
 
         }
 
+        public static string GetActiveTabUrl()
+        {
+            Process[] procsChrome = Process.GetProcessesByName("chrome");
 
+            if (procsChrome.Length <= 0)
+                return null;
 
+            foreach (Process proc in procsChrome)
+            {
+                // the chrome process must have a window 
+                if (proc.MainWindowHandle == IntPtr.Zero)
+                    continue;
 
+                // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+                AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
+                var SearchBar = root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
+                if (SearchBar != null)
+                    return (string)SearchBar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+            }
+
+            return null;
+        }
         private bool IsChrome(string title)
         {
             return title.Contains("chrome");
