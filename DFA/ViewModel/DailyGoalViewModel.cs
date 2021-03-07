@@ -1,4 +1,5 @@
 ﻿using DFA.Properties;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections;
 using System.Windows;
@@ -6,7 +7,7 @@ using System.Windows.Input;
 
 namespace DFA
 {
-    class DailyGoalViewModel : BaseViewModel
+    class DailyGoalViewModel : ViewModelBase
     {
         public TimeSpan returnTime;
 
@@ -21,7 +22,7 @@ namespace DFA
             set
             {
                 buttonAcceptVisibility = value;
-                OnPropertyChanged(nameof(ButtonAcceptVisibility));
+                RaisePropertyChanged();
             }
         }
 
@@ -36,7 +37,8 @@ namespace DFA
             set
             {
                 textFeedback = value;
-                OnPropertyChanged(nameof(TextFeedback));
+                RaisePropertyChanged();
+
             }
         }
 
@@ -51,7 +53,8 @@ namespace DFA
             {
                 textBoxInput = value;
                 ValidateInput();
-                OnPropertyChanged(nameof(TextBoxInput));
+                RaisePropertyChanged();
+
             }
         }
 

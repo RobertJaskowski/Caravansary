@@ -1,4 +1,6 @@
 ﻿using DFA.Properties;
+using DFA.ViewModel;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -7,7 +9,7 @@ using System.Windows.Input;
 
 namespace DFA
 {
-    class SettingsWindowViewModel : BaseViewModel
+    class SettingsWindowViewModel : ViewModelBase
     {
 
         #region Properties
@@ -20,7 +22,7 @@ namespace DFA
                 Settings.Default.Save();
                 ((MainWindowViewModel)Application.Current.MainWindow.DataContext).BotBarEnabled = value;
 
-                OnPropertyChanged(nameof(CheckboxBottomBar));
+                RaisePropertyChanged();
             }
         }
 
@@ -33,7 +35,8 @@ namespace DFA
                 Settings.Default.Save();
 
 
-                OnPropertyChanged(nameof(CheckBoxBlacklistEnabled));
+                RaisePropertyChanged();
+
             }
         }
 
@@ -47,7 +50,8 @@ namespace DFA
 
                 Settings.Default.BackgroundTransparency = value;
                 Settings.Default.Save();
-                OnPropertyChanged(nameof(BackgroundTransparency));
+                RaisePropertyChanged();
+
             }
         }
 
@@ -72,7 +76,8 @@ namespace DFA
             {
                 _blacklistItems = value;
 
-                OnPropertyChanged(nameof(BlacklistItems));
+                RaisePropertyChanged();
+
             }
         }
 

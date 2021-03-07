@@ -1,6 +1,7 @@
 ﻿
-namespace DFA
+namespace DFA.ViewModel
 {
+    using GalaSoft.MvvmLight;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -10,7 +11,7 @@ namespace DFA
     using System.Windows.Threading;
     using Settings = Properties.Settings;
 
-    class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         #region properties
 
@@ -49,7 +50,7 @@ namespace DFA
                         _artistTimeString = "|| " + value;
                         break;
                 }
-                OnPropertyChanged(nameof(ArtistTimeString));
+                RaisePropertyChanged();
             }
         }
 
@@ -78,7 +79,8 @@ namespace DFA
             set
             {
                 _topBarStateColor = value;
-                OnPropertyChanged("TopBarStateColor");
+                RaisePropertyChanged();
+
             }
         }
 
@@ -92,7 +94,8 @@ namespace DFA
             set
             {
                 _progressTopBar = value;
-                OnPropertyChanged(nameof(ProgressTopBar));
+                RaisePropertyChanged();
+
             }
         }
 
@@ -106,7 +109,8 @@ namespace DFA
             set
             {
                 _progressBotBar = value;
-                OnPropertyChanged(nameof(ProgressBotBar));
+                RaisePropertyChanged();
+
             }
         }
 
@@ -120,7 +124,8 @@ namespace DFA
             set
             {
                 _backgroundTransparency = value;
-                OnPropertyChanged(nameof(BackgroundTransparency));
+                RaisePropertyChanged();
+
             }
         }
         #endregion
@@ -439,7 +444,8 @@ namespace DFA
             {
 
                 _dailyGoalText = value;
-                OnPropertyChanged(nameof(DailyGoalText));
+                RaisePropertyChanged();
+
             }
         }
         public void SetDailyGoal(TimeSpan time)
@@ -593,7 +599,8 @@ namespace DFA
             {
 
                 _ctrlZCounterString = value;
-                OnPropertyChanged(nameof(CtrlZCounter));
+                RaisePropertyChanged();
+
             }
         }
 
