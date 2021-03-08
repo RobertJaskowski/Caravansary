@@ -4,10 +4,10 @@
 <br>
 ![Twitter Follow](https://img.shields.io/twitter/follow/rjjaskowski?label=Developer&style=social)
 
-Caravansary is productivity tools always visible in desktop. There is no need for window switching or managing multiple processes for different tasks.
+## **Caravansary** is productivity tools always visible on desktop. There is no need for window switching or managing multiple processes for different tasks.
 
 
-Roadmap:
+### Roadmap:
 - [x] Activity timer that stops on blacklisted processes. It counts you work time excluding afk time and social apps time.
 - [x] Daily goal always present on the screen
 - [x] Ctrl Z counter ( can be used for artists as requested)
