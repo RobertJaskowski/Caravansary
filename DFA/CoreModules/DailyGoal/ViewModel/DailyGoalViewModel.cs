@@ -71,6 +71,6 @@ namespace DFA.CoreModules.DailyGoal.ViewModel
         //        DailyGoalText = "Set daily goal! ";
 
         //}
-
+        public override string ModuleName => throw new NotImplementedException();
     }
 }

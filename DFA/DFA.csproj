@@ -139,11 +139,16 @@
       <DependentUpon>ActiveTimerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="CoreModules\DailyGoal\ViewModel\DailyGoalViewModel.cs" />
+    <Compile Include="CoreModules\MainBar\ViewModel\MainBarViewModel.cs" />
+    <Compile Include="CoreModules\MainBar\View\MainBarView.xaml.cs">
+      <DependentUpon>MainBarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="IWindow.cs" />
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="Models\ArtistModel.cs" />
+    <Compile Include="ModuleManager.cs" />
     <Compile Include="ProgressBarSmoother.cs" />
     <Compile Include="ProgressBarExtensions.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
@@ -177,6 +182,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="CoreModules\ActiveTimer\View\ActiveTimerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CoreModules\MainBar\View\MainBarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

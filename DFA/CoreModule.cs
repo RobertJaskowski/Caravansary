@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DFA
 {
-    class CoreModule : BaseViewModel
+    public abstract class CoreModule : BaseViewModel
     {
-
+        public abstract string ModuleName { get; }
     }
 }

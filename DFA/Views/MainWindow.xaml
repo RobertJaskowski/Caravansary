@@ -47,21 +47,12 @@
     <StackPanel x:Name="stackParent" VerticalAlignment="Top">
 
 
-        <FrameworkElement x:Name="ProxyElement" Visibility="Collapsed"/>
 
 
-        <ProgressBar local:ProgressBarSmoother.SmoothValue="{Binding ProgressTopBar}" x:Name="progressBarTopMost"  MinHeight="2" MinWidth="1000" Value="50" MaxHeight="2" Height="2"  >
-            <ProgressBar.Background>
-                <SolidColorBrush Color="{Binding DataContext.TopBarStateColor, Source={x:Reference ProxyElement}, UpdateSourceTrigger=PropertyChanged}"/>
-            </ProgressBar.Background>
-            <ProgressBar.BorderBrush>
-                <SolidColorBrush Color="{Binding DataContext.TopBarStateColor, Source={x:Reference ProxyElement} , UpdateSourceTrigger=PropertyChanged}"/>
-            </ProgressBar.BorderBrush>
+        <ContentControl Content="{Binding Mod0}"/>
 
 
-        </ProgressBar>
-        
-        
+
         <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
 
             <ContentControl Content="{Binding Mod1}"/>
@@ -104,6 +95,7 @@
 
 
             </Label>-->
+        
         </StackPanel>
         <ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
                          MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">

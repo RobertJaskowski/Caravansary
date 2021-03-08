@@ -1,23 +1,18 @@
 ﻿
 namespace DFA
 {
-    using DFA.CoreModules.ActiveTimer.ViewModel;
     using System;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Media;
     using System.Windows.Threading;
     using Settings = Properties.Settings;
 
     class MainWindowViewModel : BaseViewModel
     {
-        #region properties
+        #region Properties
 
-       
 
         private bool _botBarEnabled;
         public bool BotBarEnabled
@@ -33,34 +28,6 @@ namespace DFA
 
         }
 
-        private Color _topBarStateColor;
-        public Color TopBarStateColor
-        {
-            get
-            {
-
-                return _topBarStateColor;
-            }
-            set
-            {
-                _topBarStateColor = value;
-                OnPropertyChanged("TopBarStateColor");
-            }
-        }
-
-        private double _progressTopBar;
-        public double ProgressTopBar
-        {
-            get
-            {
-                return _progressTopBar;
-            }
-            set
-            {
-                _progressTopBar = value;
-                OnPropertyChanged(nameof(ProgressTopBar));
-            }
-        }
 
         private double _progressBotBar;
         public double ProgressBotBar
@@ -89,6 +56,7 @@ namespace DFA
                 OnPropertyChanged(nameof(BackgroundTransparency));
             }
         }
+
         #endregion
 
         #region events
@@ -136,7 +104,6 @@ namespace DFA
 
 
         private ICommand _showSettings;
-
         public ICommand ShowSettings
         {
             get
@@ -160,8 +127,8 @@ namespace DFA
                 return _showSettings;
             }
         }
-        private ICommand _quitApp;
 
+        private ICommand _quitApp;
         public ICommand QuitApp
         {
             get
@@ -209,6 +176,18 @@ namespace DFA
         //        OnPropertyChanged(nameof(CoreModule));
         //    }
         //}
+
+        private CoreModule _mod0;
+
+        public CoreModule Mod0
+        {
+            get { return _mod0; }
+            set
+            {
+                _mod0 = value;
+                OnPropertyChanged(nameof(Mod0));
+            }
+        }
 
         private CoreModule _mod1;
 
@@ -279,14 +258,12 @@ namespace DFA
             CurrentHandleWindow = handle;
             trayIcon = new TrayIcon();
 
-            Mod3 = new ActiveTimerViewModel();
+            Mod0 = ModuleManager.Instance.GetCoreModule("MainBar");
+            Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
 
 
 
-
-
-
-            LoadSettings();
+            LoadWindowSettings();
 
 
 
@@ -302,7 +279,7 @@ namespace DFA
         }
 
 
-        private void LoadSettings()
+        private void LoadWindowSettings()
         {
 
             Application.Current.MainWindow.ShowInTaskbar = Settings.Default.ShowInTaskbar;
@@ -327,37 +304,6 @@ namespace DFA
 
 
         }
-
-
-
-
-        
-
-        float topPercentFilled = 0;
-        public int timeSecToFillTopBar = 0;
-
-
-
-        public void UpdateTopBar()
-        {
-            if (timeSecToFillTopBar == 0)
-                return;
-            if ((Mod3 as ActiveTimerViewModel).Artist.ArtistActive)
-            {
-
-                float rest = (float)((Mod3 as ActiveTimerViewModel).Artist.ActiveTime.TotalSeconds % (timeSecToFillTopBar));
-                topPercentFilled = Utils.ToProcentage(rest, 0, timeSecToFillTopBar);
-
-                ProgressTopBar = topPercentFilled;
-
-                //progressBarTopMost.SetValueWithAnimation(topPercentFilled, true);
-
-
-            }
-
-        }
-
-
 
 
         MilestoneSystem milestoneSystem;

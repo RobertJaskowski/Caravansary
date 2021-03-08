@@ -1,12 +1,11 @@
-﻿using DFA.Properties;
+﻿using DFA.CoreModules.MainBar.ViewModel;
+using DFA.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using static DFA.WinApi;
 
@@ -16,6 +15,7 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
     {
 
         #region Properties 
+        public override string ModuleName => "ActiveTimer";
 
         private ArtistModel _artistModel;
         public ArtistModel Artist
@@ -30,6 +30,20 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                 OnPropertyChanged(nameof(Artist));
             }
 
+        }
+
+        private string _timeReason;
+        public String TimeReason
+        {
+            get
+            {
+                return _timeReason;
+            }
+            set
+            {
+                _timeReason = value;
+                OnPropertyChanged(nameof(TimeReason));
+            }
         }
 
         private string _artistTimeString;
@@ -50,10 +64,23 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                         _artistTimeString = value;
                         break;
                     case ArtistState.PAUSED:
-                        _artistTimeString = "|| " + value;
+                        _artistTimeString = "|| " + value + (!string.IsNullOrEmpty(TimeReason) ? " by " + TimeReason : "");
+                        break;
+                    case ArtistState.RESUMED:
+                        _artistTimeString = "|> " + value + (!string.IsNullOrEmpty(TimeReason) ? " by " + TimeReason : "");//TODO change to fontawesome, hangle font awesome in runtime because its not working
                         break;
                 }
                 OnPropertyChanged(nameof(ArtistTimeString));
+            }
+        }
+        private MainBarViewModel _mainBarModule;
+        private MainBarViewModel MainBarModule
+        {
+            get
+            {
+                if (_mainBarModule == null)
+                    _mainBarModule = (MainBarViewModel)ModuleManager.Instance.GetCoreModule("MainBar");
+                return _mainBarModule;
             }
         }
 
@@ -93,12 +120,16 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                     _activeTimeClicked = new RelayCommand(
                        (object o) =>
                        {
-                           if (Artist.ArtistState == ArtistState.PAUSED)
+                           TimeReason = "user";
+
+                           if (Artist.ArtistState == ArtistState.ACTIVE || Artist.ArtistState == ArtistState.INACTIVE)
                            {
-                               ArtistActivate.Execute(null);
-                           }
-                           else
                                ArtistPause.Execute(null);
+                           }
+                           else if (Artist.ArtistState == ArtistState.PAUSED)
+                           {
+                               ArtistResume.Execute(null);
+                           }
 
                        },
                        (object o) =>
@@ -122,12 +153,11 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                        {
                            Artist.ArtistState = ArtistState.ACTIVE;
 
-                           //Color c = Color.FromArgb(255, 178, 255, 89);
-                           //TopBarStateColor = c;
+
+                           Color c = Color.FromArgb(255, 178, 255, 89);
+                           MainBarModule.SetBarColor(c);
 
                            //  StartAnimatingBottomBar(); old 
-
-
                            //timeSecToFillTopBar = 20; old 
                        },
                        (object o) =>
@@ -154,10 +184,8 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                            ArtistTimeString = Artist.ActiveTime.ToString();
 
 
-                           //Color c = Color.FromArgb(255, 221, 44, 0);
-
-                           //TopBarStateColor = c;
-
+                           Color c = Color.FromArgb(255, 221, 44, 0);
+                           MainBarModule.SetBarColor(c);
 
                            //   progressBarBottomMost.StopAnimation(); old
 
@@ -171,6 +199,7 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
 
             }
         }
+
         private ICommand _artistPause;
         public ICommand ArtistPause
         {
@@ -184,12 +213,8 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
                            Artist.ArtistState = ArtistState.PAUSED;
                            ArtistTimeString = Artist.ActiveTime.ToString();
 
-
-                           //Color c = Color.FromArgb(255, 221, 44, 0); 
-
-                           //TopBarStateColor = c;
-
-
+                           Color c = Color.FromArgb(255, 221, 44, 0);
+                           MainBarModule.SetBarColor(c);
                            //   progressBarBottomMost.StopAnimation(); old
 
                        },
@@ -203,7 +228,36 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
             }
         }
 
+        private ICommand _artistResume;
+        public ICommand ArtistResume
+        {
+            get
+            {
+                if (_artistResume == null)
+                    _artistResume = new RelayCommand(
+                       (object o) =>
+                       {
+
+                           Artist.ArtistState = ArtistState.RESUMED;
+
+                           ArtistTimeString = Artist.ActiveTime.ToString();
+
+                           Color c = Color.FromArgb(255, 221, 44, 0);
+                           MainBarModule.SetBarColor(c);
+
+                       },
+                       (object o) =>
+                       {
+                           return true;
+                       });
+
+                return _artistResume;
+
+            }
+        }
+
         #endregion
+
 
 
 
@@ -214,63 +268,150 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
         public ActiveTimerViewModel()
         {
 
+
+
             _artistModel = new ArtistModel(TimeSpan.FromSeconds(0));
 
             CreateArtistStateTimers();
 
 
             windowApi = new WindowsWindowApi();
+
             WindowsWindowApi.OnWindowSwitched += WindowSwitched;
 
-            
+
 
 
         }
 
 
+     
+
+
+        private string lastWindow;
         private void WindowSwitched(object sender, WindowsWindowApi.WindowSwitchedArgs e)
         {
+            string tit = e.Title.ToLower().Trim();
+
+
+            if (TimeReason != null)
+                if (TimeReason.ToLower().Contains("user"))
+                    return;
+
+
+                    Debug.WriteLine("window switched callback " + tit);
+
+            if (tit.Contains("visual") || tit.Contains("dfa"))
+            {
+                Debug.WriteLine("is in design");
+
+                return;
+            }
+
+            if (lastWindow == null)
+                lastWindow = tit;
+            else
+            {
+                if (lastWindow.Length == tit.Length)
+                {
+                    Debug.WriteLine("is same window");
+                    return;
+                }
+                lastWindow = tit;
+
+
+            }
 
 
             if (!Settings.Default.CheckBoxBlacklistEnabled) return;
             if (!(GlobalSettings.SettingsBlackListItems.Count > 0)) return;
 
 
+            List<BlacklistItem> chrome = new List<BlacklistItem>();
+            List<BlacklistItem> windows = new List<BlacklistItem>();
 
-            //Debug.WriteLine(windowTitle + "\r\n");
-
-
-
-            //if (IsChrome(windowTitle))
-            //{
-            for (int i = 0; i < GlobalSettings.SettingsBlackListItems.Count; i++)
+            foreach (var item in GlobalSettings.SettingsBlackListItems)
             {
-
-                BlacklistItem item = GlobalSettings.SettingsBlackListItems[i];
-                if (WindowsWindowApi.IsChrome(e.Title))//called alot in debug
+                if (WindowsWindowApi.IsChrome(item.Rule))//called alot in debug
                 {
                     if (WindowsWindowApi.IsChromeTab(item.Rule.ToLower(), out string settingsTabUrl))
                     {
-
-                        var ActiveTabUrl = WindowsWindowApi.GetChromeActiveTabUrl();
-                        if (ActiveTabUrl.Contains(settingsTabUrl))
-                        {
-                            ArtistDeactivate.Execute(null);
-                            Debug.WriteLine("stopping");
-                            return;
-                        }
+                        chrome.Add(item);
+                    }
+                    else
+                    {
+                        windows.Add(item);
                     }
                 }
                 else
                 {
-                    if (e.Title.Contains(item.Rule.ToLower()))
+                    windows.Add(item);
+                }
+            }
+
+
+            foreach (var item in windows)
+            {
+                if (tit.Contains(item.Rule.ToLower()))
+                {
+                    TimeReason = item.Rule;
+                    ArtistPause.Execute(null);
+                    Debug.WriteLine(TimeReason);
+                    return;
+                }
+            }
+
+
+            if (chrome.Count > 0)
+            {
+                
+                foreach (var item in chrome)
+                {
+
+
+
+                    WindowsWindowApi.SplitProcessAndParameter(item.Rule, out string process, out string settingsTabUrl);
+                    if (tit.Contains(settingsTabUrl.ToLower()))
                     {
-                        ArtistDeactivate.Execute(null);
+                        TimeReason = settingsTabUrl;
+                        ArtistPause.Execute(null);
+
+
+                        Debug.WriteLine(TimeReason);
+
                         return;
                     }
                 }
+                //chrome tabs
+                //string ActiveTabUrl =  WindowsWindowApi.GetChromeActiveTabUrl();
+                //foreach (var item in chrome)
+                //{
+                //    if (ActiveTabUrl == null) break;
 
+
+
+                //    WindowsWindowApi.SplitProcessAndParameter(item.Rule, out string process, out string settingsTabUrl);
+                //    if (ActiveTabUrl.Contains(settingsTabUrl.ToLower()))
+                //    {
+                //        TimeReason = settingsTabUrl;
+                //        ArtistPause.Execute(null);
+
+
+                //        Debug.WriteLine(TimeReason);
+
+                //        Debug.WriteLine("stopping");
+                //        return;
+                //    }
+                //}
             }
+
+            if (TimeReason != null)
+                if (!TimeReason.ToLower().Contains("user"))
+                {
+                    TimeReason = "window";
+                    ArtistResume.Execute(null);
+                }
+
         }
 
         private void CreateArtistStateTimers()
@@ -286,17 +427,23 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
         {
 
 
-            // ActiveTimeUpdate.Execute(null);
 
             CheckStateChanges();
 
-            OnTick();
-        }
-
-
-        private void OnArtistStateInactiveTick()
-        {
-
+            switch (Artist.ArtistState)
+            {
+                case ArtistState.ACTIVE:
+                    OnArtistStateActiveTick();
+                    break;
+                case ArtistState.INACTIVE:
+                    OnArtistStateInactiveTick();
+                    break;
+                case ArtistState.PAUSED:
+                    break;
+                case ArtistState.RESUMED:
+                    OnArtistStateResumeTick();
+                    break;
+            }
         }
 
 
@@ -363,33 +510,32 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
         }
 
 
-        private void OnTick()
-        {
-            switch (Artist.ArtistState)
-            {
-                case ArtistState.ACTIVE:
-                    OnArtistStateActiveTick();
-                    break;
-                case ArtistState.INACTIVE:
-                    OnArtistStateInactiveTick();
-                    break;
-                case ArtistState.PAUSED:
-                    break;
-            }
-        }
-
         private void OnArtistStateActiveTick()
         {
             ActiveTimeUpdate1Sec.Execute(null);
 
-
-
-            //mainWindow.UpdateTopBar();
+            MainBarModule.UpdateTopBar(Artist.ActiveTime.TotalSeconds);
 
 
             //old
             //UpdateBottomBar();
             //StartAnimatingBottomBar();
         }
+
+        private void OnArtistStateInactiveTick()
+        {
+
+        }
+
+        private void OnArtistStateResumeTick()
+        {
+            ActiveTimeUpdate1Sec.Execute(null);
+
+            MainBarModule.UpdateTopBar(Artist.ActiveTime.TotalSeconds);
+
+            TimeReason = "";
+        }
+
+
     }
 }

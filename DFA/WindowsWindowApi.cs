@@ -62,15 +62,19 @@ namespace DFA
 
 
 
-            var windowTitle = GetActiveWindowTitle().ToLower().Trim();
-            if(OnWindowSwitched!=null)
+            var windowTitle = GetActiveWindowTitle();
+            if (windowTitle == null) return;
+
+            windowTitle = windowTitle.ToLower().Trim();
+
+
+            if (OnWindowSwitched != null)
             {
                 OnWindowSwitched(this, new WindowSwitchedArgs(windowTitle));
             }
 
 
         }
-
         public static string GetChromeActiveTabUrl()
         {
             Process[] procsChrome = Process.GetProcessesByName("chrome");
@@ -85,8 +89,43 @@ namespace DFA
                     continue;
 
                 // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+
+                try
+                {
+                    AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
+                    var SearchBar =
+                         root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
+                    if (SearchBar != null)
+                        return (string)SearchBar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
+                }
+                catch
+                {
+                    Debug.WriteLine("exception chrome tab");
+                }
+                
+            }
+
+            return null;
+        }
+
+
+        public static async Task<string> AsyncGetChromeActiveTabUrl()
+        {
+            Process[] procsChrome = Process.GetProcessesByName("chrome");
+
+            if (procsChrome.Length <= 0)
+                return null;
+
+            foreach (Process proc in procsChrome)
+            {
+                // the chrome process must have a window 
+                if (proc.MainWindowHandle == IntPtr.Zero)
+                    continue;
+
+                // to find the tabs we first need to locate something reliable - the 'New Tab' button 
                 AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
-                var SearchBar = root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar"));
+                var SearchBar = 
+                    await Task.Run(() => root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar")));
                 if (SearchBar != null)
                     return (string)SearchBar.GetCurrentPropertyValue(ValuePatternIdentifiers.ValueProperty);
             }
@@ -105,13 +144,13 @@ namespace DFA
             SplitProcessAndParameter(title, out string process, out string param);
             return !string.IsNullOrEmpty(param);
         }
-        private static void SplitProcessAndParameter(string title, out string process, out string parameter)
+        public static void SplitProcessAndParameter(string stringToSplit, out string process, out string parameter)
         {
-            if (title.Contains(':'))
+            if (stringToSplit.Contains(':'))
             {
 
 
-                List<string> spl = title.Split(':').ToList<string>();
+                List<string> spl = stringToSplit.Split(':').ToList<string>();
                 if (spl[1].Length > 0)
                 {
                     process = spl[0];
@@ -126,7 +165,7 @@ namespace DFA
             }
             else
             {
-                process = title;
+                process = stringToSplit;
                 parameter = "";
             }
 

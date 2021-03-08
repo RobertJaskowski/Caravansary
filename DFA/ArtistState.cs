@@ -8,6 +8,7 @@ namespace DFA
     {
         ACTIVE,
         INACTIVE,
-        PAUSED
+        PAUSED,
+        RESUMED
     }
 }
