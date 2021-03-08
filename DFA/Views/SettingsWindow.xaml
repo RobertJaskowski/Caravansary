@@ -26,7 +26,11 @@
         <local:CloseWindowOnKey Key="Esc"/>
     </i:Interaction.Behaviors>
     <StackPanel>
-        <StackPanel>
+        <Grid >
+            <TextBlock Text="{Binding AppVersion, FallbackValue=Version 0.0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        
+        <StackPanel Visibility="Collapsed">
             <CheckBox Foreground="{DynamicResource DefaultForeground}" IsChecked="{Binding CheckboxBottomBar, Mode=TwoWay}"  x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30"  >
                 <CheckBox.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
@@ -36,6 +40,8 @@
                 </CheckBox.Background>
             </CheckBox>
         </StackPanel>
+        
+        
         <StackPanel Orientation="Horizontal">
             <Label Width="180"  Margin="5" Content="Transparency" HorizontalContentAlignment="Center">
                 <Label.Foreground>

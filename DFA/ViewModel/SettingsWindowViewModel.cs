@@ -1,7 +1,5 @@
 ﻿using DFA.Properties;
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,6 +9,17 @@ namespace DFA
     {
 
         #region Properties
+        public string _appVersion;
+        public string AppVersion
+        {
+            get => string.IsNullOrEmpty(_appVersion) ? "0.0" : _appVersion;
+            set
+            {
+                _appVersion = value;
+                OnPropertyChanged(nameof(AppVersion));
+            }
+        }
+        
         public bool CheckboxBottomBar
         {
             get => Settings.Default.CheckBoxBottomBar;

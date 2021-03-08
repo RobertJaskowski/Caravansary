@@ -76,7 +76,7 @@
     <OutputPath>bin\x64\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
     <ErrorReport>prompt</ErrorReport>
@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviours\CloseWindowOnKey.cs" />
-    <Compile Include="BlacklistItems.cs" />
+    <Compile Include="CoreModules\ActiveTimer\BlacklistItems.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="CoreModules\ActiveTimer\ViewModel\ActiveTimerViewModel.cs" />
@@ -166,7 +166,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="TrayIcon.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="BlacklistItem.cs" />
+    <Compile Include="CoreModules\ActiveTimer\BlacklistItem.cs" />
     <Compile Include="CoreModules\DailyGoal\ViewModel\DailyGoalSetterViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\SettingsWindowViewModel.cs" />
@@ -240,7 +240,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ArtistState.cs" />
+    <Compile Include="CoreModules\ActiveTimer\ArtistState.cs" />
     <Compile Include="WindowsWindowApi.cs" />
     <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
