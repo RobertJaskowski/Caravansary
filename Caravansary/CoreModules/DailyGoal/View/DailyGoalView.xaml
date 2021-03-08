@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Caravansary.CoreModules.DailyGoal.View.DailyGoalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Caravansary.CoreModules.DailyGoal.View"
+             mc:Ignorable="d" >
+    <Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"   FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+        <Label.InputBindings>
+            <MouseBinding Command="{Binding DailyGoalClicked}" MouseAction="LeftClick" />
+        </Label.InputBindings>
+
+
+    </Label>
+
+</UserControl>
