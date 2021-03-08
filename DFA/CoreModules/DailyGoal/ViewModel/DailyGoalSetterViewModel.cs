@@ -1,12 +1,11 @@
 ﻿using DFA.Properties;
 using System;
-using System.Collections;
 using System.Windows;
 using System.Windows.Input;
 
 namespace DFA
 {
-    class DailyGoalViewModel : BaseViewModel
+    class DailyGoalSetterViewModel : BaseViewModel
     {
         public TimeSpan returnTime;
 

@@ -1,4 +1,7 @@
 ﻿using DFA.CoreModules.ActiveTimer.ViewModel;
+using DFA.CoreModules.DailyGoal.ViewModel;
+using DFA.CoreModules.Filler.ViewModel;
+using DFA.CoreModules.KeyCounter.ViewModel;
 using DFA.CoreModules.MainBar.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -22,7 +25,15 @@ namespace DFA
                     CoreModules = new List<CoreModule>();
 
                     CoreModules.Add(new MainBarViewModel());
+
+                    CoreModules.Add(new KeyCounterViewModel());
                     CoreModules.Add(new ActiveTimerViewModel());
+                    CoreModules.Add(new DailyGoalViewModel());
+
+
+                    CoreModules.Add(new FillerViewModel());
+
+
                 }
                 return _instance;
             }
@@ -44,7 +55,9 @@ namespace DFA
 
         }
 
-
-
+        internal void CloseModules()
+        {
+            CoreModules.ForEach(e => e.CloseModule());
+        }
     }
 }

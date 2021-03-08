@@ -139,6 +139,17 @@
       <DependentUpon>ActiveTimerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="CoreModules\DailyGoal\ViewModel\DailyGoalViewModel.cs" />
+    <Compile Include="CoreModules\DailyGoal\View\DailyGoalView.xaml.cs">
+      <DependentUpon>DailyGoalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoreModules\Filler\ViewModel\FillerViewModel.cs" />
+    <Compile Include="CoreModules\Filler\View\FillerView.xaml.cs">
+      <DependentUpon>FillerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoreModules\KeyCounter\ViewModel\KeyCounterViewModel.cs" />
+    <Compile Include="CoreModules\KeyCounter\View\KeyCounterView.xaml.cs">
+      <DependentUpon>KeyCounterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CoreModules\MainBar\ViewModel\MainBarViewModel.cs" />
     <Compile Include="CoreModules\MainBar\View\MainBarView.xaml.cs">
       <DependentUpon>MainBarView.xaml</DependentUpon>
@@ -154,15 +165,15 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TrayIcon.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="BlacklistItem.cs" />
-    <Compile Include="ViewModels\DailyGoalViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
-    <Compile Include="Views\DailyGoalWindow.xaml.cs">
-      <DependentUpon>DailyGoalWindow.xaml</DependentUpon>
+    <Compile Include="CoreModules\DailyGoal\ViewModel\DailyGoalSetterViewModel.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\SettingsWindowViewModel.cs" />
+    <Compile Include="CoreModules\DailyGoal\View\DailyGoalSetterView.xaml.cs">
+      <DependentUpon>DailyGoalSetterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\IMainWindow.cs" />
+    <Compile Include="ViewModel\IMainWindow.cs" />
     <Compile Include="CoreModules\MilestoneCoreModule\MilestoneSystem.cs" />
     <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\Milestone.cs" />
     <Compile Include="CoreModules\MilestoneCoreModule\Modules\TimespanMilestoneModule\Data\TimespanMilestone.cs" />
@@ -182,6 +193,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="CoreModules\ActiveTimer\View\ActiveTimerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CoreModules\DailyGoal\View\DailyGoalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CoreModules\Filler\View\FillerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CoreModules\KeyCounter\View\KeyCounterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,13 +232,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DailyGoalWindow.xaml">
+    <Page Include="CoreModules\DailyGoal\View\DailyGoalSetterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\UselessWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -223,10 +242,6 @@
     </Compile>
     <Compile Include="ArtistState.cs" />
     <Compile Include="WindowsWindowApi.cs" />
-    <Compile Include="Windows\UselessWindow.cs">
-      <DependentUpon>UselessWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Views\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,9 +332,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CoreModules\DailyGoal\View\" />
-    <Folder Include="CoreModules\KeyCounter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

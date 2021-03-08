@@ -536,6 +536,9 @@ namespace DFA.CoreModules.ActiveTimer.ViewModel
             TimeReason = "";
         }
 
-
+        public override void CloseModule()
+        {
+            
+        }
     }
 }

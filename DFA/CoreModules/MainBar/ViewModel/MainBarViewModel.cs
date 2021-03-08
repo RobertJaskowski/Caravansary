@@ -74,6 +74,8 @@ namespace DFA.CoreModules.MainBar.ViewModel
             TopBarStateColor = color;
         }
 
-
+        public override void CloseModule()
+        {
+        }
     }
 }

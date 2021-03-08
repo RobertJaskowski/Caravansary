@@ -33,14 +33,14 @@ namespace DFA
 
         public void HookKeyboard()
         {
-            //  _hookID = SetHook(_proc);
-           // Debug.WriteLine("Last error kb " + Marshal.GetLastWin32Error());
+             _hookID = SetHook(_proc);
+            Debug.WriteLine("Last error kb " + Marshal.GetLastWin32Error());
 
         }
 
         public void UnHookKeyboard()
         {
-          // WinApi.UnhookWindowsHookEx(_hookID);
+           WinApi.UnhookWindowsHookEx(_hookID);
         }
 
         private IntPtr SetHook(LowLevelKeyboardProc proc)

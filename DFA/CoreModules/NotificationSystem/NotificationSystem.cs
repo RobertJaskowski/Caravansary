@@ -13,7 +13,6 @@ namespace DFA
     {
         public static NotificationSystem Instance;
 
-        private UselessWindow mainWindow;
 
         public LinkedList<Notification> notificationQueue;
 
@@ -28,17 +27,17 @@ namespace DFA
         private bool isShowing = false;
         //DispatcherTimer notificationTimer;
 
-        public NotificationSystem(UselessWindow mainForm)
+        public NotificationSystem()
         {
             if (Instance == null)
             {
                 Instance = this;
             }
 
-            this.mainWindow = mainForm;
-            notificationQueue = new LinkedList<Notification>();
+            //this.mainWindow = mainForm;
+            //notificationQueue = new LinkedList<Notification>();
 
-            mainForm.GetNotificationStackPanel().Height = mainForm.GetNotificationStackPanel().MinHeight;
+            //mainForm.GetNotificationStackPanel().Height = mainForm.GetNotificationStackPanel().MinHeight;
 
         }
         public void ShowNotification(Notification notification)
@@ -93,32 +92,32 @@ namespace DFA
         private void CreateNotification()
         {
             isShowing = true;
-            mainWindow.GetNotificationTextbox().Content = GetCurrentNotification().message;
+            //mainWindow.GetNotificationTextbox().Content = GetCurrentNotification().message;
 
 
 
 
 
-            //  CreateNotificationTimer();
-            //   CreateNotificationGraphicTimer();
+            //  CreateNotificationTimer();old
+            //   CreateNotificationGraphicTimer();old
 
 
-            var singleAnimation = new DoubleAnimation((float)mainWindow.GetNotificationStackPanel().MaxHeight, TimeSpan.FromSeconds(1));
-            singleAnimation.Completed += OnDisplayingAnimationFinished;
+            //var singleAnimation = new DoubleAnimation((float)mainWindow.GetNotificationStackPanel().MaxHeight, TimeSpan.FromSeconds(1));
+            //singleAnimation.Completed += OnDisplayingAnimationFinished;
 
-            Storyboard storyboard = new Storyboard();
-            storyboard.Children.Add(singleAnimation);
-
-
-            Storyboard.SetTargetName(singleAnimation, mainWindow.GetNotificationStackPanel().Name);
-            Storyboard.SetTargetProperty(singleAnimation, new PropertyPath("Height"));
-
-            storyboard.Begin(mainWindow);
+            //Storyboard storyboard = new Storyboard();
+            //storyboard.Children.Add(singleAnimation);
 
 
+            //Storyboard.SetTargetName(singleAnimation, mainWindow.GetNotificationStackPanel().Name);
+            //Storyboard.SetTargetProperty(singleAnimation, new PropertyPath("Height"));
+
+            //storyboard.Begin(mainWindow);
 
 
-            //desiredSize = new Size(mainWindow.GetNotificationStackPanel().Width, mainWindow.GetNotificationStackPanel().MaxHeight);
+
+
+            //desiredSize = new Size(mainWindow.GetNotificationStackPanel().Width, mainWindow.GetNotificationStackPanel().MaxHeight);old
 
 
         }
@@ -134,17 +133,17 @@ namespace DFA
         public void StartHidingNotification()
         {
 
-             hidingSingleAnimation = new DoubleAnimation((float)mainWindow.GetNotificationStackPanel().MinHeight, TimeSpan.FromSeconds(1));
+            // hidingSingleAnimation = new DoubleAnimation((float)mainWindow.GetNotificationStackPanel().MinHeight, TimeSpan.FromSeconds(1));
 
-            hidingStoryBoard = new Storyboard();
-            hidingStoryBoard.Children.Add(hidingSingleAnimation);
+            //hidingStoryBoard = new Storyboard();
+            //hidingStoryBoard.Children.Add(hidingSingleAnimation);
 
 
-            Storyboard.SetTargetName(hidingSingleAnimation, mainWindow.GetNotificationStackPanel().Name);
-            Storyboard.SetTargetProperty(hidingSingleAnimation, new PropertyPath("Height"));
+            //Storyboard.SetTargetName(hidingSingleAnimation, mainWindow.GetNotificationStackPanel().Name);
+            //Storyboard.SetTargetProperty(hidingSingleAnimation, new PropertyPath("Height"));
 
-            hidingStoryBoard.Completed += OnHidingAnimationFinished;
-            hidingStoryBoard.Begin(mainWindow);
+            //hidingStoryBoard.Completed += OnHidingAnimationFinished;
+            //hidingStoryBoard.Begin(mainWindow);
             
         }
 

@@ -1,76 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DFA.CoreModules.MainBar.ViewModel;
+using System;
 using System.Windows.Input;
 
 namespace DFA.CoreModules.DailyGoal.ViewModel
 {
     class DailyGoalViewModel : CoreModule
     {
+        public override string ModuleName => "DailyGoal";
 
-        //private string _dailyGoalText;
-        //public string DailyGoalText
-        //{
-        //    get
-        //    {
+        private string _dailyGoalText;
+        public string DailyGoalText
+        {
+            get
+            {
 
-        //        return _dailyGoalText;
-        //    }
-        //    set
-        //    {
+                return string.IsNullOrEmpty(_dailyGoalText) ? "Daily goal" : _dailyGoalText ;
+            }
+            set
+            {
 
-        //        _dailyGoalText = value;
-        //        OnPropertyChanged(nameof(DailyGoalText));
-        //    }
-        //}
+                _dailyGoalText = value;
+                OnPropertyChanged(nameof(DailyGoalText));
+            }
+        }
 
-        //public void SetDailyGoal(TimeSpan time)
-        //{
-        //    //label5.Content = "Daily goal: " + time.ToString();
 
-        //    DailyGoalText = "Daily goal: " + time.ToString();
 
-        //    timeSecToFillTopBar = (int)time.TotalSeconds;
-        //}
+        private MainBarViewModel _mainBarModule;
+        private MainBarViewModel MainBarModule
+        {
+            get
+            {
+                if (_mainBarModule == null)
+                    _mainBarModule = (MainBarViewModel)ModuleManager.Instance.GetCoreModule("MainBar");
+                return _mainBarModule;
+            }
+        }
 
-        //private ICommand _dailyGoalClicked;
-        //public ICommand DailyGoalClicked
-        //{
-        //    get
-        //    {
-        //        if (_dailyGoalClicked == null)
-        //            _dailyGoalClicked = new RelayCommand(
-        //               (object o) =>
-        //               {
+        public DailyGoalViewModel()
+        {
+            LoadDailyGoal();
 
-        //                   DailyGoalWindow dialog = new DailyGoalWindow();
-        //                   dialog.DataContext = new DailyGoalViewModel();
-        //                   dialog.ShowDialog();
-        //                   DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result);
-        //                   SetDailyGoal(result);
+        }
 
-        //               },
-        //               (object o) =>
-        //               {
-        //                   return true;
-        //               });
 
-        //        return _dailyGoalClicked;
+        public void SetDailyGoal(TimeSpan time)
+        {
+            //label5.Content = "Daily goal: " + time.ToString();
 
-        //    }
-        //}
+            DailyGoalText = "Daily goal: " + time.ToString();
 
-        //private void LoadDailyGoal()
-        //{
+            MainBarModule.timeSecToFillTopBar = (int)time.TotalSeconds;
+        }
 
-        //    if (DailyGoalViewModel.GetDailyGoalTimespan(out TimeSpan result))
-        //        SetDailyGoal(result);
-        //    else
-        //        DailyGoalText = "Set daily goal! ";
 
-        //}
-        public override string ModuleName => throw new NotImplementedException();
+        private ICommand _dailyGoalClicked;
+        public ICommand DailyGoalClicked
+        {
+            get
+            {
+                if (_dailyGoalClicked == null)
+                    _dailyGoalClicked = new RelayCommand(
+                       (object o) =>
+                       {
+
+                           DailyGoalWindow dialog = new DailyGoalWindow();
+                           dialog.DataContext = new DailyGoalSetterViewModel();
+                           dialog.ShowDialog();
+                           DailyGoalSetterViewModel.GetDailyGoalTimespan(out TimeSpan result);
+                           SetDailyGoal(result);
+
+                       },
+                       (object o) =>
+                       {
+                           return true;
+                       });
+
+                return _dailyGoalClicked;
+
+            }
+        }
+
+        private void LoadDailyGoal()
+        {
+
+            if (DailyGoalSetterViewModel.GetDailyGoalTimespan(out TimeSpan result))
+                SetDailyGoal(result);
+            else
+                DailyGoalText = "Set daily goal! ";
+
+        }
+
+        public override void CloseModule()
+        {
+        }
     }
 }

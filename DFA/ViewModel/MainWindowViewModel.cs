@@ -1,6 +1,7 @@
 ﻿
 namespace DFA
 {
+    using DFA.CoreModules.Filler.ViewModel;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -74,22 +75,17 @@ namespace DFA
 
         internal void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            _listener = new KeyboardListener();
-            _listener.OnKeyPressed += _listener_OnKeyPressed;
-            _listener.OnKeyReleased += _listener_OnKeyReleased;
-
-
-            _listener.HookKeyboard();
-
+            
 
         }
 
         internal void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            _listener.UnHookKeyboard();
 
-
+            ModuleManager.Instance.CloseModules();
         }
+
+
         private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             System.Windows.MessageBox.Show("Unhandled exception occurred: \n" + e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -97,7 +93,6 @@ namespace DFA
         }
 
         #endregion
-
 
 
         #region Commands
@@ -181,7 +176,7 @@ namespace DFA
 
         public CoreModule Mod0
         {
-            get { return _mod0; }
+            get { return _mod0==null?  new FillerViewModel() : _mod0 ; }
             set
             {
                 _mod0 = value;
@@ -190,7 +185,6 @@ namespace DFA
         }
 
         private CoreModule _mod1;
-
         public CoreModule Mod1
         {
             get { return _mod1; }
@@ -201,8 +195,8 @@ namespace DFA
             }
         }
 
-        private CoreModule _mod2;
 
+        private CoreModule _mod2;
         public CoreModule Mod2
         {
             get { return _mod2; }
@@ -213,8 +207,8 @@ namespace DFA
             }
         }
 
-        private CoreModule _mod3;
 
+        private CoreModule _mod3;
         public CoreModule Mod3
         {
             get { return _mod3; }
@@ -225,8 +219,8 @@ namespace DFA
             }
         }
 
-        private CoreModule _mod4;
 
+        private CoreModule _mod4;
         public CoreModule Mod4
         {
             get { return _mod4; }
@@ -237,8 +231,8 @@ namespace DFA
             }
         }
 
-        private CoreModule _mod5;
 
+        private CoreModule _mod5;
         public CoreModule Mod5
         {
             get { return _mod5; }
@@ -250,6 +244,8 @@ namespace DFA
         }
 
 
+        MilestoneSystem milestoneSystem;
+        NotificationSystem notificationSystem;
 
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
@@ -258,9 +254,14 @@ namespace DFA
             CurrentHandleWindow = handle;
             trayIcon = new TrayIcon();
 
+            //top
             Mod0 = ModuleManager.Instance.GetCoreModule("MainBar");
-            Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
 
+            Mod1 = ModuleManager.Instance.GetCoreModule("KeyCounter");
+            Mod2 = ModuleManager.Instance.GetCoreModule("Filler");
+            Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
+            Mod4 = ModuleManager.Instance.GetCoreModule("Filler");
+            Mod5 = ModuleManager.Instance.GetCoreModule("DailyGoal");
 
 
             LoadWindowSettings();
@@ -271,9 +272,8 @@ namespace DFA
 
 
 
-
-            //CreateMilestoneSystem();
-            //CreateNotificationSystem();
+            //  milestoneSystem = new MilestoneSystem(this);
+            //   notificationSystem = new NotificationSystem(this);
 
 
         }
@@ -302,22 +302,6 @@ namespace DFA
                 WindowHelper.ResetWindowPosition(CurrentWindow.GetAssociatedWindow);
             }
 
-
-        }
-
-
-        MilestoneSystem milestoneSystem;
-
-        private void CreateMilestoneSystem()
-        {
-            //  milestoneSystem = new MilestoneSystem(this);
-
-        }
-
-        NotificationSystem notificationSystem;
-        private void CreateNotificationSystem()
-        {
-            //   notificationSystem = new NotificationSystem(this);
 
         }
 
@@ -365,96 +349,6 @@ namespace DFA
 
 
 
-
-        #region KeyCombination
-
-
-        private KeyboardListener _listener;
-
-        private int _ctrlZCounterString = 0;
-        public int CtrlZCounter
-        {
-            get
-            {
-
-                return _ctrlZCounterString;
-            }
-            set
-            {
-
-                _ctrlZCounterString = value;
-                OnPropertyChanged(nameof(CtrlZCounter));
-            }
-        }
-
-        private bool ZPressed = false;
-        private bool CtrlPressed = false;
-
-        private ICommand _ctrlZClicked;
-        public ICommand CtrlZClicked
-        {
-            get
-            {
-                if (_ctrlZClicked == null)
-                    _ctrlZClicked = new RelayCommand(
-                       (object o) =>
-                       {
-
-                           Debug.WriteLine("ctrlz clicked");
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-                       });
-
-                return _ctrlZClicked;
-
-            }
-        }
-        void _listener_OnKeyReleased(object sender, KeyReleasedArgs e)
-        {
-            if (e.KeyReleased == System.Windows.Input.Key.LeftCtrl)
-            {
-                CtrlPressed = false;
-
-            }
-            else if (e.KeyReleased == System.Windows.Input.Key.Z)
-            {
-                ZPressed = false;
-
-            }
-
-
-        }
-
-        private void CheckForCtrlZCombination()
-        {
-            if (CtrlPressed && ZPressed)
-            {
-                CtrlZCounter++;
-                Debug.WriteLine(CtrlZCounter);
-                //label1.Content = ctrlZCounter;
-            }
-        }
-
-        void _listener_OnKeyPressed(object sender, KeyPressedArgs e)
-        {
-            if (e.KeyPressed == System.Windows.Input.Key.LeftCtrl)
-            {
-                CtrlPressed = true;
-                CheckForCtrlZCombination();
-            }
-            else if (e.KeyPressed == System.Windows.Input.Key.Z)
-            {
-                ZPressed = true;
-                CheckForCtrlZCombination();
-            }
-
-
-        }
-
-        #endregion
 
 
 

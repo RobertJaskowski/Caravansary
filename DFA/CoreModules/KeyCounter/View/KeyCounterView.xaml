@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DFA.CoreModules.KeyCounter.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             >
+    <Label Name="label1" Content="{Binding KeyCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+        <Label.InputBindings>
+            <MouseBinding Command="{Binding KeyCounterClicked}" MouseAction="LeftClick" />
+        </Label.InputBindings>
+
+
+    </Label>
+
 </UserControl>

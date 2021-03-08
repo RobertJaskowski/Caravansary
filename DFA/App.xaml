@@ -8,8 +8,21 @@
              xmlns:mbV="clr-namespace:DFA.CoreModules.MainBar.View"
              xmlns:mbVM="clr-namespace:DFA.CoreModules.MainBar.ViewModel"
              
+             
+             xmlns:kcV="clr-namespace:DFA.CoreModules.KeyCounter.View"
+             xmlns:kcVM="clr-namespace:DFA.CoreModules.KeyCounter.ViewModel"
+             
              xmlns:atV="clr-namespace:DFA.CoreModules.ActiveTimer.View"
              xmlns:atVM="clr-namespace:DFA.CoreModules.ActiveTimer.ViewModel"
+             
+             xmlns:dgV="clr-namespace:DFA.CoreModules.DailyGoal.View"
+             xmlns:dgVM="clr-namespace:DFA.CoreModules.DailyGoal.ViewModel"
+             
+             
+             
+             xmlns:fV="clr-namespace:DFA.CoreModules.Filler.View"
+             xmlns:fVM="clr-namespace:DFA.CoreModules.Filler.ViewModel"
+             
              >
     <Application.Resources>
 
@@ -28,9 +41,22 @@
             <DataTemplate DataType="{x:Type mbVM:MainBarViewModel}">
                 <mbV:MainBarView/>
             </DataTemplate>
-            
+
+            <DataTemplate DataType="{x:Type kcVM:KeyCounterViewModel}">
+                <kcV:KeyCounterView/>
+            </DataTemplate>
+
+
             <DataTemplate DataType="{x:Type atVM:ActiveTimerViewModel}">
                 <atV:ActiveTimerView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type dgVM:DailyGoalViewModel}">
+                <dgV:DailyGoalView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type fVM:FillerViewModel}">
+                <fV:FillerView/>
             </DataTemplate>
 
         </ResourceDictionary>
