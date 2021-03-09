@@ -12,7 +12,7 @@ namespace Caravansary
         public string _appVersion;
         public string AppVersion
         {
-            get => string.IsNullOrEmpty(_appVersion) ? "0.0" : _appVersion;
+            get => string.IsNullOrEmpty(_appVersion) ? GlobalSettings.Version.ToString() : _appVersion;
             set
             {
                 _appVersion = value;

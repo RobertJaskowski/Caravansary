@@ -22,12 +22,12 @@
 
 
 
-    <i:Interaction.Behaviors>
+    <!--<i:Interaction.Behaviors>
         <local:CloseWindowOnKey Key="Esc"/>
-    </i:Interaction.Behaviors>
+    </i:Interaction.Behaviors>-->
     <StackPanel>
         <Grid >
-            <TextBlock Text="{Binding AppVersion, FallbackValue=Version 0.0}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding AppVersion, FallbackValue=Version}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         
         <StackPanel Visibility="Collapsed">
