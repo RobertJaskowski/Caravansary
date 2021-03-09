@@ -14,9 +14,9 @@
     <Window.Background>
         <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
     </Window.Background>
-    <i:Interaction.Behaviors>
+    <!--<i:Interaction.Behaviors>
         <local:CloseWindowOnKey Key="Esc"/>
-    </i:Interaction.Behaviors>
+    </i:Interaction.Behaviors>-->
 
     <Border BorderThickness="1" CornerRadius="8">
         <Border.BorderBrush>

@@ -34,7 +34,7 @@ namespace Caravansary
         public void HookKeyboard()
         {
              _hookID = SetHook(_proc);
-            Debug.WriteLine("Last error kb " + Marshal.GetLastWin32Error());
+            //Debug.WriteLine("Last error kb " + Marshal.GetLastWin32Error());
 
         }
 
