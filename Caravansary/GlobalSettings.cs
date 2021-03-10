@@ -27,7 +27,7 @@ namespace Caravansary
         }
 
 
-        public static BlacklistItems _settingsBlacklistItems;
+        //public static BlacklistItems _settingsBlacklistItems;
         public static BlacklistItems SettingsBlackListItems
         {
             get
@@ -76,9 +76,21 @@ namespace Caravansary
 
         public bool IsLower(Version other)
         {
-            if (major < other.major) return true;
-            if (minor < other.minor) return true;
-            if (build < other.build) return true;
+            if (major < other.major)
+                return true;
+            else if(major > other.major)
+                return false;
+
+
+            if (minor < other.minor)
+                return true;
+            else if (minor > other.minor)
+                return false;
+
+            if (build < other.build)
+                return true;
+            else if (build > other.build)
+                return false;
 
             return false;
         }
