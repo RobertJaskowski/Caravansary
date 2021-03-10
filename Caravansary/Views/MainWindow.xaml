@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         
         Title="Caravansary" Width="1000" WindowStartupLocation="CenterScreen" 
-        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="28" Topmost="True" Icon="/Caravansary;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None"
+        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="24" Topmost="True" Icon="/Caravansary;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None"
         >
     <Window.Resources>
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
@@ -97,6 +97,9 @@
             </Label>-->
         
         </StackPanel>
+
+        <ContentControl Content="{Binding Mod10}"/>
+
         <ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
                          MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">
 

@@ -3,6 +3,7 @@ using Caravansary.CoreModules.DailyGoal.ViewModel;
 using Caravansary.CoreModules.Filler.ViewModel;
 using Caravansary.CoreModules.KeyCounter.ViewModel;
 using Caravansary.CoreModules.MainBar.ViewModel;
+using Caravansary.CoreModules.Roadmap.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,9 @@ namespace Caravansary
 
 
                     CoreModules.Add(new FillerViewModel());
+
+
+                    CoreModules.Add(new RoadmapViewModel());
 
 
                 }

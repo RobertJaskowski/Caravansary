@@ -57,11 +57,9 @@ namespace Caravansary.CoreModules.KeyCounter.ViewModel
         public KeyCounterViewModel()
         {
 
-            _listener = new KeyboardListener();//todo move to main window
+            _listener = KeyboardListener.Instance;//todo move to main window
 
 
-
-            _listener.HookKeyboard();
 
             _listener.OnKeyPressed += _listener_OnKeyPressed;
             _listener.OnKeyReleased += _listener_OnKeyReleased;
@@ -110,8 +108,9 @@ namespace Caravansary.CoreModules.KeyCounter.ViewModel
 
         public override void CloseModule()
         {
-            _listener.UnHookKeyboard();
-
+            // _listener.UnHookKeyboard();
+            _listener.OnKeyPressed -= _listener_OnKeyPressed;
+            _listener.OnKeyReleased -= _listener_OnKeyReleased;
         }
     }
 }

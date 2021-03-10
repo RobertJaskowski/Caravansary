@@ -91,14 +91,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Rule, FallbackValue=empty}"/>
+                            <TextBox Text="{Binding Rule, FallbackValue=empty}" Background="{x:Null}"/>
                             <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ItemsControl >
+            <!--<ItemsControl >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
 
@@ -110,7 +110,7 @@
 
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            </ItemsControl>-->
 
             <!--<StackPanel Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked}"  Style="{StaticResource SettingsList}" Orientation="Horizontal">
 

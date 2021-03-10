@@ -19,7 +19,20 @@ namespace Caravansary
                 OnPropertyChanged(nameof(AppVersion));
             }
         }
-        
+
+        public bool RoadmapEnabled
+        {
+            get => Settings.Default.RoadmapEnabled;
+            set
+            {
+                Settings.Default.RoadmapEnabled = value;
+                Settings.Default.Save();
+
+                OnPropertyChanged(nameof(RoadmapEnabled));
+
+            }
+        }
+
         public bool CheckboxBottomBar
         {
             get => Settings.Default.CheckBoxBottomBar;
@@ -62,7 +75,7 @@ namespace Caravansary
 
 
 
-       
+
 
         private ObservableCollection<BlacklistItem> _blacklistItems;
         public ObservableCollection<BlacklistItem> BlacklistItems
@@ -133,7 +146,7 @@ namespace Caravansary
 
                                GlobalSettings.SettingsBlackListItems.Remove(o as BlacklistItem);
                                Settings.Default.Save();
-                               
+
                            }
 
                        },

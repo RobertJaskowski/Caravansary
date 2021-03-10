@@ -23,6 +23,11 @@
              xmlns:fV="clr-namespace:Caravansary.CoreModules.Filler.View"
              xmlns:fVM="clr-namespace:Caravansary.CoreModules.Filler.ViewModel"
              
+             
+             
+             xmlns:rV="clr-namespace:Caravansary.CoreModules.Roadmap.View"
+             xmlns:rVM="clr-namespace:Caravansary.CoreModules.Roadmap.ViewModel"
+             
              >
     <Application.Resources>
 
@@ -57,6 +62,10 @@
 
             <DataTemplate DataType="{x:Type fVM:FillerViewModel}">
                 <fV:FillerView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type rVM:RoadmapViewModel}">
+                <rV:RoadmapView/>
             </DataTemplate>
 
         </ResourceDictionary>

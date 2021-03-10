@@ -179,6 +179,13 @@
     <Compile Include="CoreModules\MainBar\View\MainBarView.xaml.cs">
       <DependentUpon>MainBarView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CoreModules\Roadmap\RoadmapAddingDirection.cs" />
+    <Compile Include="CoreModules\Roadmap\RoadmapItem.cs" />
+    <Compile Include="CoreModules\Roadmap\RoadmapItems.cs" />
+    <Compile Include="CoreModules\Roadmap\ViewModel\RoadmapViewModel.cs" />
+    <Compile Include="CoreModules\Roadmap\View\RoadmapView.xaml.cs">
+      <DependentUpon>RoadmapView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="Helpers\WindowHelper.cs" />
     <Compile Include="IWindow.cs" />
@@ -234,6 +241,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CoreModules\MainBar\View\MainBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CoreModules\Roadmap\View\RoadmapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

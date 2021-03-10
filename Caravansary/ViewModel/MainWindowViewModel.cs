@@ -86,6 +86,8 @@ namespace Caravansary
         {
 
             ModuleManager.Instance.CloseModules();
+
+            KeyboardListener.Instance.UnHookKeyboard();
         }
 
 
@@ -160,7 +162,7 @@ namespace Caravansary
         public IWindow CurrentWindow;
         TrayIcon trayIcon;
 
-
+        #region mods
 
 
         //private ObservableCollection<CoreModule> _myCoreModules;
@@ -247,6 +249,18 @@ namespace Caravansary
         }
 
 
+        private CoreModule _mod10;
+        public CoreModule Mod10
+        {
+            get { return _mod10; }
+            set
+            {
+                _mod10 = value;
+                OnPropertyChanged(nameof(Mod10));
+            }
+        }
+        #endregion
+
         MilestoneSystem milestoneSystem;
         NotificationSystem notificationSystem;
 
@@ -265,6 +279,9 @@ namespace Caravansary
             Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
             Mod4 = ModuleManager.Instance.GetCoreModule("Filler");
             Mod5 = ModuleManager.Instance.GetCoreModule("DailyGoal");
+
+
+            Mod10 = ModuleManager.Instance.GetCoreModule("Roadmap");
 
 
             LoadWindowSettings();
