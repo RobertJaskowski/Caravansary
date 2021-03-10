@@ -45,7 +45,7 @@ namespace Caravansary
                     string handlestr = CurrentHandleWindow.ToString();
                     File.WriteAllText(dumpFileLocation, handlestr) ;
 
-                    Process.Start("UpdaterCaravansary.exe");
+                    Process.Start("LauncherCaravansary.exe");
 
 
 
