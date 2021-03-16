@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Caravansary.Core\Caravansary.Core.csproj" />
+    <ProjectReference Include="..\Plugger\Plugger.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -35,6 +35,11 @@ namespace Caravansary
             wnd.MouseDown += vm.MouseDown;
             wnd.Show();
 
+
+            vm.LoadView();
+
+            return;
+
             WebClient webClient = new WebClient();
 
             try

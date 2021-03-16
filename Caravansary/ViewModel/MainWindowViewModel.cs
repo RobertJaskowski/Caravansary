@@ -14,6 +14,9 @@ using System.Windows.Threading;
 using Settings = Caravansary.Properties.Settings;
 using System.Windows.Controls;
 using Plugger.Contracts;
+using System.Resources;
+using System.Collections;
+using System.Windows.Markup;
 
 namespace Caravansary
 {
@@ -93,6 +96,9 @@ namespace Caravansary
             ModuleManager.Instance.CloseModules();
 
             KeyboardListener.Instance.UnHookKeyboard();
+
+
+
         }
 
 
@@ -194,6 +200,8 @@ namespace Caravansary
             }
         }
 
+        private CoreModule _cmMod0;
+
         private UserControl _mod1;
         public UserControl Mod1
         {
@@ -272,6 +280,7 @@ namespace Caravansary
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
             Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             this.CurrentWindow = window;
             CurrentHandleWindow = handle;
             trayIcon = new TrayIcon();
@@ -291,7 +300,6 @@ namespace Caravansary
             ModuleManager.Instance.InitializeModules();
 
 
-            LoadView();
 
 
             LoadWindowSettings();
@@ -322,18 +330,76 @@ namespace Caravansary
                 foreach (var connect in connectors)
                 {
                     string dllPath = GetPluggerDll(connect);
-                    Assembly _Assembly = Assembly.LoadFile(dllPath);
-                    var types = _Assembly.GetTypes()?.ToList();
-                    var type = types?.Find(a => typeof(IPlugger).IsAssignableFrom(a));
-                    var win = (IPlugger)Activator.CreateInstance(type);
+                    if (string.IsNullOrEmpty(dllPath))
+                        continue;
+                    Assembly assembly = Assembly.LoadFile(dllPath);
+                    var types = assembly.GetTypes()?.ToList();
+                    var type = types?.Find(a => typeof(CoreModule).IsAssignableFrom(a));
+                    var win = (CoreModule)Activator.CreateInstance(type);
 
-                    Mod1 = win.GetPlugger();
+
+
+
+
+
+
+                    var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".g.resources");
+
+                    //var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "ActiveTimerView.xaml");
+
+
+
+
+                    var resourceReader = new ResourceReader(stream);
+
+
+                    foreach (DictionaryEntry resource in resourceReader)
+                    {
+                        if (new FileInfo(resource.Key.ToString()).Extension.Equals(".baml"))
+                        {
+
+                            Uri uri = new Uri("/" + assembly.GetName().Name + ";component/" + resource.Key.ToString().Replace(".baml", ".xaml"), UriKind.Relative);
+
+                            Debug.WriteLine(resourceReader.ToString());
+                            var uc = Application.LoadComponent(uri) as UserControl;
+
+                            Mod1 = uc;
+
+                            uc.DataContext = win;
+
+                            _cmMod0 = win;
+
+                            //ResourceDictionary skin = Application.LoadComponent(uri) as ResourceDictionary;
+
+                            //this.Resources.MergedDictionaries.Add(skin);
+                            //Mod1 = resource as UserControl;
+
+                            break;
+                        }
+                    }
+
+
+                    //var xaml = XamlReader.Load(stream);
+
+                    //var fe = xaml as UserControl;
+
+
+
+                    //Mod1 = fe;
+
+                    //fe.DataContext = win;
+
+                    //Mod1 = win.GetPlugger();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Internal Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+
+
+            //Application.Current.Resources.Add(template.DataTemplateKey;, template);
 
         }
 
@@ -342,12 +408,30 @@ namespace Caravansary
             var files = Directory.GetFiles(connect, "*.dll");
             foreach (var file in files)
             {
-                if (FileVersionInfo.GetVersionInfo(file).ProductName.StartsWith("Calci"))
+                if (!FileVersionInfo.GetVersionInfo(file).ProductName.StartsWith("Calci"))
                     return file;
             }
             return string.Empty;
         }
+        DataTemplate CreateTemplate(Type viewModelType, Type viewType)
+        {
+            const string xamlTemplate = "<DataTemplate DataType=\"{{x:Type vm:{0}}}\"><v:{1} /></DataTemplate>";
+            var xaml = String.Format(xamlTemplate, viewModelType.Name, viewType.Name, viewModelType.Namespace, viewType.Namespace);
 
+            var context = new ParserContext();
+
+            context.XamlTypeMapper = new XamlTypeMapper(new string[0]);
+            context.XamlTypeMapper.AddMappingProcessingInstruction("vm", viewModelType.Namespace, viewModelType.Assembly.FullName);
+            context.XamlTypeMapper.AddMappingProcessingInstruction("v", viewType.Namespace, viewType.Assembly.FullName);
+
+            context.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            context.XmlnsDictionary.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+            context.XmlnsDictionary.Add("vm", "vm");
+            context.XmlnsDictionary.Add("v", "v");
+
+            var template = (DataTemplate)XamlReader.Parse(xaml, context);
+            return template;
+        }
         private void LoadWindowSettings()
         {
 
