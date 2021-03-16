@@ -315,11 +315,10 @@ namespace Caravansary
         {
             try
             {
-                //Configure path of PlugBoard folder to access all calculate libraries   
-                string plugName = ConfigurationManager.AppSettings["Plugs"].ToString(); // ConfigurationSettings.AppSettings["Plugs"].ToString();
 
+               
 
-                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath);
+                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath+ Path.DirectorySeparatorChar +"Modules");
                 foreach (var connect in connectors)
                 {
                     string dllPath = GetPluggerDll(connect);

@@ -8,14 +8,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Plugger\Plugger.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="PresentationFramework">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\PresentationFramework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 	<PropertyGroup>
         <TargetFramework>net5.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
+        <Product>Calci</Product>
     </PropertyGroup>
 </Project>
