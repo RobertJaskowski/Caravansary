@@ -1,5 +1,4 @@
-﻿
-namespace Caravansary
+﻿namespace Caravansary.Core
 {
     using System.ComponentModel;
 

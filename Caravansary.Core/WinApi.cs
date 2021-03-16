@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Interop;
 using System.Windows;
 using System.ComponentModel;
 using System.Linq;
 
-namespace Caravansary
+namespace Caravansary.Core
 {
-    class WinApi
+    public class WinApi
     {
 
         [DllImport("kernel32.dll")]
@@ -36,8 +35,8 @@ namespace Caravansary
 
 
 
-        [DllImport("user32.dll")]
-        public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE pRawInputDevices, uint uiNumDevices, uint cbSize);
+        //[DllImport("user32.dll")]
+        //public static extern bool RegisterRawInputDevices(RAWINPUTDEVICE pRawInputDevices, uint uiNumDevices, uint cbSize);
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 
@@ -51,34 +50,34 @@ namespace Caravansary
 
 
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool PeekMessage(out NativeMessage lpMsg, IntPtr hWnd, uint wMsgFilterMin,
-           uint wMsgFilterMax, uint wRemoveMsg);
+        //[DllImport("user32.dll")]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        //public static extern bool PeekMessage(out NativeMessage lpMsg, IntPtr hWnd, uint wMsgFilterMin,
+        //   uint wMsgFilterMax, uint wRemoveMsg);
 
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct NativeMessage
-        {
-            public IntPtr handle;
-            public uint msg;
-            public IntPtr wParam;
-            public IntPtr lParam;
-            public uint time;
-            public Point p;
-        }
+        //[StructLayout(LayoutKind.Sequential)]
+        //public struct NativeMessage
+        //{
+        //    public IntPtr handle;
+        //    public uint msg;
+        //    public IntPtr wParam;
+        //    public IntPtr lParam;
+        //    public uint time;
+        //    public Point p;
+        //}
 
 
-        const UInt32 SWP_NOSIZE = 0x0001;
-        const UInt32 SWP_NOMOVE = 0x0002;
+        //const UInt32 SWP_NOSIZE = 0x0001;
+        //const UInt32 SWP_NOMOVE = 0x0002;
 
-        static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        //static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
 
-        public static void SendWpfWindowBack(Window window)
-        {
-            var hWnd = new WindowInteropHelper(window).Handle;
-            SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
-        }
+        //public static void SendWpfWindowBack(Window window)
+        //{
+        //    var hWnd = new WindowInteropHelper(window).Handle;
+        //    SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+        //}
 
         [DllImport("user32.dll", EntryPoint = "GetKeyboardState", SetLastError = true)]
         private static extern bool NativeGetKeyboardState([Out] byte[] keyStates);
@@ -122,13 +121,14 @@ namespace Caravansary
             public Int32 X;
             public Int32 Y;
         };
-        public static Point GetMousePosition()
-        {
-            var w32Mouse = new Win32Point();
-            GetCursorPos(ref w32Mouse);
+        //public static Point GetMousePosition()
+        //{
+        //    var w32Mouse = new Win32Point();
+        //    GetCursorPos(ref w32Mouse);
 
-            return new Point(w32Mouse.X, w32Mouse.Y);
-        }
+        //    return new Point(w32Mouse.X, w32Mouse.Y);
+        //}
+
 
         [DllImport("user32.dll")]
 

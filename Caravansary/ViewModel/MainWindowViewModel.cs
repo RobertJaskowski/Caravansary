@@ -1,18 +1,23 @@
-﻿
+﻿using Caravansary.Core;
+using System;
+using System.ComponentModel;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Settings = Caravansary.Properties.Settings;
+using System.Windows.Controls;
+using Plugger.Contracts;
+
 namespace Caravansary
 {
-    using Caravansary.CoreModules.Filler.ViewModel;
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Net;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Threading;
-    using Settings = Properties.Settings;
-
+   
     class MainWindowViewModel : BaseViewModel
     {
         #region Properties
@@ -78,7 +83,7 @@ namespace Caravansary
 
         internal void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            
+
 
         }
 
@@ -181,7 +186,7 @@ namespace Caravansary
 
         public CoreModule Mod0
         {
-            get { return _mod0==null?  new FillerViewModel() : _mod0 ; }
+            get { return _mod0; }
             set
             {
                 _mod0 = value;
@@ -189,8 +194,8 @@ namespace Caravansary
             }
         }
 
-        private CoreModule _mod1;
-        public CoreModule Mod1
+        private UserControl _mod1;
+        public UserControl Mod1
         {
             get { return _mod1; }
             set
@@ -261,8 +266,8 @@ namespace Caravansary
         }
         #endregion
 
-        MilestoneSystem milestoneSystem;
-        NotificationSystem notificationSystem;
+        //MilestoneSystem milestoneSystem;
+        //NotificationSystem notificationSystem;
 
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
@@ -272,22 +277,27 @@ namespace Caravansary
             trayIcon = new TrayIcon();
 
             //top
-            Mod0 = ModuleManager.Instance.GetCoreModule("MainBar");
+            //Mod0 = ModuleManager.Instance.GetCoreModule("MainBar");
 
-            Mod1 = ModuleManager.Instance.GetCoreModule("KeyCounter");
-            Mod2 = ModuleManager.Instance.GetCoreModule("Filler");
-            Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
-            Mod4 = ModuleManager.Instance.GetCoreModule("Filler");
-            Mod5 = ModuleManager.Instance.GetCoreModule("DailyGoal");
+            //Mod1 = ModuleManager.Instance.GetCoreModule("KeyCounter");
+            //Mod2 = ModuleManager.Instance.GetCoreModule("Filler");
+            //Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
+            //Mod4 = ModuleManager.Instance.GetCoreModule("Filler");
+            //Mod5 = ModuleManager.Instance.GetCoreModule("DailyGoal");
 
 
-            Mod10 = ModuleManager.Instance.GetCoreModule("Roadmap");
+            //Mod10 = ModuleManager.Instance.GetCoreModule("Roadmap");
+
+            ModuleManager.Instance.InitializeModules();
+
+
+            LoadView();
 
 
             LoadWindowSettings();
 
 
-            
+
 
             //LoadDailyGoal();
 
@@ -299,8 +309,45 @@ namespace Caravansary
 
         }
 
+        static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
+
+        public void LoadView()
+        {
+            try
+            {
+                //Configure path of PlugBoard folder to access all calculate libraries   
+                string plugName = ConfigurationManager.AppSettings["Plugs"].ToString(); // ConfigurationSettings.AppSettings["Plugs"].ToString();
 
 
+                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath);
+                foreach (var connect in connectors)
+                {
+                    string dllPath = GetPluggerDll(connect);
+                    Assembly _Assembly = Assembly.LoadFile(dllPath);
+                    var types = _Assembly.GetTypes()?.ToList();
+                    var type = types?.Find(a => typeof(IPlugger).IsAssignableFrom(a));
+                    var win = (IPlugger)Activator.CreateInstance(type);
+
+                    Mod1 = win.GetPlugger();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Internal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+        }
+
+        private string GetPluggerDll(string connect)
+        {
+            var files = Directory.GetFiles(connect, "*.dll");
+            foreach (var file in files)
+            {
+                if (FileVersionInfo.GetVersionInfo(file).ProductName.StartsWith("Calci"))
+                    return file;
+            }
+            return string.Empty;
+        }
 
         private void LoadWindowSettings()
         {
@@ -328,16 +375,6 @@ namespace Caravansary
 
         }
 
-
-
-        public bool isMouseDown = false;
-        public bool isLMouseDown = false;
-        public bool isRMouseDown = false;
-
-        public int mouseX;
-        public int mouseY;
-        public int mouseinX;
-        public int mouseinY;
 
 
 

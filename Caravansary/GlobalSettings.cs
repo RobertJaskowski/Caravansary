@@ -28,19 +28,19 @@ namespace Caravansary
 
 
         //public static BlacklistItems _settingsBlacklistItems;
-        public static BlacklistItems SettingsBlackListItems
-        {
-            get
-            {
-                return Settings.Default.BlacklistItems;
-            }
+        //public static BlacklistItems SettingsBlackListItems
+        //{
+        //    get
+        //    {
+        //        return Settings.Default.BlacklistItems;
+        //    }
 
-            set
-            {
-                Settings.Default.BlacklistItems = value;
-                Settings.Default.Save();
-            }
-        }
+        //    set
+        //    {
+        //        Settings.Default.BlacklistItems = value;
+        //        Settings.Default.Save();
+        //    }
+        //}
     }
 
 

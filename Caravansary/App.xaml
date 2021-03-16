@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Caravansary" ShutdownMode="OnMainWindowClose"
              
-             
-             
-             xmlns:mbV="clr-namespace:Caravansary.CoreModules.MainBar.View"
+             >
+
+    <!--xmlns:mbV="clr-namespace:Caravansary.CoreModules.MainBar.View"
              xmlns:mbVM="clr-namespace:Caravansary.CoreModules.MainBar.ViewModel"
              
              
@@ -28,7 +28,7 @@
              xmlns:rV="clr-namespace:Caravansary.CoreModules.Roadmap.View"
              xmlns:rVM="clr-namespace:Caravansary.CoreModules.Roadmap.ViewModel"
              
-             >
+             >-->
     <Application.Resources>
 
         <ResourceDictionary>
@@ -43,7 +43,7 @@
                 
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type mbVM:MainBarViewModel}">
+            <!--<DataTemplate DataType="{x:Type mbVM:MainBarViewModel}">
                 <mbV:MainBarView/>
             </DataTemplate>
 
@@ -66,7 +66,7 @@
 
             <DataTemplate DataType="{x:Type rVM:RoadmapViewModel}">
                 <rV:RoadmapView/>
-            </DataTemplate>
+            </DataTemplate>-->
 
         </ResourceDictionary>
 

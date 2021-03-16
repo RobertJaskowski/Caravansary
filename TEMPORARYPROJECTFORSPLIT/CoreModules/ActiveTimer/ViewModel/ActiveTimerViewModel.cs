@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using static Caravansary.WinApi;
+using static Caravansary.Core;
 
 namespace Caravansary.CoreModules.ActiveTimer.ViewModel
 {
@@ -245,6 +245,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
                            Color c = Color.FromArgb(255, 221, 44, 0);
                            MainBarModule.SetBarColor(c);
 
+                           TimeReason = "";
                        },
                        (object o) =>
                        {
@@ -285,7 +286,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
         }
 
 
-     
+
 
 
         private string lastWindow;
@@ -299,7 +300,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
                     return;
 
 
-                    Debug.WriteLine("window switched callback " + tit);
+            Debug.WriteLine("window switched callback " + tit);
 
             if (tit.Contains("visual") || tit.Contains("Caravansary"))
             {
@@ -312,7 +313,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
                 lastWindow = tit;
             else
             {
-                if (lastWindow.Length == tit.Length)
+                if (lastWindow.Equals(tit))
                 {
                     Debug.WriteLine("is same window");
                     return;
@@ -364,7 +365,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
 
             if (chrome.Count > 0)
             {
-                
+
                 foreach (var item in chrome)
                 {
 
@@ -405,12 +406,13 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
                 //}
             }
 
-            if (TimeReason != null)
-                if (!TimeReason.ToLower().Contains("user"))
-                {
-                    TimeReason = "window";
-                    ArtistResume.Execute(null);
-                }
+            if (Artist.ArtistState != ArtistState.ACTIVE)
+                if (TimeReason != null)
+                    if (!TimeReason.ToLower().Contains("user"))
+                    {
+                        
+                        ArtistResume.Execute(null);
+                    }
 
         }
 
@@ -538,7 +540,7 @@ namespace Caravansary.CoreModules.ActiveTimer.ViewModel
 
         public override void CloseModule()
         {
-            
+
         }
     }
 }

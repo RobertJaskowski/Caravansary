@@ -1,4 +1,5 @@
 ﻿using Caravansary.Properties;
+using Caravansary.Core;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
@@ -75,28 +76,28 @@ namespace Caravansary
 
 
 
+        //todo will crash probably because there is nothing to bind against , this have to be in the modules itself and iject settings page into main app settings
 
+        //private ObservableCollection<BlacklistItem> _blacklistItems;
+        //public ObservableCollection<BlacklistItem> BlacklistItems
+        //{
+        //    get
+        //    {
+        //        if (_blacklistItems == null)
+        //        {
+        //            _blacklistItems = new ObservableCollection<BlacklistItem>(Settings.Default.BlacklistItems);
 
-        private ObservableCollection<BlacklistItem> _blacklistItems;
-        public ObservableCollection<BlacklistItem> BlacklistItems
-        {
-            get
-            {
-                if (_blacklistItems == null)
-                {
-                    _blacklistItems = new ObservableCollection<BlacklistItem>(Settings.Default.BlacklistItems);
+        //        }
 
-                }
+        //        return _blacklistItems;
+        //    }
+        //    set
+        //    {
+        //        _blacklistItems = value;
 
-                return _blacklistItems;
-            }
-            set
-            {
-                _blacklistItems = value;
-
-                OnPropertyChanged(nameof(BlacklistItems));
-            }
-        }
+        //        OnPropertyChanged(nameof(BlacklistItems));
+        //    }
+        //}
 
 
         #endregion
@@ -112,11 +113,11 @@ namespace Caravansary
                     _createNewBlacklistItem = new RelayCommand(
                        (object o) =>
                        {
-                           var k = new BlacklistItem("empty");
-                           _blacklistItems.Add(k);
+                           //var k = new BlacklistItem("empty");
+                           //_blacklistItems.Add(k);
 
-                           GlobalSettings.SettingsBlackListItems.Add(k);
-                           Settings.Default.Save();
+                           //GlobalSettings.SettingsBlackListItems.Add(k);
+                           //Settings.Default.Save();
 
                        },
                        (object o) =>
@@ -140,14 +141,14 @@ namespace Caravansary
                     _removeBlacklistItem = new RelayCommand(
                        (object o) =>
                        {
-                           if (o is BlacklistItem)
-                           {
-                               BlacklistItems.Remove(o as BlacklistItem);
+                           //if (o is BlacklistItem)
+                           //{
+                           //    BlacklistItems.Remove(o as BlacklistItem);
 
-                               GlobalSettings.SettingsBlackListItems.Remove(o as BlacklistItem);
-                               Settings.Default.Save();
+                           //    GlobalSettings.SettingsBlackListItems.Remove(o as BlacklistItem);
+                           //    Settings.Default.Save();
 
-                           }
+                           //}
 
                        },
                        (object o) =>

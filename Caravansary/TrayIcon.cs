@@ -1,4 +1,5 @@
-﻿using Caravansary.Properties;
+﻿using Caravansary.Core;
+using Caravansary.Properties;
 using System;
 using System.Windows;
 

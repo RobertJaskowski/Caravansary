@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
-namespace Caravansary
+namespace Caravansary.Core
 {
     public class WindowsWindowApi
     {

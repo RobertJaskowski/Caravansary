@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Caravansary.CoreModules.Roadmap;
+
 
 namespace Caravansary.Properties {
     
@@ -121,20 +121,20 @@ namespace Caravansary.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public BlacklistItems BlacklistItems
-        {
-            get
-            {
-                return ((BlacklistItems)(this["BlacklistItems"]));
-            }
-            set
-            {
-                this["BlacklistItems"] = value;
-            }
-        }
+        //[global::System.Configuration.UserScopedSettingAttribute()]
+        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //[global::System.Configuration.DefaultSettingValueAttribute("")]
+        //public BlacklistItems BlacklistItems
+        //{
+        //    get
+        //    {
+        //        return ((BlacklistItems)(this["BlacklistItems"]));
+        //    }
+        //    set
+        //    {
+        //        this["BlacklistItems"] = value;
+        //    }
+        //}
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -148,19 +148,19 @@ namespace Caravansary.Properties {
             }
         }
 
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public RoadmapItems RoadmapItems
-        {
-            get
-            {
-                return ((RoadmapItems)(this["RoadmapItems"]));
-            }
-            set
-            {
-                this["RoadmapItems"] = value;
-            }
-        }
+        //[global::System.Configuration.UserScopedSettingAttribute()]
+        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        //[global::System.Configuration.DefaultSettingValueAttribute("")]
+        //public RoadmapItems RoadmapItems
+        //{
+        //    get
+        //    {
+        //        return ((RoadmapItems)(this["RoadmapItems"]));
+        //    }
+        //    set
+        //    {
+        //        this["RoadmapItems"] = value;
+        //    }
+        //}
     }
 }
