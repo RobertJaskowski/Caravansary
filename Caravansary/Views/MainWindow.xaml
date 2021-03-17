@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         
         Title="Caravansary" Width="1000" WindowStartupLocation="CenterScreen" 
-        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="24" Topmost="True" Icon="/Caravansary;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None"
+        MaxWidth="1500" MaxHeight="100" MinWidth="1000" MinHeight="20" Topmost="True" Icon="/Caravansary;component/Resources/logo.png" ResizeMode="NoResize" SizeToContent="WidthAndHeight" AllowsTransparency="True" WindowStyle="None"
         >
     <Window.Resources>
         <ItemsPanelTemplate x:Key="MenuItemPanelTemplate">
@@ -44,74 +44,132 @@
         <TaskbarItemInfo Description="testtbiteminfo" ProgressValue="69" ProgressState="Indeterminate"/>
     </Window.TaskbarItemInfo>
 
-    <StackPanel x:Name="stackParent" VerticalAlignment="Top">
+    <StackPanel x:Name="stackParent" VerticalAlignment="Top" >
 
 
 
 
-        <ContentControl Content="{Binding Mod0}"/>
+        <!--<ContentControl Content="{Binding Mod0}"/>-->
+        <!--MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"-->
+        <ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
+            <ListView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <!--Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"-->
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding View}" >
+                        <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}"/>
+                            <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
+                    </ContentControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
 
 
-        <StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">
+        <!--<StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">-->
 
-            <ContentControl Content="{Binding Mod1}"/>
+        <ListView Name="CoreModules" ItemsSource="{Binding CoreModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
+            <ListView.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+            </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                    <Setter Property="Focusable" Value="False" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <!--Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"-->
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ContentControl Content="{Binding View}" >
+                        <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}"/>
+                            <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
+                    </ContentControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!--<ContentControl Content="{Binding Mod1}"/>
             <ContentControl Content="{Binding Mod2}"/>
             <ContentControl Content="{Binding Mod3}"/>
             <ContentControl Content="{Binding Mod4}"/>
-            <ContentControl Content="{Binding Mod5}"/>
+            <ContentControl Content="{Binding Mod5}"/>-->
 
-            <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
+        <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding CtrlZClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
             </Label>-->
-            
-            <!--<Label  Name="label2"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+
+        <!--<Label  Name="label2"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
 
 
             </Label>-->
-            
-            
-            <!--<Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+
+
+        <!--<Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding ActiveTimeClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
             </Label>-->
-            
-            <!--<Label Name="label4"   FontWeight="Bold" MinWidth="200" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+
+        <!--<Label Name="label4"   FontWeight="Bold" MinWidth="200" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
 
 
             </Label>-->
-            
-            <!--<Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"   FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
+
+        <!--<Label Name="label5" Content="{Binding DailyGoalText ,Mode=OneWay, FallbackValue='Daily goal'}"   FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding DailyGoalClicked}" MouseAction="LeftClick" />
                 </Label.InputBindings>
 
 
             </Label>-->
-        
-        </StackPanel>
+
+        <!--</StackPanel>-->
 
         <ContentControl Content="{Binding Mod10}"/>
 
-        <ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
+        <!--<ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
                          MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">
 
-        </ProgressBar>
-        <StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28" Visibility="Collapsed">
+        </ProgressBar>-->
+
+
+        <!--<StackPanel x:Name="stackNotification" Orientation="Horizontal" MinWidth="1000" MaxHeight="28" Height="28" Visibility="Collapsed">
             <Label x:Name="labelNotification"   
                    FontWeight="Bold" Content="TestStartingnotification" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0" MinWidth="1000" 
                    HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Center" >
 
             </Label>
-        </StackPanel>
+        </StackPanel>-->
     </StackPanel>
 
 </Window>

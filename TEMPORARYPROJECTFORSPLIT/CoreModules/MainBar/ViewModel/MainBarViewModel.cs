@@ -1,13 +1,16 @@
-﻿using System;
+﻿using Caravansary.Core;
+using Caravansary.SDK.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Caravansary.CoreModules.MainBar.ViewModel
 {
-    class MainBarViewModel : CoreModule
+    class MainBarViewModel : CoreModule,ICaravansary.SDK
     {
 
         #region Properties
@@ -41,6 +44,9 @@ namespace Caravansary.CoreModules.MainBar.ViewModel
                 OnPropertyChanged(nameof(ProgressTopBar));
             }
         }
+
+        public string Caravansary.SDKName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override UserControl View { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
 
@@ -76,6 +82,11 @@ namespace Caravansary.CoreModules.MainBar.ViewModel
 
         public override void CloseModule()
         {
+        }
+
+        public UserControl GetCaravansary.SDK()
+        {
+            return null;
         }
     }
 }

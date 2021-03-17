@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace Plugger.Contracts
+namespace Caravansary.SDK.Contracts
 {
     public interface IPlugger
     {
         /// <summary>  
-        /// Name of plugger  
+        /// Name of Caravansary.SDK  
         /// </summary>  
-        string PluggerName { get; set; }
+        string  Name { get; set; }
 
         /// <summary>  
         /// It will return UserControl which will display on Main application  

@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caravansary.Core", "Caravan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEMPORARYPROJECTFORSPLIT", "TEMPORARYPROJECTFORSPLIT\TEMPORARYPROJECTFORSPLIT.csproj", "{4E5A8002-CBD1-4DAB-B586-FBCCECC53BE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugger", "Plugger\Plugger.csproj", "{5465FDA8-DF25-4642-9B9A-D0D68563AE52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caravansary.SDK", "Caravansary.SDK\Caravansary.SDK.csproj", "{5465FDA8-DF25-4642-9B9A-D0D68563AE52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingLibrary", "TestingLibrary\TestingLibrary.csproj", "{E1D19AB4-D294-4357-A0BA-B458374FE872}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveTimer", "ActiveTimer\ActiveTimer.csproj", "{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,18 +83,6 @@ Global
 		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x64.Build.0 = Release|Any CPU
 		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x86.ActiveCfg = Release|Any CPU
 		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x86.Build.0 = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|x64.Build.0 = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Debug|x86.Build.0 = Debug|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|x64.ActiveCfg = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|x64.Build.0 = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|x86.ActiveCfg = Release|Any CPU
-		{71D1B7E2-F886-45D1-A13D-04A483C6ADFE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

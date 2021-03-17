@@ -36,7 +36,7 @@ namespace Caravansary
             wnd.Show();
 
 
-            vm.LoadView();
+            vm.LoadModules();
 
             return;
 

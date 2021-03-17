@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Caravansary.Core\Caravansary.Core.csproj" />
-    <ProjectReference Include="..\Plugger\Plugger.csproj" />
+    <ProjectReference Include="..\Caravansary.SDK\Caravansary.SDK.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />

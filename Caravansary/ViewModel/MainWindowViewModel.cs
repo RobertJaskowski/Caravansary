@@ -13,14 +13,15 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Settings = Caravansary.Properties.Settings;
 using System.Windows.Controls;
-using Plugger.Contracts;
+using Caravansary.SDK.Contracts;
 using System.Resources;
 using System.Collections;
 using System.Windows.Markup;
+using System.Collections.ObjectModel;
 
 namespace Caravansary
 {
-   
+
     class MainWindowViewModel : BaseViewModel
     {
         #region Properties
@@ -174,104 +175,70 @@ namespace Caravansary
         TrayIcon trayIcon;
 
         #region mods
-
-
-        //private ObservableCollection<CoreModule> _myCoreModules;
-
-        //public ObservableCollection<CoreModule> CoreModules
-        //{
-        //    get { return _myCoreModules; }
-        //    set
-        //    {
-        //        _myCoreModules = value;
-        //        OnPropertyChanged(nameof(CoreModule));
-        //    }
-        //}
-
-        private CoreModule _mod0;
-
-        public CoreModule Mod0
+        private ObservableCollection<CoreModule> _topModules;
+        public ObservableCollection<CoreModule> TopModules
         {
-            get { return _mod0; }
-            set
+            get
             {
-                _mod0 = value;
-                OnPropertyChanged(nameof(Mod0));
+                if (_topModules == null)
+                {
+                    _topModules = new ObservableCollection<CoreModule>();
+
+                }
+
+                return _topModules;
             }
-        }
-
-        private CoreModule _cmMod0;
-
-        private UserControl _mod1;
-        public UserControl Mod1
-        {
-            get { return _mod1; }
             set
             {
-                _mod1 = value;
-                OnPropertyChanged(nameof(Mod1));
+                _topModules = value;
+
+                OnPropertyChanged(nameof(TopModules));
             }
         }
 
 
-        private CoreModule _mod2;
-        public CoreModule Mod2
+        private ObservableCollection<CoreModule> _coreModules;
+        public ObservableCollection<CoreModule> CoreModules
         {
-            get { return _mod2; }
+            get
+            {
+                if (_coreModules == null)
+                {
+                    _coreModules = new ObservableCollection<CoreModule>();
+
+                }
+
+                return _coreModules;
+            }
             set
             {
-                _mod2 = value;
-                OnPropertyChanged(nameof(Mod2));
+                _coreModules = value;
+
+                OnPropertyChanged(nameof(CoreModules));
             }
         }
 
-
-        private CoreModule _mod3;
-        public CoreModule Mod3
+        private ObservableCollection<CoreModule> _botModules;
+        public ObservableCollection<CoreModule> BotModules
         {
-            get { return _mod3; }
+            get
+            {
+                if (_botModules == null)
+                {
+                    _botModules = new ObservableCollection<CoreModule>();
+
+                }
+
+                return _botModules;
+            }
             set
             {
-                _mod3 = value;
-                OnPropertyChanged(nameof(Mod3));
+                _botModules = value;
+
+                OnPropertyChanged(nameof(BotModules));
             }
         }
 
-
-        private CoreModule _mod4;
-        public CoreModule Mod4
-        {
-            get { return _mod4; }
-            set
-            {
-                _mod4 = value;
-                OnPropertyChanged(nameof(Mod4));
-            }
-        }
-
-
-        private CoreModule _mod5;
-        public CoreModule Mod5
-        {
-            get { return _mod5; }
-            set
-            {
-                _mod5 = value;
-                OnPropertyChanged(nameof(Mod5));
-            }
-        }
-
-
-        private CoreModule _mod10;
-        public CoreModule Mod10
-        {
-            get { return _mod10; }
-            set
-            {
-                _mod10 = value;
-                OnPropertyChanged(nameof(Mod10));
-            }
-        }
         #endregion
 
         //MilestoneSystem milestoneSystem;
@@ -319,23 +286,23 @@ namespace Caravansary
 
         static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
 
-        public void LoadView()
+        public void LoadModules()
         {
             try
             {
 
-               
 
-                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath+ Path.DirectorySeparatorChar +"Modules");
+
+                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
                 foreach (var connect in connectors)
                 {
-                    string dllPath = GetPluggerDll(connect);
+                    string dllPath = GetDll(connect);
                     if (string.IsNullOrEmpty(dllPath))
                         continue;
                     Assembly assembly = Assembly.LoadFile(dllPath);
                     var types = assembly.GetTypes()?.ToList();
                     var type = types?.Find(a => typeof(CoreModule).IsAssignableFrom(a));
-                    var win = (CoreModule)Activator.CreateInstance(type);
+                    var currentCoreModule = (CoreModule)Activator.CreateInstance(type);
 
 
 
@@ -361,13 +328,22 @@ namespace Caravansary
                             Uri uri = new Uri("/" + assembly.GetName().Name + ";component/" + resource.Key.ToString().Replace(".baml", ".xaml"), UriKind.Relative);
 
                             Debug.WriteLine(resourceReader.ToString());
-                            var uc = Application.LoadComponent(uri) as UserControl;
+                            var currentUserControl = Application.LoadComponent(uri) as UserControl;
 
-                            Mod1 = uc;
+                            currentUserControl.DataContext = currentCoreModule;
+                            currentCoreModule.View = currentUserControl;
 
-                            uc.DataContext = win;
 
-                            _cmMod0 = win;
+                            if (resource.Key.ToString().ToLower().Contains("bar"))
+                                TopModules.Add(currentCoreModule);
+                            else
+                                CoreModules.Add(currentCoreModule);
+
+
+                            // Mod1 = currentUserControl;
+
+
+                            // _cmMod0 = currentCoreModule;
 
                             //ResourceDictionary skin = Application.LoadComponent(uri) as ResourceDictionary;
 
@@ -389,7 +365,7 @@ namespace Caravansary
 
                     //fe.DataContext = win;
 
-                    //Mod1 = win.GetPlugger();
+                    //Mod1 = win.GetCaravansary.SDK();
                 }
             }
             catch (Exception ex)
@@ -403,9 +379,9 @@ namespace Caravansary
 
         }
 
-        private string GetPluggerDll(string connect)
+        private string GetDll(string moduleDirectory)
         {
-            var files = Directory.GetFiles(connect, "*.dll");
+            var files = Directory.GetFiles(moduleDirectory, "*.dll");
             foreach (var file in files)
             {
                 if (!FileVersionInfo.GetVersionInfo(file).ProductName.StartsWith("Calci"))
@@ -413,6 +389,8 @@ namespace Caravansary
             }
             return string.Empty;
         }
+
+
         DataTemplate CreateTemplate(Type viewModelType, Type viewType)
         {
             const string xamlTemplate = "<DataTemplate DataType=\"{{x:Type vm:{0}}}\"><v:{1} /></DataTemplate>";

@@ -277,9 +277,9 @@
       <Project>{b7ae387c-42f7-4a46-bd8e-dd37088c21c6}</Project>
       <Name>Caravansary.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Plugger\Plugger.csproj">
+    <ProjectReference Include="..\Caravansary.SDK\Caravansary.SDK.csproj">
       <Project>{5465fda8-df25-4642-9b9a-d0d68563ae52}</Project>
-      <Name>Plugger</Name>
+      <Name>Caravansary.SDK</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
