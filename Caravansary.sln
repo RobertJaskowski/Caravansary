@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TEMPORARYPROJECTFORSPLIT", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caravansary.SDK", "Caravansary.SDK\Caravansary.SDK.csproj", "{5465FDA8-DF25-4642-9B9A-D0D68563AE52}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingLibrary", "TestingLibrary\TestingLibrary.csproj", "{E1D19AB4-D294-4357-A0BA-B458374FE872}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,18 +69,6 @@ Global
 		{5465FDA8-DF25-4642-9B9A-D0D68563AE52}.Release|x64.Build.0 = Release|Any CPU
 		{5465FDA8-DF25-4642-9B9A-D0D68563AE52}.Release|x86.ActiveCfg = Release|Any CPU
 		{5465FDA8-DF25-4642-9B9A-D0D68563AE52}.Release|x86.Build.0 = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|x64.Build.0 = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Debug|x86.Build.0 = Debug|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x64.ActiveCfg = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x64.Build.0 = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x86.ActiveCfg = Release|Any CPU
-		{E1D19AB4-D294-4357-A0BA-B458374FE872}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

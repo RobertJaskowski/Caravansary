@@ -94,7 +94,6 @@ namespace Caravansary
         internal void OnWindowClosing(object sender, CancelEventArgs e)
         {
 
-            ModuleManager.Instance.CloseModules();
 
             KeyboardListener.Instance.UnHookKeyboard();
 
@@ -174,37 +173,39 @@ namespace Caravansary
         public IWindow CurrentWindow;
         TrayIcon trayIcon;
 
+
+
         #region mods
-        private ObservableCollection<CoreModule> _topModules;
-        public ObservableCollection<CoreModule> TopModules
-        {
-            get
-            {
-                if (_topModules == null)
-                {
-                    _topModules = new ObservableCollection<CoreModule>();
+        //private ObservableCollection<CoreModule> _topModules;
+        //public ObservableCollection<CoreModule> TopModules
+        //{
+        //    get
+        //    {
+        //        if (_topModules == null)
+        //        {
+        //            _topModules = new ObservableCollection<CoreModule>();
 
-                }
+        //        }
 
-                return _topModules;
-            }
-            set
-            {
-                _topModules = value;
+        //        return _topModules;
+        //    }
+        //    set
+        //    {
+        //        _topModules = value;
 
-                OnPropertyChanged(nameof(TopModules));
-            }
-        }
+        //        OnPropertyChanged(nameof(TopModules));
+        //    }
+        //}
 
 
-        private ObservableCollection<CoreModule> _coreModules;
-        public ObservableCollection<CoreModule> CoreModules
+        private ObservableCollection<ViewCoreModule> _coreModules;
+        public ObservableCollection<ViewCoreModule> CoreModules
         {
             get
             {
                 if (_coreModules == null)
                 {
-                    _coreModules = new ObservableCollection<CoreModule>();
+                    _coreModules = new ObservableCollection<ViewCoreModule>();
 
                 }
 
@@ -218,26 +219,26 @@ namespace Caravansary
             }
         }
 
-        private ObservableCollection<CoreModule> _botModules;
-        public ObservableCollection<CoreModule> BotModules
-        {
-            get
-            {
-                if (_botModules == null)
-                {
-                    _botModules = new ObservableCollection<CoreModule>();
+        //private ObservableCollection<CoreModule> _botModules;
+        //public ObservableCollection<CoreModule> BotModules
+        //{
+        //    get
+        //    {
+        //        if (_botModules == null)
+        //        {
+        //            _botModules = new ObservableCollection<CoreModule>();
 
-                }
+        //        }
 
-                return _botModules;
-            }
-            set
-            {
-                _botModules = value;
+        //        return _botModules;
+        //    }
+        //    set
+        //    {
+        //        _botModules = value;
 
-                OnPropertyChanged(nameof(BotModules));
-            }
-        }
+        //        OnPropertyChanged(nameof(BotModules));
+        //    }
+        //}
 
         #endregion
 
@@ -285,9 +286,13 @@ namespace Caravansary
         }
 
         static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
-
+        static ModuleController moduleController;
         public void LoadModules()
         {
+            moduleController = new ModuleController();
+
+
+
             try
             {
 
@@ -301,8 +306,8 @@ namespace Caravansary
                         continue;
                     Assembly assembly = Assembly.LoadFile(dllPath);
                     var types = assembly.GetTypes()?.ToList();
-                    var type = types?.Find(a => typeof(CoreModule).IsAssignableFrom(a));
-                    var currentCoreModule = (CoreModule)Activator.CreateInstance(type);
+                    var type = types?.Find(a => typeof(ICoreModule).IsAssignableFrom(a));
+                    var currentCoreModule = (ICoreModule)Activator.CreateInstance(type);
 
 
 
@@ -330,14 +335,22 @@ namespace Caravansary
                             Debug.WriteLine(resourceReader.ToString());
                             var currentUserControl = Application.LoadComponent(uri) as UserControl;
 
+
+
+
                             currentUserControl.DataContext = currentCoreModule;
-                            currentCoreModule.View = currentUserControl;
+
+                            ViewCoreModule viewCoreModule = new ViewCoreModule();
+                            viewCoreModule.View = currentUserControl;
+                            viewCoreModule.CoreModule = currentCoreModule;
+
+                            //currentCoreModule.View = currentUserControl;
 
 
-                            if (resource.Key.ToString().ToLower().Contains("bar"))
-                                TopModules.Add(currentCoreModule);
-                            else
-                                CoreModules.Add(currentCoreModule);
+                            //if (resource.Key.ToString().ToLower().Contains("bar"))
+                            //    TopModules.Add(currentCoreModule);
+                            //else
+                                CoreModules.Add(viewCoreModule);
 
 
                             // Mod1 = currentUserControl;

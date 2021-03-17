@@ -156,10 +156,7 @@ namespace Caravansary.Core
 
         }
 
-        public void CloseModules()
-        {
-            CoreModules.ForEach(e => e.CloseModule());
-        }
+       
 
 
     }
