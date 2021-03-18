@@ -35,7 +35,6 @@
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
 
 
-            <!--Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" Padding="0" BorderThickness="0" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"-->
         </Style>
 
         <Style TargetType="{x:Type ListViewItem}">
@@ -53,6 +52,7 @@
 
 
     </Window.Resources>
+    
     <Window.ContextMenu>
         <ContextMenu >
             <ContextMenu.Background>
@@ -80,7 +80,7 @@
 
         <!--MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"-->
         <ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}"  >
-            
+
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"></StackPanel>
@@ -89,30 +89,16 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <UserControl Content="{Binding }" >
-                      </UserControl>
+                    </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
 
 
-        <!--<StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">-->
-        <!--Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" Padding="0" BorderThickness="0" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"-->
+
+        <!--MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" -->
         <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules,Mode=TwoWay}" >
-            <!--<ListView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
-            </ListView.Resources>-->
-            <!--<ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="Background" Value="{x:Null}" />
-                    <Setter Property="BorderBrush" Value="{x:Null}" />
-                    <Setter Property="Focusable" Value="False" />
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                </Style>
-            </ListView.ItemContainerStyle>-->
             <!--Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"-->
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -129,12 +115,6 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <!--<ContentControl Content="{Binding Mod1}"/>
-            <ContentControl Content="{Binding Mod2}"/>
-            <ContentControl Content="{Binding Mod3}"/>
-            <ContentControl Content="{Binding Mod4}"/>
-            <ContentControl Content="{Binding Mod5}"/>-->
-
         <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding CtrlZClicked}" MouseAction="LeftClick" />
@@ -149,13 +129,6 @@
             </Label>-->
 
 
-        <!--<Label Name="label3" Content="{Binding ArtistTimeString ,Mode=OneWay, FallbackValue='00:00:00'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
-                <Label.InputBindings>
-                    <MouseBinding Command="{Binding ActiveTimeClicked}" MouseAction="LeftClick" />
-                </Label.InputBindings>
-
-
-            </Label>-->
 
         <!--<Label Name="label4"   FontWeight="Bold" MinWidth="200" Margin="0,2,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" >
 
