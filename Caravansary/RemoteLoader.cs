@@ -16,6 +16,14 @@ public class RemoteLoader : MarshalByRefObject
 {
     private Assembly _pluginAssembly;
     private ICoreModule _instance;
+    public ICoreModule Instance
+    {
+        get { return _instance; }
+        private set
+        {
+            _instance = value;
+        }
+    }
     private string _name;
     public string Name => _name;
     public bool IsStarted { get; private set; }
@@ -29,7 +37,7 @@ public class RemoteLoader : MarshalByRefObject
 
 
 
-         _pluginAssembly = alc.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(assemblyDllPath)));
+        _pluginAssembly = alc.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(assemblyDllPath)));
 
 
 

@@ -23,6 +23,35 @@
         <Style TargetType="{x:Type ContextMenu}">
             <Setter Property="ItemsPanel" Value="{StaticResource MenuItemPanelTemplate}"/>
         </Style>
+
+
+
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+
+
+            <!--Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" Padding="0" BorderThickness="0" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"-->
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+            </Style.Resources>
+        </Style>
+
+
     </Window.Resources>
     <Window.ContextMenu>
         <ContextMenu >
@@ -49,20 +78,9 @@
 
 
 
-        <!--<ContentControl Content="{Binding Mod0}"/>-->
         <!--MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"-->
-        <!--<ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
-            <ListView.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="Background" Value="{x:Null}" />
-                    <Setter Property="BorderBrush" Value="{x:Null}" />
-                    <Setter Property="Focusable" Value="False" />
-                </Style>
-            </ListView.ItemContainerStyle>
+        <ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}"  >
+            
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"></StackPanel>
@@ -70,28 +88,31 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding View}" >
-                      </ContentControl>
+                    <UserControl Content="{Binding }" >
+                      </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>-->
+        </ListView>
 
 
 
         <!--<StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">-->
-
-        <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
-            <ListView.Resources>
+        <!--Background="{x:Null}" BorderBrush="{x:Null}" Margin="0" Padding="0" BorderThickness="0" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled"-->
+        <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules,Mode=TwoWay}" >
+            <!--<ListView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
+            </ListView.Resources>-->
+            <!--<ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Background" Value="{x:Null}" />
                     <Setter Property="BorderBrush" Value="{x:Null}" />
                     <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
                 </Style>
-            </ListView.ItemContainerStyle>
+            </ListView.ItemContainerStyle>-->
             <!--Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"-->
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

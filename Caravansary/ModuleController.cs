@@ -1,5 +1,4 @@
 ﻿using Caravansary;
-using Caravansary.SDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using static WindowsWindowApi;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
@@ -25,13 +25,47 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     }
 
-    private readonly Dictionary<string, ModuleInfo> _coreModules = new Dictionary<string, ModuleInfo>();
+    private Dictionary<string, ModuleInfo> _coreModules = new Dictionary<string, ModuleInfo>();
 
     public Action<ModuleInfo> OnModulesChanged;
     public Action<ModuleInfo> OnModuleAdded;
+    public Action<ModuleInfo> OnModuleRemoved;
 
     public string[] CoreModulesKeys => _coreModules.Keys.ToArray();
     public ModuleInfo[] CoreModuleValues => _coreModules.Values.ToArray();
+
+    #region Listeners
+    public void HookWindowSwitchEvent(Action<WindowSwitchedArgs> method)
+    {
+        WindowsWindowApi.Instance.OnWindowSwitched += method;
+    }
+
+    public void UnHookWindowSwitchEvent(Action<WindowSwitchedArgs> method)
+    {
+        WindowsWindowApi.Instance.OnWindowSwitched -= method;
+    }
+
+    public void HookKeyboardPressedEvent(Action<KeyPressedArgs> method)
+    {
+        KeyboardListener.Instance.OnKeyPressed += method;
+    }
+
+    public void UnHookKeyboardPressedEvent(Action<KeyPressedArgs> method)
+    {
+        KeyboardListener.Instance.OnKeyPressed -= method;
+    }
+
+    public void HookKeyboardReleaseEvent(Action<KeyPressedArgs> method)
+    {
+        KeyboardListener.Instance.OnKeyPressed += method;
+    }
+
+    public void UnHookKeyboardReleasedEvent(Action<KeyPressedArgs> method)
+    {
+        KeyboardListener.Instance.OnKeyPressed -= method;
+    }
+
+    #endregion
 
     public void ScanDirectory(string path)
     {
@@ -92,9 +126,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
 
             }
-            catch
+            catch (Exception e)
             {
-                Debug.WriteLine("failed loading plugin " + dllDirectory);
+                Debug.WriteLine("failed loading plugin " + dllDirectory + " " +e.Message);
             }
 
 
@@ -103,6 +137,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
 
     }
+
 
     private bool CheckIfDirectoryIsAValidModule(string dirName)
     {
@@ -153,6 +188,19 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
+    
+    public void SendMessage(string ModuleName, string message)
+    {
+        if (_coreModules.ContainsKey(ModuleName))
+        {
+            var p = _coreModules[ModuleName].Loader;
+            if (p.IsStarted)
+            {
+                p.ReceiveMessage(message);
+            }
+        }
+    }
+
     public void StopCoreModule(string name)
     {
         if (_coreModules.ContainsKey(name))
@@ -165,15 +213,16 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
-    public void SendMessage(string ModuleName, string message)
+    internal void StopAllModules()
     {
-        if (_coreModules.ContainsKey(ModuleName))
+        foreach (var item in CoreModulesKeys)
         {
-            var p = _coreModules[ModuleName].Loader;
-            if (p.IsStarted)
-            {
-                p.ReceiveMessage(message);
-            }
+
+            OnModuleRemoved?.Invoke(_coreModules[item]);
+            _coreModules[item].Loader.Stop();
+            _coreModules[item].AssemblyLoadContext.Unload();
+            _coreModules.Remove(item);
+
         }
     }
 }

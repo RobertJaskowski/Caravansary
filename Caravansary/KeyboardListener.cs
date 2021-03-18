@@ -1,5 +1,4 @@
-﻿using Caravansary.Core;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
@@ -35,8 +34,8 @@ namespace Caravansary
 
         public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        public  event EventHandler<KeyPressedArgs> OnKeyPressed;
-        public  event EventHandler<KeyReleasedArgs> OnKeyReleased;
+        public event Action<KeyPressedArgs> OnKeyPressed;
+        public event Action<KeyReleasedArgs> OnKeyReleased;
 
         private LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
@@ -80,37 +79,17 @@ namespace Caravansary
             {
                 int vkCode = Marshal.ReadInt32(lParam);
 
-                if (OnKeyPressed != null) { OnKeyPressed(this, new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
+                if (OnKeyPressed != null) { OnKeyPressed.Invoke(new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
             }
 
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
             {
                 int vkCode = Marshal.ReadInt32(lParam);
 
-                if (OnKeyReleased != null) { OnKeyReleased(this, new KeyReleasedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
+                if (OnKeyReleased != null) { OnKeyReleased.Invoke(new KeyReleasedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
             }
 
             return WinApi.CallNextHookEx(_hookID, nCode, wParam, lParam);
-        }
-    }
-
-    public class KeyReleasedArgs : EventArgs
-    {
-        public Key KeyReleased { get; private set; }
-
-        public KeyReleasedArgs(Key key)
-        {
-            KeyReleased = key;
-        }
-    }
-
-    public class KeyPressedArgs : EventArgs
-    {
-        public Key KeyPressed { get; private set; }
-
-        public KeyPressedArgs(Key key)
-        {
-            KeyPressed = key;
         }
     }
 }

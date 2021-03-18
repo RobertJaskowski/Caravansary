@@ -119,7 +119,6 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Caravansary.Core\Caravansary.Core.csproj" />
     <ProjectReference Include="..\Caravansary.SDK\Caravansary.SDK.csproj" />
   </ItemGroup>
   <ItemGroup>

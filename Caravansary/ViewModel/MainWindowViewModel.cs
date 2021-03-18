@@ -25,6 +25,19 @@ namespace Caravansary
     {
         #region Properties
 
+        private bool _fullView;
+        public bool FullView
+        {
+            get
+            {
+                return _fullView;
+            }
+            set
+            {
+                _fullView = value;
+            }
+
+        }
 
         private bool _botBarEnabled;
         public bool BotBarEnabled
@@ -87,13 +100,24 @@ namespace Caravansary
         internal void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
 
+            KeyboardListener.Instance.OnKeyPressed += OnKeyPressed;
+            KeyboardListener.Instance.OnKeyReleased += OnKeyReleased;
+        }
+
+        private void OnKeyReleased(KeyReleasedArgs obj)
+        {
+
+        }
+
+        private void OnKeyPressed(KeyPressedArgs obj)
+        {
 
         }
 
         internal void OnWindowClosing(object sender, CancelEventArgs e)
         {
 
-
+            moduleController.StopAllModules();
             KeyboardListener.Instance.UnHookKeyboard();
 
 
@@ -175,26 +199,26 @@ namespace Caravansary
 
 
         #region mods
-        //private ObservableCollection<CoreModule> _topModules;
-        //public ObservableCollection<CoreModule> TopModules
-        //{
-        //    get
-        //    {
-        //        if (_topModules == null)
-        //        {
-        //            _topModules = new ObservableCollection<CoreModule>();
+        private ObservableCollection<UserControl> _topModules;
+        public ObservableCollection<UserControl> TopModules
+        {
+            get
+            {
+                if (_topModules == null)
+                {
+                    _topModules = new ObservableCollection<UserControl>();
 
-        //        }
+                }
 
-        //        return _topModules;
-        //    }
-        //    set
-        //    {
-        //        _topModules = value;
+                return _topModules;
+            }
+            set
+            {
+                _topModules = value;
 
-        //        OnPropertyChanged(nameof(TopModules));
-        //    }
-        //}
+                OnPropertyChanged(nameof(TopModules));
+            }
+        }
 
 
         private ObservableCollection<UserControl> _viewCoreModules;
@@ -218,26 +242,26 @@ namespace Caravansary
             }
         }
 
-        //private ObservableCollection<CoreModule> _botModules;
-        //public ObservableCollection<CoreModule> BotModules
-        //{
-        //    get
-        //    {
-        //        if (_botModules == null)
-        //        {
-        //            _botModules = new ObservableCollection<CoreModule>();
+        private ObservableCollection<UserControl> _botModules;
+        public ObservableCollection<UserControl> BotModules
+        {
+            get
+            {
+                if (_botModules == null)
+                {
+                    _botModules = new ObservableCollection<UserControl>();
 
-        //        }
+                }
 
-        //        return _botModules;
-        //    }
-        //    set
-        //    {
-        //        _botModules = value;
+                return _botModules;
+            }
+            set
+            {
+                _botModules = value;
 
-        //        OnPropertyChanged(nameof(BotModules));
-        //    }
-        //}
+                OnPropertyChanged(nameof(BotModules));
+            }
+        }
 
         #endregion
 
@@ -279,8 +303,20 @@ namespace Caravansary
             foreach (var modInfo in moduleController.CoreModuleValues)
             {
 
-                ViewCoreModules.Add(modInfo.Loader.View);
+                modInfo.Loader.Start();
 
+                switch (modInfo.Loader.Instance.GetModulePosition())
+                {
+                    case ModulePosition.TOP:
+                        TopModules.Add(modInfo.Loader.View);
+                        break;
+                    case ModulePosition.MID:
+                        ViewCoreModules.Add(modInfo.Loader.View);
+                        break;
+                    case ModulePosition.BOT:
+                        BotModules.Add(modInfo.Loader.View);
+                        break;
+                }
             } 
             
         }
