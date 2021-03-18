@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Settings = Caravansary.Properties.Settings;
 using System.Windows.Controls;
-using Caravansary.SDK.Contracts;
 using System.Resources;
 using System.Collections;
 using System.Windows.Markup;
@@ -252,20 +251,6 @@ namespace Caravansary
             this.CurrentWindow = window;
             CurrentHandleWindow = handle;
             trayIcon = new TrayIcon();
-
-            //top
-            //Mod0 = ModuleManager.Instance.GetCoreModule("MainBar");
-
-            //Mod1 = ModuleManager.Instance.GetCoreModule("KeyCounter");
-            //Mod2 = ModuleManager.Instance.GetCoreModule("Filler");
-            //Mod3 = ModuleManager.Instance.GetCoreModule("ActiveTimer");
-            //Mod4 = ModuleManager.Instance.GetCoreModule("Filler");
-            //Mod5 = ModuleManager.Instance.GetCoreModule("DailyGoal");
-
-
-            //Mod10 = ModuleManager.Instance.GetCoreModule("Roadmap");
-
-
 
 
 
