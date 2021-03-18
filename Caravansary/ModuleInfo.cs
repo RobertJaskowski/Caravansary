@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Caravansary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
 
-class ModuleInfo
+public class ModuleInfo
 {
-    public AppDomain Domain { get; set; }
+    public PluginLoadContext AssemblyLoadContext { get; set; }
     public RemoteLoader Loader { get; set; }
 }

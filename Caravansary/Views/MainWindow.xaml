@@ -51,7 +51,7 @@
 
         <!--<ContentControl Content="{Binding Mod0}"/>-->
         <!--MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"-->
-        <ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
+        <!--<ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
             <ListView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
@@ -63,7 +63,6 @@
                     <Setter Property="Focusable" Value="False" />
                 </Style>
             </ListView.ItemContainerStyle>
-            <!--Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"-->
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"></StackPanel>
@@ -72,18 +71,16 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ContentControl Content="{Binding View}" >
-                        <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}"/>
-                            <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
-                    </ContentControl>
+                      </ContentControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+        </ListView>-->
 
 
 
         <!--<StackPanel x:Name="stackMiddlePanel" Orientation="Horizontal" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20">-->
 
-        <ListView Name="CoreModules" ItemsSource="{Binding CoreModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
+        <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules,Mode=TwoWay}" Background="{x:Null}" BorderBrush="{x:Null}" MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
             <ListView.Resources>
                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
@@ -103,10 +100,10 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding View}" >
+                    <UserControl Content="{Binding }" >
                         <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}"/>
                             <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
-                    </ContentControl>
+                    </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

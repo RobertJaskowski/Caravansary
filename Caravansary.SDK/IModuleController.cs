@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public interface IModuleController
 {
-    string[] CoreModules { get; }
+    string[] CoreModulesKeys { get; }
 
     void StartCoreModule(string name);
     void StopCoreModule(string name);

@@ -198,24 +198,24 @@ namespace Caravansary
         //}
 
 
-        private ObservableCollection<ViewCoreModule> _coreModules;
-        public ObservableCollection<ViewCoreModule> CoreModules
+        private ObservableCollection<UserControl> _viewCoreModules;
+        public ObservableCollection<UserControl> ViewCoreModules
         {
             get
             {
-                if (_coreModules == null)
+                if (_viewCoreModules == null)
                 {
-                    _coreModules = new ObservableCollection<ViewCoreModule>();
+                    _viewCoreModules = new ObservableCollection<UserControl>();
 
                 }
 
-                return _coreModules;
+                return _viewCoreModules;
             }
             set
             {
-                _coreModules = value;
+                _viewCoreModules = value;
 
-                OnPropertyChanged(nameof(CoreModules));
+                OnPropertyChanged(nameof(ViewCoreModules));
             }
         }
 
@@ -247,7 +247,7 @@ namespace Caravansary
 
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
-            Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+            //Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             this.CurrentWindow = window;
             CurrentHandleWindow = handle;
@@ -265,7 +265,6 @@ namespace Caravansary
 
             //Mod10 = ModuleManager.Instance.GetCoreModule("Roadmap");
 
-            ModuleManager.Instance.InitializeModules();
 
 
 
@@ -284,124 +283,24 @@ namespace Caravansary
 
 
         }
-
         static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
+
         static ModuleController moduleController;
-        public void LoadModules()
+        public void InitModuleController()
         {
             moduleController = new ModuleController();
+            moduleController.ScanDirectory(mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
 
-
-
-            try
+            foreach (var modInfo in moduleController.CoreModuleValues)
             {
 
+                ViewCoreModules.Add(modInfo.Loader.View);
 
-
-                var connectors = Directory.GetDirectories(mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
-                foreach (var connect in connectors)
-                {
-                    string dllPath = GetDll(connect);
-                    if (string.IsNullOrEmpty(dllPath))
-                        continue;
-                    Assembly assembly = Assembly.LoadFile(dllPath);
-                    var types = assembly.GetTypes()?.ToList();
-                    var type = types?.Find(a => typeof(ICoreModule).IsAssignableFrom(a));
-                    var currentCoreModule = (ICoreModule)Activator.CreateInstance(type);
-
-
-
-
-
-
-
-                    var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + ".g.resources");
-
-                    //var stream = assembly.GetManifestResourceStream(assembly.GetName().Name + "ActiveTimerView.xaml");
-
-
-
-
-                    var resourceReader = new ResourceReader(stream);
-
-
-                    foreach (DictionaryEntry resource in resourceReader)
-                    {
-                        if (new FileInfo(resource.Key.ToString()).Extension.Equals(".baml"))
-                        {
-
-                            Uri uri = new Uri("/" + assembly.GetName().Name + ";component/" + resource.Key.ToString().Replace(".baml", ".xaml"), UriKind.Relative);
-
-                            Debug.WriteLine(resourceReader.ToString());
-                            var currentUserControl = Application.LoadComponent(uri) as UserControl;
-
-
-
-
-                            currentUserControl.DataContext = currentCoreModule;
-
-                            ViewCoreModule viewCoreModule = new ViewCoreModule();
-                            viewCoreModule.View = currentUserControl;
-                            viewCoreModule.CoreModule = currentCoreModule;
-
-                            //currentCoreModule.View = currentUserControl;
-
-
-                            //if (resource.Key.ToString().ToLower().Contains("bar"))
-                            //    TopModules.Add(currentCoreModule);
-                            //else
-                                CoreModules.Add(viewCoreModule);
-
-
-                            // Mod1 = currentUserControl;
-
-
-                            // _cmMod0 = currentCoreModule;
-
-                            //ResourceDictionary skin = Application.LoadComponent(uri) as ResourceDictionary;
-
-                            //this.Resources.MergedDictionaries.Add(skin);
-                            //Mod1 = resource as UserControl;
-
-                            break;
-                        }
-                    }
-
-
-                    //var xaml = XamlReader.Load(stream);
-
-                    //var fe = xaml as UserControl;
-
-
-
-                    //Mod1 = fe;
-
-                    //fe.DataContext = win;
-
-                    //Mod1 = win.GetCaravansary.SDK();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Internal Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-
-
-            //Application.Current.Resources.Add(template.DataTemplateKey;, template);
-
+            } 
+            
         }
 
-        private string GetDll(string moduleDirectory)
-        {
-            var files = Directory.GetFiles(moduleDirectory, "*.dll");
-            foreach (var file in files)
-            {
-                if (!FileVersionInfo.GetVersionInfo(file).ProductName.StartsWith("Calci"))
-                    return file;
-            }
-            return string.Empty;
-        }
+        
 
 
         DataTemplate CreateTemplate(Type viewModelType, Type viewType)
