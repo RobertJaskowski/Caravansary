@@ -45,7 +45,7 @@ namespace Caravansary
             try
             {
                 var ver = new Version(webClient.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt"));
-                if (GlobalSettings.Version.IsLower(ver))
+                if (Data.Version.IsLower(ver))
                 {
                     string handlestr = CurrentHandleWindow.ToString();
                     File.WriteAllText(dumpFileLocation, handlestr) ;

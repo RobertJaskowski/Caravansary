@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Controls;
 
 public interface IModuleController
 {
@@ -17,6 +17,8 @@ public interface IModuleController
     bool SaveModuleInformation(string ModuleName, string saveFileName, object objectToSave);
 
     T LoadModuleInformation<T>(string ModuleName, string saveFileName);
+
+    void InjectView(UserControl userControlView);
 
     #region events
     public void HookWindowSwitchEvent(Action<WindowSwitchedArgs> method);

@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,19 @@ using static WindowsWindowApi;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
-    
+    private static ModuleController _instance;
+    public static ModuleController Instance
+    {
+        get
+        {
+            if (_instance == null) _instance = new ModuleController();
+
+            return _instance;
+        }
+
+    }
+
+
     public ModuleController()
     {
 
@@ -42,6 +55,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
     {
         WindowsWindowApi.Instance.OnWindowSwitched -= method;
     }
+
+
 
     public void HookKeyboardPressedEvent(Action<KeyPressedArgs> method)
     {
@@ -126,7 +141,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
             }
             catch (Exception e)
             {
-                Debug.WriteLine("failed loading plugin " + dllDirectory + " " +e.Message);
+                Debug.WriteLine("failed loading plugin " + dllDirectory + " " + e.Message);
             }
 
 
@@ -169,11 +184,25 @@ public class ModuleController : MarshalByRefObject, IModuleController
     private bool IsModulesDirectory(string path)
     {
         var p = Path.GetFileName(path);
-        
+
         return p.Contains("Modules");
     }
 
+    public ObservableCollection<UserControl> GetSettingsViews()
+    {
+        ObservableCollection<UserControl> list = new ObservableCollection<UserControl>();
+        foreach (var item in CoreModuleValues)
+        {
 
+            var v = item.Loader.Instance.GetSettingsUserControlView();
+            if (v != null)
+                list.Add(v);
+        }
+
+        if (list.Count > 0)
+            return list;
+        return null;
+    }
     public void StartCoreModule(string name)
     {
         if (_coreModules.ContainsKey(name))
@@ -186,7 +215,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
-    
+
     public void SendMessage(string ModuleName, string message)
     {
         if (_coreModules.ContainsKey(ModuleName))
@@ -231,5 +260,10 @@ public class ModuleController : MarshalByRefObject, IModuleController
     public T LoadModuleInformation<T>(string ModuleName, string saveFileName)
     {
         return Saves.Load<T>(ModuleName, saveFileName);
+    }
+
+    public void InjectView(UserControl userControlView)
+    {
+
     }
 }

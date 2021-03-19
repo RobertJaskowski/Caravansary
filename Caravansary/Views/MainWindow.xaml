@@ -26,7 +26,7 @@
 
 
 
-        <Style TargetType="{x:Type ListView}">
+        <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="{x:Null}"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
             <Setter Property="Margin" Value="0"/>

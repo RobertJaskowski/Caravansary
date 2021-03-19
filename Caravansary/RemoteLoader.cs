@@ -24,12 +24,15 @@ public class RemoteLoader : MarshalByRefObject
             _instance = value;
         }
     }
+
     private string _name;
     public string Name => _name;
     public bool IsStarted { get; private set; }
 
-    private UserControl _view;
-    public UserControl View { get { return _view; } private set { _view = value; } }
+    //private UserControl _view;
+    //public UserControl View { get { return _view; } private set { _view = value; } }
+
+    public ICoreModule _instanceSettings;
 
     public void Init(IModuleController host, AssemblyLoadContext alc, string assemblyDllPath)
     {
@@ -61,32 +64,32 @@ public class RemoteLoader : MarshalByRefObject
         }
 
 
-        var stream = _pluginAssembly.GetManifestResourceStream(_pluginAssembly.GetName().Name + ".g.resources");
+        //var stream = _pluginAssembly.GetManifestResourceStream(_pluginAssembly.GetName().Name + ".g.resources");
 
-        var resourceReader = new ResourceReader(stream);
-
-
-        foreach (DictionaryEntry resource in resourceReader)
-        {
-            if (new FileInfo(resource.Key.ToString()).Extension.Equals(".baml"))
-            {
-
-                Uri uri = new Uri("/" + _pluginAssembly.GetName().Name + ";component/" + resource.Key.ToString().Replace(".baml", ".xaml"), UriKind.Relative);
-
-                Debug.WriteLine(resourceReader.ToString());
-                UserControl currentUserControl = Application.LoadComponent(uri) as UserControl;
+        //var resourceReader = new ResourceReader(stream);
 
 
+        //foreach (DictionaryEntry resource in resourceReader)
+        //{
+        //    if (new FileInfo(resource.Key.ToString()).Extension.Equals(".baml"))
+        //    {
+
+        //        Uri uri = new Uri("/" + _pluginAssembly.GetName().Name + ";component/" + resource.Key.ToString().Replace(".baml", ".xaml"), UriKind.Relative);
+
+        //        Debug.WriteLine(resourceReader.ToString());
+        //        UserControl currentUserControl = Application.LoadComponent(uri) as UserControl;
 
 
-                currentUserControl.DataContext = _instance;
 
 
-                View = currentUserControl;
+        //        currentUserControl.DataContext = _instance;
 
-                break;
-            }
-        }
+
+        //        View = currentUserControl;
+
+        //        break;
+        //    }
+        //}
     }
 
     public void Start()

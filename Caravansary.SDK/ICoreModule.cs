@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Windows.Controls;
 
 public interface ICoreModule
 {
+
+    string ModuleName
+    {
+        get;
+    }
+    string GetModuleName();
     void Init(IModuleController host);
     void Start();
 
@@ -14,6 +21,7 @@ public interface ICoreModule
 
     ModulePosition GetModulePosition();
 
-    
+    UserControl GetModuleUserControlView();
+    UserControl GetSettingsUserControlView();
 
 }
