@@ -14,8 +14,11 @@ public interface IModuleController
 
     void SendMessage(string ModuleName, string message);
 
+    bool SaveModuleInformation(string ModuleName, string saveFileName, object objectToSave);
 
+    T LoadModuleInformation<T>(string ModuleName, string saveFileName);
 
+    #region events
     public void HookWindowSwitchEvent(Action<WindowSwitchedArgs> method);
 
     public void UnHookWindowSwitchEvent(Action<WindowSwitchedArgs> method);
@@ -27,4 +30,6 @@ public interface IModuleController
     public void HookKeyboardReleaseEvent(Action<KeyPressedArgs> method);
 
     public void UnHookKeyboardReleasedEvent(Action<KeyPressedArgs> method);
+
+    #endregion
 }

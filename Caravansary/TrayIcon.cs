@@ -11,9 +11,11 @@ namespace Caravansary
 
         private Window mainWindow;
 
-
-        public TrayIcon()
+        private MainWindowSettings _mainWindowSettings;
+        public TrayIcon(MainWindowSettings mainWindowSettings)
         {
+            _mainWindowSettings = mainWindowSettings;
+
             CreateTrayMenu();
         }
         public void CreateTrayMenu()
@@ -32,25 +34,24 @@ namespace Caravansary
             trayIcon.MouseClick += TrayIconMouseClicked;
 
             trayIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
-            trayIcon.ContextMenuStrip.Items.Add("Exit", null, TrayOnExitClicked);
-            trayIcon.ContextMenuStrip.Items.Add("Settings", null, TrayOnSettingsClicked);
+            trayIcon.ContextMenuStrip.Items.Add("Exit", null, TrayExitClicked);
+            trayIcon.ContextMenuStrip.Items.Add("Settings", null, TraySettingsClicked);
             trayIcon.ContextMenuStrip.Items.Add(new System.Windows.Forms.ToolStripDropDownButton("Quick...", null,
-                new System.Windows.Forms.ToolStripLabel("Reset position", null, false, TrayResetPosition),
-                new System.Windows.Forms.ToolStripLabel("Stay On Top", null, false, TrayStayOnTop),
-                new System.Windows.Forms.ToolStripLabel("Show in taskbar", null, false, TrayShowInTaskBar)
+                new System.Windows.Forms.ToolStripLabel("Reset position", null, false, TrayResetPositionClicked),
+                new System.Windows.Forms.ToolStripLabel("Stay On Top", null, false, TrayStayOnTopClicked),
+                new System.Windows.Forms.ToolStripLabel("Show in taskbar", null, false, TrayShowInTaskBarClicked)
                 ));
             trayIcon.Visible = true;
         }
 
-        private void TrayShowInTaskBar(object sender, EventArgs e)
+        private void TrayShowInTaskBarClicked(object sender, EventArgs e)
         {
             mainWindow.ShowInTaskbar = !mainWindow.ShowInTaskbar;
 
-            Settings.Default.ShowInTaskbar = mainWindow.ShowInTaskbar;
-            Settings.Default.Save();
+            _mainWindowSettings.ShowInTaskbar = mainWindow.ShowInTaskbar; //todo test
         }
 
-        private void TrayStayOnTop(object sender, EventArgs e)
+        private void TrayStayOnTopClicked(object sender, EventArgs e)
         {
             mainWindow.Topmost = !mainWindow.Topmost;
 
@@ -58,7 +59,7 @@ namespace Caravansary
                 mainWindow.Activate();
         }
 
-        private void TrayOnSettingsClicked(object sender, EventArgs e)
+        private void TraySettingsClicked(object sender, EventArgs e)
         {
             SettingsWindow dialog = new SettingsWindow();
             dialog.DataContext = new SettingsWindowViewModel();
@@ -68,12 +69,12 @@ namespace Caravansary
 
         }
 
-        private void TrayResetPosition(object sender, EventArgs e)
+        private void TrayResetPositionClicked(object sender, EventArgs e)
         {
            WindowHelper.ResetWindowPosition(mainWindow);
         }
 
-        private void TrayOnExitClicked(object sender, EventArgs e)
+        private void TrayExitClicked(object sender, EventArgs e)
         {
             Application.Current.Shutdown();
         }

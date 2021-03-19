@@ -41,7 +41,7 @@ namespace Caravansary
             {
                 Settings.Default.CheckBoxBottomBar = value;
                 Settings.Default.Save();
-                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).BotBarEnabled = value;
+                //((MainWindowViewModel)Application.Current.MainWindow.DataContext)BotBarEnabled = value;//todo
 
                 OnPropertyChanged(nameof(CheckboxBottomBar));
             }

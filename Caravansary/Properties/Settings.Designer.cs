@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-
 namespace Caravansary.Properties {
     
     
@@ -121,21 +119,17 @@ namespace Caravansary.Properties {
             }
         }
         
-        //[global::System.Configuration.UserScopedSettingAttribute()]
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //[global::System.Configuration.DefaultSettingValueAttribute("")]
-        //public BlacklistItems BlacklistItems
-        //{
-        //    get
-        //    {
-        //        return ((BlacklistItems)(this["BlacklistItems"]));
-        //    }
-        //    set
-        //    {
-        //        this["BlacklistItems"] = value;
-        //    }
-        //}
-
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection BlacklistItems {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["BlacklistItems"]));
+            }
+            set {
+                this["BlacklistItems"] = value;
+            }
+        }
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
@@ -147,20 +141,5 @@ namespace Caravansary.Properties {
                 this["RoadmapEnabled"] = value;
             }
         }
-
-        //[global::System.Configuration.UserScopedSettingAttribute()]
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        //[global::System.Configuration.DefaultSettingValueAttribute("")]
-        //public RoadmapItems RoadmapItems
-        //{
-        //    get
-        //    {
-        //        return ((RoadmapItems)(this["RoadmapItems"]));
-        //    }
-        //    set
-        //    {
-        //        this["RoadmapItems"] = value;
-        //    }
-        //}
     }
 }

@@ -9,6 +9,7 @@ namespace Caravansary
 {
     public static class Utils
     {
+
         public static void DoubleBuffered(this Control control, bool enabled)
         {
             var prop = control.GetType().GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);

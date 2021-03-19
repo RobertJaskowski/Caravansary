@@ -145,7 +145,7 @@
 
         <!--</StackPanel>-->
 
-        <ContentControl Content="{Binding Mod10}"/>
+        
 
         <!--<ProgressBar  local:ProgressBarSmoother.SmoothValue="{Binding ProgressBotBar}" x:Name="progressBarBottomMost" MinHeight="8" 
                          MaxHeight="8" MinWidth="1000" Value="50" Background="{x:Null}" BorderBrush="{x:Null}" Visibility="Collapsed">

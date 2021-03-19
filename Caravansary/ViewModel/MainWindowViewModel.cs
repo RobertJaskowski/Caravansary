@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Settings = Caravansary.Properties.Settings;
 using System.Windows.Controls;
 using System.Resources;
 using System.Collections;
@@ -20,8 +19,7 @@ using System.Collections.ObjectModel;
 
 namespace Caravansary
 {
-
-    class MainWindowViewModel : BaseViewModel
+    partial class MainWindowViewModel : BaseViewModel
     {
         #region Properties
 
@@ -39,46 +37,157 @@ namespace Caravansary
 
         }
 
-        private bool _botBarEnabled;
-        public bool BotBarEnabled
+        //private bool _showInTaskbar;
+        public bool ShowInTaskbar
         {
             get
             {
-                return _botBarEnabled;
+                return MainWindowSettingsSave.ShowInTaskbar;
             }
             set
             {
-                _botBarEnabled = value;
-            }
+                MainWindowSettingsSave.ShowInTaskbar = value;
+                OnPropertyChanged(nameof(ShowInTaskbar));
+                OnPropertyChanged(nameof(MainWindowSettingsSave));
+                SaveWindowSettings();
 
-        }
-
-
-        private double _progressBotBar;
-        public double ProgressBotBar
-        {
-            get
-            {
-                return _progressBotBar;
-            }
-            set
-            {
-                _progressBotBar = value;
-                OnPropertyChanged(nameof(ProgressBotBar));
             }
         }
 
-        private double _backgroundTransparency;
+        //private double _backgroundTransparency;
         public double BackgroundTransparency
         {
             get
             {
-                return _backgroundTransparency;
+                return MainWindowSettingsSave.BackgroundTransparency;
             }
             set
             {
-                _backgroundTransparency = value;
+                MainWindowSettingsSave.BackgroundTransparency = value;
                 OnPropertyChanged(nameof(BackgroundTransparency));
+                OnPropertyChanged(nameof(MainWindowSettingsSave));
+                SaveWindowSettings();
+
+            }
+        }
+
+        //private double _mainWindowPositionX;
+        public double MainWindowPositionX
+        {
+            get
+            {
+                return MainWindowSettingsSave.MainWindowPositionX;
+            }
+            set
+            {
+                MainWindowSettingsSave.MainWindowPositionX = value;
+                OnPropertyChanged(nameof(MainWindowPositionX));
+                OnPropertyChanged(nameof(MainWindowSettingsSave));
+                SaveWindowSettings();
+
+            }
+        }
+
+        //private double _mainWindowPositionY;
+        public double MainWindowPositionY
+        {
+            get
+            {
+                return MainWindowSettingsSave.MainWindowPositionY;
+            }
+            set
+            {
+                MainWindowSettingsSave.MainWindowPositionY = value;
+                OnPropertyChanged(nameof(MainWindowPositionY));
+                SaveWindowSettings();
+
+            }
+        }
+
+
+        //private bool _botBarEnabled;
+        //public bool BotBarEnabled
+        //{
+        //    get
+        //    {
+        //        return _botBarEnabled;
+        //    }
+        //    set
+        //    {
+        //        _botBarEnabled = value;
+        //    }
+
+        //}
+
+
+        //private double _progressBotBar;
+        //public double ProgressBotBar
+        //{
+        //    get
+        //    {
+        //        return _progressBotBar;
+        //    }
+        //    set
+        //    {
+        //        _progressBotBar = value;
+        //        OnPropertyChanged(x =>ProgressBotBar);
+        //    }
+        //}
+
+        //private double _backgroundTransparency;
+        //public double BackgroundTransparency
+        //{
+        //    get
+        //    {
+        //        return _backgroundTransparency;
+        //    }
+        //    set
+        //    {
+        //        _backgroundTransparency = value;
+        //        OnPropertyChanged(x =>BackgroundTransparency);
+        //    }
+        //}
+
+
+        private MainWindowSettings _mainWindowSettingsSave;
+        public MainWindowSettings MainWindowSettingsSave
+        {
+            get
+            {
+                if (_mainWindowSettingsSave == null)
+                {
+                    _mainWindowSettingsSave = Saves.Load<MainWindowSettings>("Caravansary", "MainWindowSettings");
+                    if (_mainWindowSettingsSave == null)
+                    {
+                        _mainWindowSettingsSave = new MainWindowSettings()
+                        {
+                            BackgroundTransparency = 1,
+                            ShowInTaskbar = false,
+                            MainWindowPositionX = 0,
+                            MainWindowPositionY = 0
+                        };
+
+                    }
+                }
+
+
+
+                return _mainWindowSettingsSave;
+            }
+            set
+            {
+                _mainWindowSettingsSave = value;
+
+                SaveWindowSettings();
+                OnPropertyChanged(nameof(MainWindowSettingsSave));
+            }
+        }
+
+        private void SaveWindowSettings()
+        {
+            if (_mainWindowSettingsSave != null)
+            {
+                bool ret = Saves.Save(DesktopHelper.APP_NAME, "MainWindowSettings", _mainWindowSettingsSave);//todo make async
             }
         }
 
@@ -265,16 +374,14 @@ namespace Caravansary
 
         #endregion
 
-        //MilestoneSystem milestoneSystem;
-        //NotificationSystem notificationSystem;
 
         public MainWindowViewModel(IntPtr handle, IWindow window)
         {
-            //Application.Current.Dispatcher.UnhandledException += OnDispatcherUnhandledException;
+
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             this.CurrentWindow = window;
             CurrentHandleWindow = handle;
-            trayIcon = new TrayIcon();
+            trayIcon = new TrayIcon(MainWindowSettingsSave);
 
 
 
@@ -287,18 +394,16 @@ namespace Caravansary
 
 
 
-            //  milestoneSystem = new MilestoneSystem(this);
-            //   notificationSystem = new NotificationSystem(this);
+
 
 
         }
-        static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
 
         static ModuleController moduleController;
         public void InitModuleController()
         {
             moduleController = new ModuleController();
-            moduleController.ScanDirectory(mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+            moduleController.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
 
             foreach (var modInfo in moduleController.CoreModuleValues)
             {
@@ -317,11 +422,9 @@ namespace Caravansary
                         BotModules.Add(modInfo.Loader.View);
                         break;
                 }
-            } 
-            
-        }
+            }
 
-        
+        }
 
 
         DataTemplate CreateTemplate(Type viewModelType, Type viewType)
@@ -346,13 +449,15 @@ namespace Caravansary
         private void LoadWindowSettings()
         {
 
-            Application.Current.MainWindow.ShowInTaskbar = Settings.Default.ShowInTaskbar;
 
-            BackgroundTransparency = Settings.Default.BackgroundTransparency;
+
+            Application.Current.MainWindow.ShowInTaskbar = ShowInTaskbar;
+
+            //BackgroundTransparency = MainWindowSettingsSave.BackgroundTransparency;
 
             CurrentWindow.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-            double posX = Settings.Default.MainWindowPositionX;
-            double posY = Settings.Default.MainWindowPositionY;
+            double posX = MainWindowPositionX;
+            double posY = MainWindowPositionY;
 
 
             if (posX != 0 || posY != 0)
@@ -377,9 +482,9 @@ namespace Caravansary
 
             int x = (int)CurrentWindow.GetAssociatedWindow.Left;
             int y = (int)CurrentWindow.GetAssociatedWindow.Top;
-            Settings.Default.MainWindowPositionX = x;
-            Settings.Default.MainWindowPositionY = y;
-            Settings.Default.Save();
+            MainWindowPositionX = x;
+            MainWindowPositionY = y;
+
         }
 
 

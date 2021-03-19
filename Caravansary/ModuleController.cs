@@ -12,14 +12,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Serialization;
 using static WindowsWindowApi;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
-    string mainApplicationPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-    static string mainApplicationDirectoryPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).ToString();
-    static string moduleFolder = Path.Combine(mainApplicationDirectoryPath, "Modules");
-
+    
     public ModuleController()
     {
 
@@ -220,9 +218,18 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
             OnModuleRemoved?.Invoke(_coreModules[item]);
             _coreModules[item].Loader.Stop();
-            _coreModules[item].AssemblyLoadContext.Unload();
             _coreModules.Remove(item);
 
         }
+    }
+
+    public bool SaveModuleInformation(string ModuleName, string saveFileName, object objectToSave)
+    {
+        return Saves.Save(ModuleName, saveFileName, objectToSave);
+    }
+
+    public T LoadModuleInformation<T>(string ModuleName, string saveFileName)
+    {
+        return Saves.Load<T>(ModuleName, saveFileName);
     }
 }

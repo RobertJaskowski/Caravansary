@@ -13,4 +13,7 @@ public interface ICoreModule
     void OnFullViewEntered();
 
     ModulePosition GetModulePosition();
+
+    
+
 }
