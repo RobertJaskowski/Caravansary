@@ -33,8 +33,8 @@ class SettingsWindowViewModel : BaseViewModel
     }
 
 
-    private ObservableCollection<modSetCont> _settingsControls;
-    public ObservableCollection<modSetCont> ModuleSettingsControls
+    private ObservableCollection<ViewModuleSettings> _settingsControls;
+    public ObservableCollection<ViewModuleSettings> ModuleSettingsControls
     {
         get
         {
@@ -42,7 +42,7 @@ class SettingsWindowViewModel : BaseViewModel
             {
 
 
-                _settingsControls = new ObservableCollection<modSetCont>();
+                _settingsControls = new ObservableCollection<ViewModuleSettings>();
 
                 foreach (var item in ModuleController.Instance.CoreModuleValues)
                 {
@@ -51,7 +51,7 @@ class SettingsWindowViewModel : BaseViewModel
                     if (v != null)
                     {
 
-                        _settingsControls.Add(new modSetCont
+                        _settingsControls.Add(new ViewModuleSettings
                         {
                             ModuleName = item.Loader.Instance.GetModuleName(),
                             View = item.Loader.Instance.GetSettingsUserControlView()
@@ -71,7 +71,7 @@ class SettingsWindowViewModel : BaseViewModel
         }
     }
 
-    public class modSetCont
+    public class ViewModuleSettings
     {
         public UserControl View { get; set; }
         public string ModuleName { get; set; }
