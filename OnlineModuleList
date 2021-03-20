@@ -2,14 +2,9 @@
 <OnlineModuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <onlineModuleListItems>
     <OnlineModuleListItem>
-      <ModuleName>testName</ModuleName>
-      <Description>testDes</Description>
-      <DownloadLink>testDes</DownloadLink>
-    </OnlineModuleListItem>
-    <OnlineModuleListItem>
-      <ModuleName>testName2</ModuleName>
-      <Description>testDes2</Description>
-      <DownloadLink>testDes</DownloadLink>
+      <ModuleName>ActiveTimer</ModuleName>
+      <Description>Keeps it rolling when you active!</Description>
+      <DownloadLink>https://github.com/RobertJaskowski/ActiveTimer/releases/latest/download/ActiveTimer.zip</DownloadLink>
     </OnlineModuleListItem>
   </onlineModuleListItems>
 </OnlineModuleList>
