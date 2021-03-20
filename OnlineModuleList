@@ -4,10 +4,12 @@
     <OnlineModuleListItem>
       <ModuleName>testName</ModuleName>
       <Description>testDes</Description>
+      <DownloadLink>testDes</DownloadLink>
     </OnlineModuleListItem>
     <OnlineModuleListItem>
       <ModuleName>testName2</ModuleName>
       <Description>testDes2</Description>
+      <DownloadLink>testDes</DownloadLink>
     </OnlineModuleListItem>
   </onlineModuleListItems>
 </OnlineModuleList>
