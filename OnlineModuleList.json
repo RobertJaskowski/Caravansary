@@ -1,0 +1,9 @@
+{
+	"onlineModuleListItems": [
+		{
+			"Name": "ActiveTimer",
+			"Description": "Keeps it rolling when you are active!",
+			"DownloadLink": "https://github.com/RobertJaskowski/ActiveTimer/releases/latest/download/ActiveTimer.zip"
+		}
+	]
+}
