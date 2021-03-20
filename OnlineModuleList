@@ -3,7 +3,7 @@
   <onlineModuleListItems>
     <OnlineModuleListItem>
       <Name>ActiveTimer</Name>
-      <Description>Keeps it rolling when you active!</Description>
+      <Description>Keeps it rolling when you are active!</Description>
       <DownloadLink>https://github.com/RobertJaskowski/ActiveTimer/releases/latest/download/ActiveTimer.zip</DownloadLink>
     </OnlineModuleListItem>
   </onlineModuleListItems>
