@@ -82,7 +82,7 @@ public class WindowsWindowApi
 
         if (OnWindowSwitched != null)
         {
-            OnWindowSwitched.Invoke( new WindowSwitchedArgs(windowTitle));
+            OnWindowSwitched.Invoke(new WindowSwitchedArgs(windowTitle));
         }
 
 

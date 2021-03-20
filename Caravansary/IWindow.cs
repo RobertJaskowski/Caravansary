@@ -4,7 +4,7 @@ namespace Caravansary
 {
     public interface IWindow
     {
-        Window GetAssociatedWindow { get;  }
+        Window GetAssociatedWindow { get; }
         double Top { get; set; }
         double Left { get; set; }
         double Height { get; set; }

@@ -1,6 +1,5 @@
 ﻿using Caravansary;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,15 +7,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Reflection;
-using System.Resources;
-using System.Runtime.Loader;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Serialization;
-using static WindowsWindowApi;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
@@ -55,7 +48,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
 
 
-    internal async Task<bool> DownloadModule(Uri downloadLink)
+    internal async Task<bool> DownloadModule(ModulesListViewModel.OnlineModuleListItem onlineModuleListItem)
     {
         using (var webClient = new WebClient())
         {
@@ -63,9 +56,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
             {
 
 
-                await Task.Run(() => webClient.DownloadFileAsync(downloadLink, DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + "tee"));
-                
-                FileInfo file = new FileInfo(DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + "tee");
+                await Task.Run(() => webClient.DownloadFileAsync(new Uri(onlineModuleListItem.DownloadLink), DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + onlineModuleListItem.ModuleName));
+
+                FileInfo file = new FileInfo(DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + onlineModuleListItem.ModuleName);
 
                 AddModuleFromFile(file);
 

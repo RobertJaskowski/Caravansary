@@ -1,9 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
-using System;
-using Caravansary.Core;
 
 class SettingsWindowViewModel : BaseViewModel
 {
@@ -55,7 +52,7 @@ class SettingsWindowViewModel : BaseViewModel
                         {
                             ModuleName = item.Loader.Instance.GetModuleName(),
                             View = item.Loader.Instance.GetSettingsUserControlView()
-                        }) ;
+                        });
                     }
                 }
 

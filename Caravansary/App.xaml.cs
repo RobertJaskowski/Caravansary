@@ -48,7 +48,7 @@ namespace Caravansary
                 if (Data.Version.IsLower(ver))
                 {
                     string handlestr = CurrentHandleWindow.ToString();
-                    File.WriteAllText(dumpFileLocation, handlestr) ;
+                    File.WriteAllText(dumpFileLocation, handlestr);
 
                     Process.Start("LauncherCaravansary.exe");
 

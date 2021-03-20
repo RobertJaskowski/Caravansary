@@ -1,15 +1,9 @@
-﻿using Caravansary.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml;
 using System.Xml.Serialization;
 
 public class ModulesListViewModel : BaseViewModel
@@ -38,7 +32,7 @@ public class ModulesListViewModel : BaseViewModel
 
     #region Commands
 
-    
+
     private ICommand _getModulesClick;
     public ICommand GetModuleClick
     {
@@ -49,7 +43,7 @@ public class ModulesListViewModel : BaseViewModel
                    (object o) =>
                    {
 
-                       if(o is ViewModuleListItem)
+                       if (o is ViewModuleListItem)
                        {
 
                            var vmli = o as ViewModuleListItem;
@@ -71,7 +65,13 @@ public class ModulesListViewModel : BaseViewModel
     private async void GetModule(ViewModuleListItem vmli)
     {
         vmli.Description += "Downloading";
-        await ModuleController.Instance.DownloadModule(new Uri(vmli.DownloadLink));
+        await ModuleController.Instance.DownloadModule(new OnlineModuleListItem()
+        {
+            ModuleName = vmli.ModuleName,
+            Description = vmli.Description,
+            DownloadLink = vmli.DownloadLink
+        });
+
 
         vmli.Description.Replace("Downloading", "");
 
@@ -85,7 +85,7 @@ public class ModulesListViewModel : BaseViewModel
         ShowListOfModules();
     }
 
-    
+
 
     private void ShowListOfModules()
     {
@@ -110,7 +110,7 @@ public class ModulesListViewModel : BaseViewModel
             //});
 
             //SerializeModuleList(oml);
-           
+
             return;
         }
 
@@ -125,7 +125,7 @@ public class ModulesListViewModel : BaseViewModel
                 ModuleName = item.ModuleName,
                 Description = item.Description,
                 DownloadLink = item.DownloadLink
-            }) ;
+            });
 
         }
         if (ret.Count > 0)
@@ -184,7 +184,7 @@ public class ModulesListViewModel : BaseViewModel
         public string Description { get; set; }
 
         public string DownloadLink { get; set; }
-        
+
         public string ImageUrl { get; set; }
 
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using Caravansary.Core;
 
 namespace Caravansary
 {
@@ -17,6 +16,6 @@ namespace Caravansary
 
         //public void ShowNotification(Notification notification);
         public void SetMidLable(string text);
-        
+
     }
 }

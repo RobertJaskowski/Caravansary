@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 [Serializable]
 public class MainWindowSettings
@@ -11,5 +10,5 @@ public class MainWindowSettings
 
     public double MainWindowPositionY { get; set; }
 
-    
+
 }

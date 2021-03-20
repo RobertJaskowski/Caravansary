@@ -1,5 +1,4 @@
-﻿using Caravansary.Core;
-using Caravansary.Properties;
+﻿using Caravansary.Properties;
 using System;
 using System.Windows;
 
@@ -71,7 +70,7 @@ namespace Caravansary
 
         private void TrayResetPositionClicked(object sender, EventArgs e)
         {
-           WindowHelper.ResetWindowPosition(mainWindow);
+            WindowHelper.ResetWindowPosition(mainWindow);
         }
 
         private void TrayExitClicked(object sender, EventArgs e)

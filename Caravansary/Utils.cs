@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 using System.Windows.Controls;
 
@@ -20,7 +17,7 @@ namespace Caravansary
             if (value.Length < 1) return value;
             if (value.Length <= maxLength)
                 return value;
-            value.Remove(maxLength  ,value.Length - maxLength);
+            value.Remove(maxLength, value.Length - maxLength);
             value = new StringBuilder(value.ToString());
             //StringBuilder v =  value.Length <= maxLength ? value : value.Remove(maxLength - (value.Length - maxLength), value.Length);
             return value;
@@ -39,7 +36,7 @@ namespace Caravansary
 
         public static float ProcentToProgressBarValue(ProgressBar progressBar, float percent)
         {
-            return (float)(progressBar.Maximum *  percent / 100);
+            return (float)(progressBar.Maximum * percent / 100);
         }
 
 
@@ -52,7 +49,7 @@ namespace Caravansary
             return (int)((correctedStartVal * progressBar.Maximum) / range);
         }
 
-        
+
         public static float Lerp(float firstFloat, float secondFloat, float by)
         {
             return firstFloat + (secondFloat - firstFloat) * by;

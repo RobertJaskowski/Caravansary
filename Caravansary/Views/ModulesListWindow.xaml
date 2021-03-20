@@ -45,7 +45,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Get"/>
+                        <Button Content="Get" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}"/>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{Binding ModuleName}"/>
                             <TextBlock Text="{Binding ModuleDescription}"/>

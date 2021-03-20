@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
@@ -42,7 +38,7 @@ namespace Caravansary
         //    progressBar.BeginAnimation(ProgressBar.ValueProperty, animation);
         //}
 
-      
+
 
         public static void SetValueWithAnimation(this ProgressBar progressBar, double value, bool jumpOnLowerValue)
         {

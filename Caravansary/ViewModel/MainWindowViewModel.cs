@@ -1,23 +1,15 @@
-﻿using Caravansary.Core;
-using System;
-using System.ComponentModel;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Resources;
-using System.Collections;
-using System.Windows.Markup;
-using System.Collections.ObjectModel;
-using Caravansary;
+﻿using Caravansary;
 using Caravansary.Views;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Threading;
 
 public class MainWindowViewModel : BaseViewModel
 {
@@ -185,7 +177,7 @@ public class MainWindowViewModel : BaseViewModel
                    (object o) =>
                    {
 
-                       ModulesListWindow dialog = new ();
+                       ModulesListWindow dialog = new();
                        dialog.DataContext = new ModulesListViewModel();
 
                        bool? result = dialog.ShowDialog();
@@ -405,7 +397,7 @@ public class MainWindowViewModel : BaseViewModel
     private void HandleGetModulesButtonVisibility()
     {
 
-        GetModulesButtonVisibility = ModuleController.Instance.CoreModulesKeys.Count() <1 ? Visibility.Visible : Visibility.Collapsed;
+        GetModulesButtonVisibility = ModuleController.Instance.CoreModulesKeys.Count() < 1 ? Visibility.Visible : Visibility.Collapsed;
 
     }
 
