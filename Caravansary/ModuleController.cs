@@ -9,9 +9,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using System.Reflection;
+using System.Runtime.Loader;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
@@ -126,7 +129,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         return true;
 
     }
-
+    private string nameToRem;
     internal void RemoveModule(string name)
     {
         if (_coreModules.ContainsKey(name))
@@ -137,24 +140,74 @@ public class ModuleController : MarshalByRefObject, IModuleController
                 outVal.Loader.Stop();
 
             }
-            outVal.AssemblyLoadContext.Unload();
+            bool alive = outVal.AssemblyLoadContext.IsAlive;
+            if (alive)
+                ((PluginLoadContext)outVal.AssemblyLoadContext.Target).Unload();
 
             _coreModules.Remove(name);
 
-
             OnModuleRemoved?.Invoke(outVal);
+
+            outVal.Loader.Clear();
+            outVal.AssemblyLoadContext = null;
+            outVal.Loader = null;
+            outVal = null;
         }
 
-        RemoveModuleCatalog(name);
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+
+        //nameToRem = name;
+        //DispatcherTimer dt = new DispatcherTimer();
+        //dt.Interval = TimeSpan.FromSeconds(5);
+        //dt.Tick += tick;
+        //dt.Start();
     }
 
-    private void RemoveModuleCatalog(string name)
+    //private void tick(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        RemoveModuleCatalog(nameToRem);
+    //    }
+    //    catch(Exception ece)
+    //    {
+
+    //    }
+    //}
+
+    public void RemoveModuleCatalog(string name)
     {
-        string pathToMod = DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + name;
-        if (Directory.Exists(pathToMod))
+
+        var asss = AssemblyLoadContext.All;
+
+        try
         {
-            Directory.Delete(pathToMod,true);
+
+            string pathToMod = DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + name;
+            string pathTOModDir = pathToMod + Path.DirectorySeparatorChar + "ActiveTimer.dll";
+            if (Directory.Exists(pathToMod))
+            {
+                try
+                {
+                    using (var f= File.OpenRead(pathTOModDir))
+                    {
+                        f.Close();
+
+                    }
+                }
+                catch(Exception es)
+                {
+
+                }
+               
+
+                File.Delete(pathToMod + Path.DirectorySeparatorChar + "ActiveTimer.dll");
+                Directory.Delete(pathToMod, true);
+            }
         }
+        catch  (UnauthorizedAccessException e ){}
     }
 
     internal bool IsModuleActive(string name)
@@ -298,7 +351,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
                 var mi = new ModuleInfo
                 {
-                    AssemblyLoadContext = loadContext,
+                    AssemblyLoadContext = new WeakReference(loadContext),
                     Loader = remoteLoader
                 };
 

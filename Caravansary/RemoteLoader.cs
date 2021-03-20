@@ -6,7 +6,7 @@ using System.Runtime.Loader;
 
 public class RemoteLoader : MarshalByRefObject
 {
-    private Assembly _pluginAssembly;
+    public Assembly _pluginAssembly;
     private ICoreModule _instance;
     public ICoreModule Instance
     {
@@ -21,10 +21,6 @@ public class RemoteLoader : MarshalByRefObject
     public string Name => _name;
     public bool IsStarted { get; private set; }
 
-    //private UserControl _view;
-    //public UserControl View { get { return _view; } private set { _view = value; } }
-
-    public ICoreModule _instanceSettings;
 
     public void Init(IModuleController host, AssemblyLoadContext alc, string assemblyDllPath)
     {
@@ -105,12 +101,22 @@ public class RemoteLoader : MarshalByRefObject
 
     public void Stop()
     {
+       
+        
         if (_instance == null)
         {
             return;
         }
         _instance.Stop();
         IsStarted = false;
+    }
+
+    public void Clear()
+    {
+        if (IsStarted)
+            Stop();
+        Instance = null;
+        _pluginAssembly = null;
     }
 
 

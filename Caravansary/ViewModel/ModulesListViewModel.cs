@@ -87,18 +87,16 @@ public class ModulesListViewModel : BaseViewModel
 
     private void OnModuleRemoved(ModuleInfo mod)
     {
-        ViewModuleListItem modToRemove = null;
+        ViewModuleListItem modToChange = null;
         foreach (var vMod in ModuleListItems)
         {
             if (vMod.Name == mod.Loader.Name)
             {
-                modToRemove = vMod;
+                modToChange = vMod;
+
             }
         }
-        if (modToRemove != null)
-        {
-            ModuleListItems.Remove(modToRemove);
-        }
+
     }
 
     private void RemoveModule(ViewModuleListItem vmli)

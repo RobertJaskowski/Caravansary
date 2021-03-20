@@ -1,7 +1,8 @@
 ﻿using Caravansary;
+using System;
 
 public class ModuleInfo
 {
-    public PluginLoadContext AssemblyLoadContext { get; set; }
+    public WeakReference AssemblyLoadContext { get; set; }
     public RemoteLoader Loader { get; set; }
 }

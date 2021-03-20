@@ -168,6 +168,27 @@ public class MainWindowViewModel : BaseViewModel
 
     #region Commands
 
+    private ICommand _remDir;
+    public ICommand RemoveDir
+    {
+        get
+        {
+            if (_remDir == null)
+                _remDir = new RelayCommand(
+                   (object o) =>
+                   {
+                       ModuleController.Instance.RemoveModuleCatalog("ActiveTimer");
+
+
+                   },
+                   (object o) =>
+                   {
+                       return true;
+                   });
+
+            return _remDir;
+        }
+    }
     private ICommand _getModulesClick;
     public ICommand GetModulesClick
     {
@@ -177,11 +198,8 @@ public class MainWindowViewModel : BaseViewModel
                 _getModulesClick = new RelayCommand(
                    (object o) =>
                    {
-
-                       ModulesListWindow dialog = new();
-                       dialog.DataContext = new ModulesListViewModel();
-
-                       bool? result = dialog.ShowDialog();
+                       ShowWindow();
+                       
 
                    },
                    (object o) =>
@@ -192,6 +210,15 @@ public class MainWindowViewModel : BaseViewModel
             return _getModulesClick;
         }
     }
+
+    private void ShowWindow()
+    {
+        ModulesListWindow dialog = new();
+        dialog.DataContext = new ModulesListViewModel();
+
+        dialog.Show();
+    }
+
     private ICommand _showSettings;
     public ICommand ShowSettings
     {
@@ -446,6 +473,9 @@ public class MainWindowViewModel : BaseViewModel
         RemoveViewModFromCollection(ViewCoreModules, mod);
         RemoveViewModFromCollection(BotModules, mod);
 
+        TopModules = null;
+        ViewCoreModules = null;
+        BotModules = null;
     }
 
     private void RemoveViewModFromCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)
