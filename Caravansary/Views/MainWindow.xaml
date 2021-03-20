@@ -50,6 +50,9 @@
             </Style.Resources>
         </Style>
 
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource DefaultBgDark}"/>
+        </Style>
 
     </Window.Resources>
     
@@ -114,6 +117,11 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <StackPanel Orientation="Horizontal" Visibility="{Binding GetModulesButtonVisibility}">
+            <TextBlock Text="You have currently no modules."/>
+            <Button Content="Get modules" Command="{Binding GetModulesClick}"/>
+        </StackPanel>
 
         <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.InputBindings>

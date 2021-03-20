@@ -1,5 +1,4 @@
-﻿namespace Caravansary.Core
-{
+﻿
     using System;
     using System.Windows.Input;
 
@@ -40,5 +39,3 @@
 
         }
     }
-
-}

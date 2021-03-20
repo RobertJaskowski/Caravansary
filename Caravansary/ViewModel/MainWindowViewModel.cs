@@ -17,6 +17,7 @@ using System.Collections;
 using System.Windows.Markup;
 using System.Collections.ObjectModel;
 using Caravansary;
+using Caravansary.Views;
 
 public class MainWindowViewModel : BaseViewModel
 {
@@ -101,6 +102,19 @@ public class MainWindowViewModel : BaseViewModel
     }
 
 
+    private Visibility _visibility = Visibility.Collapsed;
+    public Visibility GetModulesButtonVisibility
+    {
+        get
+        {
+            return _visibility;
+        }
+        set
+        {
+            _visibility = value;
+            OnPropertyChanged(nameof(GetModulesButtonVisibility));
+        }
+    }
 
 
 
@@ -161,7 +175,30 @@ public class MainWindowViewModel : BaseViewModel
 
     #region Commands
 
+    private ICommand _getModulesClick;
+    public ICommand GetModulesClick
+    {
+        get
+        {
+            if (_getModulesClick == null)
+                _getModulesClick = new RelayCommand(
+                   (object o) =>
+                   {
 
+                       ModulesListWindow dialog = new ();
+                       dialog.DataContext = new ModulesListViewModel();
+
+                       bool? result = dialog.ShowDialog();
+
+                   },
+                   (object o) =>
+                   {
+                       return true;
+                   });
+
+            return _getModulesClick;
+        }
+    }
     private ICommand _showSettings;
     public ICommand ShowSettings
     {
@@ -317,7 +354,10 @@ public class MainWindowViewModel : BaseViewModel
 
     public void InitModuleController()
     {
-        ModuleController.Instance.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+        bool ret = ModuleController.Instance.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+
+
+        HandleGetModulesButtonVisibility();
 
         foreach (var mod in ModuleController.Instance.CoreModuleValues)
         {
@@ -362,6 +402,12 @@ public class MainWindowViewModel : BaseViewModel
 
     }
 
+    private void HandleGetModulesButtonVisibility()
+    {
+
+        GetModulesButtonVisibility = ModuleController.Instance.CoreModulesKeys.Count() <1 ? Visibility.Visible : Visibility.Collapsed;
+
+    }
 
     DataTemplate CreateTemplate(Type viewModelType, Type viewType)
     {

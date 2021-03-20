@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.Loader;
@@ -51,6 +53,82 @@ public class ModuleController : MarshalByRefObject, IModuleController
         WindowsWindowApi.Instance.OnWindowSwitched += method;
     }
 
+
+
+    internal async Task<bool> DownloadModule(Uri downloadLink)
+    {
+        using (var webClient = new WebClient())
+        {
+            try
+            {
+
+
+                await Task.Run(() => webClient.DownloadFileAsync(downloadLink, DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + "tee"));
+                
+                FileInfo file = new FileInfo(DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + "tee");
+
+                AddModuleFromFile(file);
+
+                return true;
+
+            }
+            catch
+            {
+                MessageBox.Show("Cannot download module");
+                return false;
+            }
+        }
+    }
+
+    private void AddModuleFromFile(FileInfo file)
+    {
+        if (IsModulePackedToZip(file))
+        {
+            if (!UnpackZipAsAModule(file))
+            {
+                MessageBox.Show("Cannot unpack module");
+                return;
+            }
+        }
+        else
+        {
+            file.CopyTo(DesktopHelper.moduleFolder);
+        }
+    }
+
+    private bool UnpackZipAsAModule(FileInfo file)
+    {
+
+        var zip = ZipFile.OpenRead(file.FullName);
+        if (zip.Entries.Count < 1)
+            return false;
+
+
+
+        if (zip.Entries.Where(x =>
+         {
+             return x.Name.ToLower().Contains(".dll");
+         }).Select(x => x).Count() < 1)
+        {
+            return false;
+        }
+
+
+        zip.GetEntry(file.Name).ExtractToFile(DesktopHelper.moduleFolder, true);
+        return true;
+
+    }
+
+    private bool IsModulePackedToZip(FileInfo file)
+    {
+        if (file.FullName.ToLower().Contains("7zip") || file.FullName.ToLower().Contains("zip") || file.FullName.ToLower().Contains("rar") || file.FullName.ToLower().Contains("7z"))
+            return true;
+
+        else return false;
+
+    }
+
+
     public void UnHookWindowSwitchEvent(Action<WindowSwitchedArgs> method)
     {
         WindowsWindowApi.Instance.OnWindowSwitched -= method;
@@ -80,7 +158,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     #endregion
 
-    public void ScanDirectory(string path)
+    public bool ScanDirectory(string path)
     {
 
         List<string> SpecificModuleDirectories = new List<string>();
@@ -104,9 +182,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
 
         if (SpecificModuleDirectories.Count <= 0)
-            return;
+            return false;
 
-
+        bool foundSomeModule = false;
 
 
         foreach (var dllDirectory in SpecificModuleDirectories)
@@ -148,6 +226,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
 
         }
+
+        if (foundSomeModule) return true;
+        else return false;
 
     }
 
