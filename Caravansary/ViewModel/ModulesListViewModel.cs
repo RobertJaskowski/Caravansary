@@ -47,7 +47,15 @@ public class ModulesListViewModel : BaseViewModel
                        {
 
                            var vmli = o as ViewModuleListItem;
-                           GetModule(vmli);
+
+
+                           if (vmli.ModuleButtonActionText.ToLower().Contains("get"))
+                           {
+                               GetModule(vmli);
+                           }else if (vmli.ModuleButtonActionText.ToLower().Contains("remove"))
+                           {
+                               RemoveModule(vmli);
+                           }
 
 
                        }
@@ -62,10 +70,47 @@ public class ModulesListViewModel : BaseViewModel
         }
     }
 
+    
+
+    #endregion
+
+    public ModulesListViewModel()
+    {
+        ShowListOfModules();
+
+        ModuleController.Instance.OnModuleRemoved += OnModuleRemoved;
+    }
+
+    private void OnModuleRemoved(ModuleInfo mod)
+    {
+        ViewModuleListItem modToRemove = null;
+        foreach (var vMod in ModuleListItems)
+        {
+            if(vMod.Name == mod.Loader.Name)
+            {
+                modToRemove = vMod;
+            }
+        }
+        if (modToRemove != null)
+        {
+            ModuleListItems.Remove(modToRemove);
+        }
+    }
+
+    private void RemoveModule(ViewModuleListItem vmli)
+    {
+        vmli.ModuleButtonActionText = "Removing... ";
+        vmli.ModuleButtonActionEnabled = false;
+
+        ModuleController.Instance.RemoveModule(vmli.Name);
+
+
+    }
+
     private async void GetModule(ViewModuleListItem vmli)
     {
-        vmli.ModuleButtonActionText = "Downloading... " ;
-        vmli.ModuleButtonActionEnabled =false;
+        vmli.ModuleButtonActionText = "Downloading... ";
+        vmli.ModuleButtonActionEnabled = false;
         var res = await ModuleController.Instance.DownloadModule(new OnlineModuleListItem()
         {
             Name = vmli.Name,
@@ -84,15 +129,6 @@ public class ModulesListViewModel : BaseViewModel
         vmli.ModuleButtonActionText = "Remove";
         vmli.ModuleButtonActionEnabled = true;
     }
-
-    #endregion
-
-    public ModulesListViewModel()
-    {
-        ShowListOfModules();
-    }
-
-
 
     private void ShowListOfModules()
     {
@@ -114,7 +150,7 @@ public class ModulesListViewModel : BaseViewModel
                 DownloadLink = item.DownloadLink,
                 ModuleButtonActionEnabled = true,
                 ModuleButtonActionText = ModuleController.Instance.IsModuleActive(item.Name) ? "Remove" : "Get"
-            }) ;
+            });
 
         }
         if (ret.Count > 0)

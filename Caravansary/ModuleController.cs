@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -124,6 +125,36 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
         return true;
 
+    }
+
+    internal void RemoveModule(string name)
+    {
+        if (_coreModules.ContainsKey(name))
+        {
+            ModuleInfo outVal = null;
+            if (_coreModules.TryGetValue(name, out outVal))
+            {
+                outVal.Loader.Stop();
+
+            }
+            outVal.AssemblyLoadContext.Unload();
+
+            _coreModules.Remove(name);
+
+
+            OnModuleRemoved?.Invoke(outVal);
+        }
+
+        RemoveModuleCatalog(name);
+    }
+
+    private void RemoveModuleCatalog(string name)
+    {
+        string pathToMod = DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + name;
+        if (Directory.Exists(pathToMod))
+        {
+            Directory.Delete(pathToMod,true);
+        }
     }
 
     internal bool IsModuleActive(string name)

@@ -1,6 +1,7 @@
 ﻿using Caravansary;
 using Caravansary.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -215,7 +216,7 @@ public class MainWindowViewModel : BaseViewModel
             return _showSettings;
         }
     }
-    
+
     private ICommand _quitApp;
     public ICommand QuitApp
     {
@@ -253,14 +254,14 @@ public class MainWindowViewModel : BaseViewModel
 
 
     #region mods
-    private ObservableCollection<UserControl> _topModules;
-    public ObservableCollection<UserControl> TopModules
+    private ObservableCollection<ViewModule> _topModules;
+    public ObservableCollection<ViewModule> TopModules
     {
         get
         {
             if (_topModules == null)
             {
-                _topModules = new ObservableCollection<UserControl>();
+                _topModules = new ObservableCollection<ViewModule>();
 
             }
 
@@ -275,14 +276,14 @@ public class MainWindowViewModel : BaseViewModel
     }
 
 
-    private ObservableCollection<UserControl> _viewCoreModules;
-    public ObservableCollection<UserControl> ViewCoreModules
+    private ObservableCollection<ViewModule> _viewCoreModules;
+    public ObservableCollection<ViewModule> ViewCoreModules
     {
         get
         {
             if (_viewCoreModules == null)
             {
-                _viewCoreModules = new ObservableCollection<UserControl>();
+                _viewCoreModules = new ObservableCollection<ViewModule>();
 
             }
 
@@ -296,14 +297,14 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-    private ObservableCollection<UserControl> _botModules;
-    public ObservableCollection<UserControl> BotModules
+    private ObservableCollection<ViewModule> _botModules;
+    public ObservableCollection<ViewModule> BotModules
     {
         get
         {
             if (_botModules == null)
             {
-                _botModules = new ObservableCollection<UserControl>();
+                _botModules = new ObservableCollection<ViewModule>();
 
             }
 
@@ -315,6 +316,87 @@ public class MainWindowViewModel : BaseViewModel
 
             OnPropertyChanged(nameof(BotModules));
         }
+    }
+    //private ObservableCollection<UserControl> _topModules;
+    //public ObservableCollection<UserControl> TopModules
+    //{
+    //    get
+    //    {
+    //        if (_topModules == null)
+    //        {
+    //            _topModules = new ObservableCollection<UserControl>();
+
+    //        }
+
+    //        return _topModules;
+    //    }
+    //    set
+    //    {
+    //        _topModules = value;
+
+    //        OnPropertyChanged(nameof(TopModules));
+    //    }
+    //}
+
+
+    //private ObservableCollection<UserControl> _viewCoreModules;
+    //public ObservableCollection<UserControl> ViewCoreModules
+    //{
+    //    get
+    //    {
+    //        if (_viewCoreModules == null)
+    //        {
+    //            _viewCoreModules = new ObservableCollection<UserControl>();
+
+    //        }
+
+    //        return _viewCoreModules;
+    //    }
+    //    set
+    //    {
+    //        _viewCoreModules = value;
+
+    //        OnPropertyChanged(nameof(ViewCoreModules));
+    //    }
+    //}
+
+    //private ObservableCollection<UserControl> _botModules;
+    //public ObservableCollection<UserControl> BotModules
+    //{
+    //    get
+    //    {
+    //        if (_botModules == null)
+    //        {
+    //            _botModules = new ObservableCollection<UserControl>();
+
+    //        }
+
+    //        return _botModules;
+    //    }
+    //    set
+    //    {
+    //        _botModules = value;
+
+    //        OnPropertyChanged(nameof(BotModules));
+    //    }
+    //}
+
+    public class ViewModule : ObservableObject
+    {
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; OnPropertyChanged(nameof(Name)); }
+        }
+
+        private UserControl _userControlView;
+        public UserControl UserControlView
+        {
+            get { return _userControlView; }
+            set { _userControlView = value; OnPropertyChanged(nameof(UserControlView)); }
+        }
+
     }
 
     #endregion
@@ -354,8 +436,37 @@ public class MainWindowViewModel : BaseViewModel
         InjectModule(ModuleController.Instance.CoreModuleValues);
 
         ModuleController.Instance.OnModuleAdded += OnModAdded;
+        ModuleController.Instance.OnModuleRemoved += OnModuleRemoved;
 
     }
+
+    private void OnModuleRemoved(ModuleInfo mod)
+    {
+        RemoveViewModFromCollection(TopModules, mod);
+        RemoveViewModFromCollection(ViewCoreModules, mod);
+        RemoveViewModFromCollection(BotModules, mod);
+
+    }
+
+    private void RemoveViewModFromCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)
+    {
+        List<ViewModule> toRemove = new List<ViewModule>();
+
+        foreach (var item in collection)
+        {
+            if (item.Name == mod.Loader.Name)
+            {
+                toRemove.Add(item);
+            }
+        }
+        if (toRemove.Count > 0)
+            for (int i = 0; i < toRemove.Count; i++)
+            {
+                collection.Remove(toRemove[i]);
+            }
+
+    }
+
 
     private void OnModAdded(ModuleInfo mod)
     {
@@ -367,25 +478,31 @@ public class MainWindowViewModel : BaseViewModel
 
     private void InjectModule(ModuleInfo mod)
     {
-       
-            mod.Loader.Start();
+        mod.Loader.Start();
 
-            switch (mod.Loader.Instance.GetModulePosition())
-            {
-                case ModulePosition.TOP:
-                    TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+        switch (mod.Loader.Instance.GetModulePosition())
+        {
+            case ModulePosition.TOP:
+                AddViewToViewCollection(TopModules, mod);
+                break;
+            case ModulePosition.MID:
+                AddViewToViewCollection(ViewCoreModules, mod);
+                break;
+            case ModulePosition.BOT:
+                AddViewToViewCollection(BotModules, mod);
+                break;
+        }
+    }
 
-                    break;
-                case ModulePosition.MID:
-                    ViewCoreModules.Add(mod.Loader.Instance.GetModuleUserControlView());
-
-
-                    break;
-                case ModulePosition.BOT:
-                    BotModules.Add(mod.Loader.Instance.GetModuleUserControlView());
-
-                    break;
-            }
+    private void AddViewToViewCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)
+    {
+        collection.Add(
+                    new ViewModule()
+                    {
+                        Name = mod.Loader.Name,
+                        UserControlView = mod.Loader.Instance.GetModuleUserControlView()
+                    }
+                    );
     }
 
     private void InjectModule(ModuleInfo[] coreModuleValues)
@@ -397,16 +514,19 @@ public class MainWindowViewModel : BaseViewModel
             switch (mod.Loader.Instance.GetModulePosition())
             {
                 case ModulePosition.TOP:
-                    TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+                AddViewToViewCollection(TopModules, mod);
+                    //TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
 
                     break;
                 case ModulePosition.MID:
-                    ViewCoreModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+                    //ViewCoreModules.Add(mod.Loader.Instance.GetModuleUserControlView());
 
+                    AddViewToViewCollection(ViewCoreModules, mod);
 
                     break;
                 case ModulePosition.BOT:
-                    BotModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+                    //BotModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+                    AddViewToViewCollection(BotModules, mod);
 
                     break;
             }

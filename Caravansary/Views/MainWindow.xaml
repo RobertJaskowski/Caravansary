@@ -92,7 +92,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <UserControl Content="{Binding }" >
+                    <UserControl Content="{Binding UserControlView}" >
                     </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -111,7 +111,7 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <UserControl Content="{Binding }" >
+                    <UserControl Content="{Binding UserControlView}" >
                         <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}"/>
                             <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
                     </UserControl>
