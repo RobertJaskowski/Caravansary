@@ -33,13 +33,13 @@ public class ModulesListViewModel : BaseViewModel
     #region Commands
 
 
-    private ICommand _getModulesClick;
-    public ICommand GetModuleClick
+    private ICommand _moduleButtonClicked;
+    public ICommand ModuleButtonClicked
     {
         get
         {
-            if (_getModulesClick == null)
-                _getModulesClick = new RelayCommand(
+            if (_moduleButtonClicked == null)
+                _moduleButtonClicked = new RelayCommand(
                    (object o) =>
                    {
 
@@ -58,24 +58,31 @@ public class ModulesListViewModel : BaseViewModel
                        return true;
                    });
 
-            return _getModulesClick;
+            return _moduleButtonClicked;
         }
     }
 
     private async void GetModule(ViewModuleListItem vmli)
     {
-        vmli.Description += "Downloading";
-        await ModuleController.Instance.DownloadModule(new OnlineModuleListItem()
+        vmli.ModuleButtonActionText = "Downloading... " ;
+        vmli.ModuleButtonActionEnabled =false;
+        var res = await ModuleController.Instance.DownloadModule(new OnlineModuleListItem()
         {
-            ModuleName = vmli.ModuleName,
+            Name = vmli.Name,
             Description = vmli.Description,
             DownloadLink = vmli.DownloadLink
         });
 
+        if (res)
+        {
+            ModuleController.Instance.ScanDirectory(DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + vmli.Name);
+        }
 
-        vmli.Description.Replace("Downloading", "");
 
 
+
+        vmli.ModuleButtonActionText = "Remove";
+        vmli.ModuleButtonActionEnabled = true;
     }
 
     #endregion
@@ -91,28 +98,8 @@ public class ModulesListViewModel : BaseViewModel
     {
         var res = GetModuleListOfModules();
         if (res == null)
-        {
-            //var oml = new OnlineModuleList()
-            //{
-
-            //    onlineModuleListItems = new List<OnlineModuleListItem>()
-
-            //};
-            //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
-            //{
-            //    ModuleName = "testName",
-            //    Description = "testDes"
-            //});
-            //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
-            //{
-            //    ModuleName = "testName2",
-            //    Description = "testDes2"
-            //});
-
-            //SerializeModuleList(oml);
-
             return;
-        }
+
 
         cachedOnlineModuleList = res;
 
@@ -122,10 +109,12 @@ public class ModulesListViewModel : BaseViewModel
         {
             ret.Add(new ViewModuleListItem()
             {
-                ModuleName = item.ModuleName,
+                Name = item.Name,
                 Description = item.Description,
-                DownloadLink = item.DownloadLink
-            });
+                DownloadLink = item.DownloadLink,
+                ModuleButtonActionEnabled = true,
+                ModuleButtonActionText = ModuleController.Instance.IsModuleActive(item.Name) ? "Remove" : "Get"
+            }) ;
 
         }
         if (ret.Count > 0)
@@ -156,8 +145,6 @@ public class ModulesListViewModel : BaseViewModel
             }
             return (OnlineModuleList)rslt;
 
-
-
         }
         catch
         {
@@ -177,22 +164,83 @@ public class ModulesListViewModel : BaseViewModel
 
 
 
-
-    public class ViewModuleListItem
+    public class ViewModuleListItem : ObservableObject
     {
-        public string ModuleName { get; set; }
-        public string Description { get; set; }
+        private string _moduleName;
+        public string Name
+        {
+            get { return _moduleName; }
+            set
+            {
+                _moduleName = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        private string _description;
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                OnPropertyChanged(nameof(Description));
+            }
+        }
+        private string _downloadLink;
+        public string DownloadLink
+        {
+            get { return _downloadLink; }
+            set
+            {
+                _downloadLink = value;
+                OnPropertyChanged(nameof(DownloadLink));
+            }
+        }
 
-        public string DownloadLink { get; set; }
+        private string _imageUrl;
+        public string ImageUrl
+        {
+            get { return _imageUrl; }
+            set
+            {
+                _imageUrl = value;
+                OnPropertyChanged(nameof(ImageUrl));
+            }
+        }
 
-        public string ImageUrl { get; set; }
+        private bool _moduleButtonActionEnabled;
+        public bool ModuleButtonActionEnabled
+        {
+            get
+            {
+                return _moduleButtonActionEnabled;
+            }
+            set
+            {
+                _moduleButtonActionEnabled = value;
+                OnPropertyChanged(nameof(ModuleButtonActionEnabled));
+            }
+        }
 
+        private string _moduleButtonActionText;
+        public string ModuleButtonActionText
+        {
+            get
+            {
+                return _moduleButtonActionText;
+            }
+            set
+            {
+                _moduleButtonActionText = value;
+                OnPropertyChanged(nameof(ModuleButtonActionText));
+            }
+        }
     }
 
     [Serializable]
     public class OnlineModuleListItem
     {
-        public string ModuleName { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public string DownloadLink { get; set; }
     }

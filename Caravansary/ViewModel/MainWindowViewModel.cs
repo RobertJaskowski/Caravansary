@@ -215,7 +215,7 @@ public class MainWindowViewModel : BaseViewModel
             return _showSettings;
         }
     }
-
+    
     private ICommand _quitApp;
     public ICommand QuitApp
     {
@@ -351,7 +351,46 @@ public class MainWindowViewModel : BaseViewModel
 
         HandleGetModulesButtonVisibility();
 
-        foreach (var mod in ModuleController.Instance.CoreModuleValues)
+        InjectModule(ModuleController.Instance.CoreModuleValues);
+
+        ModuleController.Instance.OnModuleAdded += OnModAdded;
+
+    }
+
+    private void OnModAdded(ModuleInfo mod)
+    {
+        InjectModule(mod);
+
+        HandleGetModulesButtonVisibility();
+
+    }
+
+    private void InjectModule(ModuleInfo mod)
+    {
+       
+            mod.Loader.Start();
+
+            switch (mod.Loader.Instance.GetModulePosition())
+            {
+                case ModulePosition.TOP:
+                    TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+
+                    break;
+                case ModulePosition.MID:
+                    ViewCoreModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+
+
+                    break;
+                case ModulePosition.BOT:
+                    BotModules.Add(mod.Loader.Instance.GetModuleUserControlView());
+
+                    break;
+            }
+    }
+
+    private void InjectModule(ModuleInfo[] coreModuleValues)
+    {
+        foreach (var mod in coreModuleValues)
         {
             mod.Loader.Start();
 
@@ -372,26 +411,6 @@ public class MainWindowViewModel : BaseViewModel
                     break;
             }
         }
-
-        //foreach (var modInfo in ModuleController.Instance.CoreModuleValues)
-        //{
-
-        //    modInfo.Loader.Start();
-
-        //    switch (modInfo.Loader.Instance.GetModulePosition())
-        //    {
-        //        case ModulePosition.TOP:
-        //            TopModules.Add(modInfo.Loader.View);
-        //            break;
-        //        case ModulePosition.MID:
-        //            ViewCoreModules.Add(modInfo.Loader.View);
-        //            break;
-        //        case ModulePosition.BOT:
-        //            BotModules.Add(modInfo.Loader.View);
-        //            break;
-        //    }
-        //}
-
     }
 
     private void HandleGetModulesButtonVisibility()

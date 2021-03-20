@@ -4,10 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Caravansary.Views"
+        xmlns:c="clr-namespace:Caravansary"
         mc:Ignorable="d"
         Title="ModulesListWindow" Height="450" Width="800" Background="{DynamicResource DefaultBgDark}"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
         <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="{x:Null}"/>
             <Setter Property="BorderBrush" Value="{x:Null}"/>
@@ -31,6 +34,10 @@
                 <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
             </Style.Resources>
         </Style>
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource DefaultBgDark}"/>
+        </Style>
     </Window.Resources>
 
 
@@ -45,10 +52,15 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Get" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+
+                        <Button Content="{Binding Path=ModuleButtonActionText}"  Margin="0,0,5,0"
+                                IsEnabled="{Binding ModuleButtonActionEnabled}"
+                                Command="{Binding  Path=DataContext.ModuleButtonClicked, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                CommandParameter="{Binding}" 
+                                />
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding ModuleName}"/>
-                            <TextBlock Text="{Binding ModuleDescription}"/>
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Description}"/>
                         </StackPanel>
                     </StackPanel>
 

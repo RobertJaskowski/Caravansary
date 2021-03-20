@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,27 +51,89 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     internal async Task<bool> DownloadModule(ModulesListViewModel.OnlineModuleListItem onlineModuleListItem)
     {
-        using (var webClient = new WebClient())
+
+
+        string filePath = "";
+        string fileName = "";
+        try
         {
-            try
+            using (var webClient = new WebClient())
             {
 
 
-                await Task.Run(() => webClient.DownloadFileAsync(new Uri(onlineModuleListItem.DownloadLink), DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + onlineModuleListItem.ModuleName));
+                // Try to extract the filename from the Content-Disposition header
 
-                FileInfo file = new FileInfo(DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + onlineModuleListItem.ModuleName);
+                //await Task.Run(() =>  webClient.DownloadDataAsync(new Uri(onlineModuleListItem.DownloadLink)));
 
-                AddModuleFromFile(file);
+                var data = webClient.DownloadData(onlineModuleListItem.DownloadLink);
 
-                return true;
 
-            }
-            catch
-            {
-                MessageBox.Show("Cannot download module");
-                return false;
+                var cd = new ContentDisposition(webClient.ResponseHeaders["Content-Disposition"]);
+                fileName = cd.FileName;
+                filePath = DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + cd.FileName;
+
+
+                // await Task.Run(() => webClient.DownloadFileAsync(new Uri(onlineModuleListItem.DownloadLink), filePath));
+
+                webClient.DownloadFile(new Uri(onlineModuleListItem.DownloadLink), filePath);
+
+
+
             }
         }
+        catch (Exception e)
+        {
+            MessageBox.Show("Cannot download module");
+            return false;
+        }
+
+
+        try
+        {
+
+            //FileInfo file = new FileInfo(DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + cd.FileName);
+            using (var zip = ZipFile.OpenRead(filePath))
+            {
+                if (zip.Entries.Count < 1)
+                    return false;
+
+
+
+                if (zip.Entries.Where(x =>
+                {
+                    return x.Name.ToLower().Contains(".dll");
+                }).Select(x => x).Count() < 1)
+                {
+                    return false;
+                }
+
+
+                zip.ExtractToDirectory(DesktopHelper.moduleFolder);
+
+            }
+
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show("Cannot add module");
+            return false;
+        }
+
+
+
+
+        return true;
+
+    }
+
+    internal bool IsModuleActive(string name)
+    {
+        foreach (var item in CoreModulesKeys)
+        {
+            if (item == name)
+                return true;
+        }
+        return false;
     }
 
     private void AddModuleFromFile(FileInfo file)
@@ -92,24 +155,26 @@ public class ModuleController : MarshalByRefObject, IModuleController
     private bool UnpackZipAsAModule(FileInfo file)
     {
 
-        var zip = ZipFile.OpenRead(file.FullName);
-        if (zip.Entries.Count < 1)
-            return false;
-
-
-
-        if (zip.Entries.Where(x =>
-         {
-             return x.Name.ToLower().Contains(".dll");
-         }).Select(x => x).Count() < 1)
+        using (var zip = ZipFile.OpenRead(file.FullName))
         {
-            return false;
+            if (zip.Entries.Count < 1)
+                return false;
+
+
+
+            if (zip.Entries.Where(x =>
+             {
+                 return x.Name.ToLower().Contains(".dll");
+             }).Select(x => x).Count() < 1)
+            {
+                return false;
+            }
+
+
+
+            return true;
+
         }
-
-
-        zip.GetEntry(file.Name).ExtractToFile(DesktopHelper.moduleFolder, true);
-        return true;
-
     }
 
     private bool IsModulePackedToZip(FileInfo file)
@@ -200,14 +265,15 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
                 remoteLoader.Init(this, loadContext, dllPath);
 
-
-
-                _coreModules.Add(remoteLoader.Name, new ModuleInfo
+                var mi = new ModuleInfo
                 {
                     AssemblyLoadContext = loadContext,
                     Loader = remoteLoader
-                });
+                };
 
+                _coreModules.Add(remoteLoader.Name, mi);
+
+                OnModuleAdded?.Invoke(mi);
 
             }
             catch (Exception e)

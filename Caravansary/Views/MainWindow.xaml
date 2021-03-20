@@ -63,6 +63,7 @@
             </ContextMenu.Background>
 
             <MenuItem Header="Settings" Icon="{x:Null}" Command="{Binding ShowSettings}"/>
+            <MenuItem Header="Modules" Command="{Binding GetModulesClick}"/>
             <MenuItem Header="Exit" Command="{Binding QuitApp}"/>
 
         </ContextMenu>
