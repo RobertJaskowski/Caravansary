@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,6 +16,8 @@ public class ModulesListViewModel : BaseViewModel
     {
         get
         {
+
+
 
             return _moduleListItems;
         }
@@ -52,7 +55,8 @@ public class ModulesListViewModel : BaseViewModel
                            if (vmli.ModuleButtonActionText.ToLower().Contains("get"))
                            {
                                GetModule(vmli);
-                           }else if (vmli.ModuleButtonActionText.ToLower().Contains("remove"))
+                           }
+                           else if (vmli.ModuleButtonActionText.ToLower().Contains("remove"))
                            {
                                RemoveModule(vmli);
                            }
@@ -70,7 +74,7 @@ public class ModulesListViewModel : BaseViewModel
         }
     }
 
-    
+
 
     #endregion
 
@@ -86,7 +90,7 @@ public class ModulesListViewModel : BaseViewModel
         ViewModuleListItem modToRemove = null;
         foreach (var vMod in ModuleListItems)
         {
-            if(vMod.Name == mod.Loader.Name)
+            if (vMod.Name == mod.Loader.Name)
             {
                 modToRemove = vMod;
             }
@@ -137,6 +141,27 @@ public class ModulesListViewModel : BaseViewModel
             return;
 
 
+        //var oml = new OnlineModuleList();
+        //oml.onlineModuleListItems = new();
+
+
+        //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
+        //{
+        //    Name = "testName",
+        //    Description = "testDes",
+        //    DownloadLink = "link"
+        //});
+        //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
+        //{
+        //    Name = "testName",
+        //    Description = "testDes",
+        //    DownloadLink = "link"
+        //});
+
+        //SerializeModuleList(oml);
+
+
+
         cachedOnlineModuleList = res;
 
         ObservableCollection<ViewModuleListItem> ret = new ObservableCollection<ViewModuleListItem>();
@@ -164,23 +189,15 @@ public class ModulesListViewModel : BaseViewModel
 
         try
         {
-            var strXml = webClient.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/OnlineModuleList");
-            if (strXml == null)
+            var strJson = webClient.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/OnlineModuleList.json");
+            if (strJson == null)
             {
                 return null;
             }
 
-            Object rslt;
+            Object rslt = JsonConvert.DeserializeObject<OnlineModuleList>(strJson);
 
-
-            var xs = new XmlSerializer(typeof(OnlineModuleList));
-
-            using (TextReader reader = new StringReader(strXml))
-            {
-                rslt = (OnlineModuleList)xs.Deserialize(reader);
-            }
             return (OnlineModuleList)rslt;
-
         }
         catch
         {

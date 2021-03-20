@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using System.Xml.Serialization;
+using System.Text.Json;
 
 public static class Saves
 {
@@ -29,19 +30,18 @@ public static class Saves
         }
     }
 
-    public static bool Save(string ModuleName, string fileName, Object Obj)
+    public static bool Save(string ModuleName, string fileName, Object ObjectToSave)
     {
 
         var savePathDir = GetModuleSaveDirectory(ModuleName);
         CreateFolderStructureIfDoesntExist(savePathDir);
 
-        var xs = new XmlSerializer(Obj.GetType());
+        //var js = JsonSerializer.Serialize(Obj, Obj.GetType());
+        var js = JsonConvert.SerializeObject(ObjectToSave);
+        File.WriteAllText(GetModuleSaveFilePath(ModuleName, fileName+".json"), js);
 
-        using (TextWriter sw = new StreamWriter(GetModuleSaveFilePath(ModuleName, fileName), false))
-        {
-            xs.Serialize(sw, Obj);
-        }
-        if (File.Exists(GetModuleSaveFilePath(ModuleName, fileName)))
+
+        if (File.Exists(GetModuleSaveFilePath(ModuleName, fileName + ".json")))
             return true;
         else return false;
 
@@ -51,14 +51,13 @@ public static class Saves
     {
         Object rslt;
 
-        if (File.Exists(GetModuleSaveFilePath(ModuleName, fileName)))
+        if (File.Exists(GetModuleSaveFilePath(ModuleName, fileName + ".json")))
         {
-            var xs = new XmlSerializer(typeof(T));
 
-            using (var sr = new StreamReader(GetModuleSaveFilePath(ModuleName, fileName)))
-            {
-                rslt = (T)xs.Deserialize(sr);
-            }
+            var js = File.ReadAllText(GetModuleSaveFilePath(ModuleName, fileName + ".json"));
+            //rslt = JsonSerializer.Deserialize<T>(js);
+            rslt = JsonConvert.DeserializeObject<T>(js);
+
             return (T)rslt;
         }
         else
