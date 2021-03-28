@@ -455,15 +455,15 @@ public class MainWindowViewModel : BaseViewModel
 
     public void InitModuleController()
     {
-        bool ret = ModuleController.Instance.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+        ModuleController.Instance.LoadSavedActiveModules();
 
 
         HandleGetModulesButtonVisibility();
 
-        InjectModule(ModuleController.Instance.CoreModuleValues);
+        InjectModule(ModuleController.Instance.GetActiveModules());
 
-        ModuleController.Instance.OnModuleAdded += OnModAdded;
-        ModuleController.Instance.OnModuleRemoved += OnModuleRemoved;
+        ModuleController.Instance.OnModuleStarted += OnModAdded;
+        ModuleController.Instance.OnModuleStopped += OnModuleRemoved;
 
     }
 
@@ -473,9 +473,6 @@ public class MainWindowViewModel : BaseViewModel
         RemoveViewModFromCollection(ViewCoreModules, mod);
         RemoveViewModFromCollection(BotModules, mod);
 
-        TopModules = null;
-        ViewCoreModules = null;
-        BotModules = null;
     }
 
     private void RemoveViewModFromCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows.Input;
@@ -35,6 +36,26 @@ public class ModulesListViewModel : BaseViewModel
 
     #region Commands
 
+    private ICommand _removeModuleButton;
+    public ICommand RemoveModuleButton
+    {
+        get
+        {
+            if (_removeModuleButton == null)
+                _removeModuleButton = new RelayCommand(
+                   (object o) =>
+                   {
+                       Process.Start("explorer.exe", DesktopHelper.moduleFolder);
+
+                   },
+                   (object o) =>
+                   {
+                       return Directory.Exists(DesktopHelper.moduleFolder);
+                   });
+
+            return _removeModuleButton;
+        }
+    }
 
     private ICommand _moduleButtonClicked;
     public ICommand ModuleButtonClicked
@@ -56,9 +77,13 @@ public class ModulesListViewModel : BaseViewModel
                            {
                                GetModule(vmli);
                            }
-                           else if (vmli.ModuleButtonActionText.ToLower().Contains("remove"))
+                           else if (vmli.ModuleButtonActionText.ToLower().Contains("deactivate"))
                            {
-                               RemoveModule(vmli);
+                               DeactivateModule(vmli);
+                           }
+                           else if (vmli.ModuleButtonActionText.ToLower().Contains("activate"))
+                           {
+                               ActivateModule(vmli);
                            }
 
 
@@ -74,6 +99,33 @@ public class ModulesListViewModel : BaseViewModel
         }
     }
 
+    private void ActivateModule(ViewModuleListItem vmli)
+    {
+        vmli.ModuleButtonActionText = "Activating... ";
+        vmli.ModuleButtonActionEnabled = false;
+
+        ModuleController.Instance.StartCoreModule(vmli.Name);
+        ModuleController.Instance.SaveActiveModulesNames();
+
+
+        vmli.ModuleButtonActionText = "Deactivate";
+        vmli.ModuleButtonActionEnabled = true;
+    }
+
+    private void DeactivateModule(ViewModuleListItem vmli)
+    {
+        vmli.ModuleButtonActionText = "Deactivating... ";
+        vmli.ModuleButtonActionEnabled = false;
+
+
+        ModuleController.Instance.StopCoreModule(vmli.Name);
+        ModuleController.Instance.SaveActiveModulesNames();
+
+
+        vmli.ModuleButtonActionText = "Activate";
+        vmli.ModuleButtonActionEnabled = true;
+    }
+
 
 
     #endregion
@@ -82,22 +134,8 @@ public class ModulesListViewModel : BaseViewModel
     {
         ShowListOfModules();
 
-        ModuleController.Instance.OnModuleRemoved += OnModuleRemoved;
     }
 
-    private void OnModuleRemoved(ModuleInfo mod)
-    {
-        ViewModuleListItem modToChange = null;
-        foreach (var vMod in ModuleListItems)
-        {
-            if (vMod.Name == mod.Loader.Name)
-            {
-                modToChange = vMod;
-
-            }
-        }
-
-    }
 
     private void RemoveModule(ViewModuleListItem vmli)
     {
@@ -128,7 +166,7 @@ public class ModulesListViewModel : BaseViewModel
 
 
 
-        vmli.ModuleButtonActionText = "Remove";
+        vmli.ModuleButtonActionText = "Deactivate";
         vmli.ModuleButtonActionEnabled = true;
     }
 
@@ -137,26 +175,6 @@ public class ModulesListViewModel : BaseViewModel
         var res = GetModuleListOfModules();
         if (res == null)
             return;
-
-
-        //var oml = new OnlineModuleList();
-        //oml.onlineModuleListItems = new();
-
-
-        //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
-        //{
-        //    Name = "testName",
-        //    Description = "testDes",
-        //    DownloadLink = "link"
-        //});
-        //oml.onlineModuleListItems.Add(new OnlineModuleListItem()
-        //{
-        //    Name = "testName",
-        //    Description = "testDes",
-        //    DownloadLink = "link"
-        //});
-
-        //SerializeModuleList(oml);
 
 
 
@@ -172,7 +190,7 @@ public class ModulesListViewModel : BaseViewModel
                 Description = item.Description,
                 DownloadLink = item.DownloadLink,
                 ModuleButtonActionEnabled = true,
-                ModuleButtonActionText = ModuleController.Instance.IsModuleActive(item.Name) ? "Remove" : "Get"
+                ModuleButtonActionText = ModuleController.Instance.IsModulePresent(item.Name) ? (ModuleController.Instance.IsModuleActive(item.Name) ? "Deactivate" : "Activate") : "Get"
             });
 
         }

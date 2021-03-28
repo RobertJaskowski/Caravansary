@@ -39,8 +39,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
     private Dictionary<string, ModuleInfo> _coreModules = new Dictionary<string, ModuleInfo>();
 
     public Action<ModuleInfo> OnModulesChanged;
-    public Action<ModuleInfo> OnModuleAdded;
-    public Action<ModuleInfo> OnModuleRemoved;
+    public Action<ModuleInfo> OnModuleStarted;
+    public Action<ModuleInfo> OnModuleStopped;
 
     public string[] CoreModulesKeys => _coreModules.Keys.ToArray();
     public ModuleInfo[] CoreModuleValues => _coreModules.Values.ToArray();
@@ -65,7 +65,6 @@ public class ModuleController : MarshalByRefObject, IModuleController
             {
 
 
-                // Try to extract the filename from the Content-Disposition header
 
                 //await Task.Run(() =>  webClient.DownloadDataAsync(new Uri(onlineModuleListItem.DownloadLink)));
 
@@ -129,7 +128,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
         return true;
 
     }
-    private string nameToRem;
+
+
     internal void RemoveModule(string name)
     {
         if (_coreModules.ContainsKey(name))
@@ -146,7 +146,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
             _coreModules.Remove(name);
 
-            OnModuleRemoved?.Invoke(outVal);
+            OnModuleStopped?.Invoke(outVal);
 
             outVal.Loader.Clear();
             outVal.AssemblyLoadContext = null;
@@ -158,24 +158,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
         GC.WaitForPendingFinalizers();
 
 
-        //nameToRem = name;
-        //DispatcherTimer dt = new DispatcherTimer();
-        //dt.Interval = TimeSpan.FromSeconds(5);
-        //dt.Tick += tick;
-        //dt.Start();
     }
 
-    //private void tick(object sender, EventArgs e)
-    //{
-    //    try
-    //    {
-    //        RemoveModuleCatalog(nameToRem);
-    //    }
-    //    catch(Exception ece)
-    //    {
-
-    //    }
-    //}
 
     public void RemoveModuleCatalog(string name)
     {
@@ -191,30 +175,40 @@ public class ModuleController : MarshalByRefObject, IModuleController
             {
                 try
                 {
-                    using (var f= File.OpenRead(pathTOModDir))
+                    using (var f = File.OpenRead(pathTOModDir))
                     {
                         f.Close();
 
                     }
                 }
-                catch(Exception es)
+                catch (Exception es)
                 {
 
                 }
-               
+
 
                 File.Delete(pathToMod + Path.DirectorySeparatorChar + "ActiveTimer.dll");
                 Directory.Delete(pathToMod, true);
             }
         }
-        catch  (UnauthorizedAccessException e ){}
+        catch (UnauthorizedAccessException e) { }
+    }
+
+    internal bool IsModulePresent(string name)
+    {
+        foreach (var item in CoreModulesKeys)
+        {
+            if (item == name)
+                return true;
+        }
+        return false;
     }
 
     internal bool IsModuleActive(string name)
     {
         foreach (var item in CoreModulesKeys)
         {
-            if (item == name)
+            if (item == name && _coreModules[item].Loader.IsStarted)
                 return true;
         }
         return false;
@@ -341,7 +335,6 @@ public class ModuleController : MarshalByRefObject, IModuleController
             {
 
                 RemoteLoader remoteLoader = new RemoteLoader();
-
                 PluginLoadContext loadContext = new PluginLoadContext(dllPath);
 
 
@@ -357,7 +350,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
                 _coreModules.Add(remoteLoader.Name, mi);
 
-                OnModuleAdded?.Invoke(mi);
+                OnModuleStarted?.Invoke(mi);
 
             }
             catch (Exception e)
@@ -405,6 +398,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
         return true;
     }
+
     private bool IsModulesDirectory(string path)
     {
         var p = Path.GetFileName(path);
@@ -427,6 +421,60 @@ public class ModuleController : MarshalByRefObject, IModuleController
             return list;
         return null;
     }
+    public class SavedActiveModules
+    {
+        public List<string> list;
+    }
+    internal void LoadSavedActiveModules()
+    {
+        ModuleController.Instance.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+
+        var load = Saves.Load<SavedActiveModules>(DesktopHelper.APP_NAME, "SavedActiveModules");
+
+        if (load == null)
+            return;
+        if (load.list == null)
+            return;
+        if (load.list.Count <= 0)
+            return;
+
+        foreach (var cm in _coreModules)
+        {
+            if (load.list.Contains(cm.Key))
+            {
+                cm.Value.Loader.Start();
+            }
+        }
+
+
+    }
+
+    internal ModuleInfo[] GetActiveModules()
+    {
+        return CoreModuleValues.Where(e => e.Loader.IsStarted).ToArray();
+
+        //List<ModuleInfo> ret = new List<ModuleInfo>();
+        //foreach (var item in CoreModuleValues)
+        //{
+        //    if (item.Loader.IsStarted)
+        //        ret.Add(item);
+        //}
+        //return ret.ToArray();
+
+    }
+
+    internal void SaveActiveModulesNames()
+    {
+        var sam = new SavedActiveModules();
+        sam.list = new List<string>();
+        foreach (var item in GetActiveModuleNames())
+        {
+            sam.list.Add(item);
+        }
+
+        Saves.Save(DesktopHelper.APP_NAME, "SavedActiveModules", sam);
+    }
+
     public void StartCoreModule(string name)
     {
         if (_coreModules.ContainsKey(name))
@@ -435,6 +483,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
             if (!p.IsStarted)
             {
                 p.Start();
+                OnModuleStarted?.Invoke(_coreModules[name]);
             }
         }
     }
@@ -460,6 +509,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
             if (p.IsStarted)
             {
                 p.Stop();
+                OnModuleStopped?.Invoke(_coreModules[name]);
             }
         }
     }
@@ -469,11 +519,25 @@ public class ModuleController : MarshalByRefObject, IModuleController
         foreach (var item in CoreModulesKeys)
         {
 
-            OnModuleRemoved?.Invoke(_coreModules[item]);
+            OnModuleStopped?.Invoke(_coreModules[item]);
             _coreModules[item].Loader.Stop();
-            _coreModules.Remove(item);
 
         }
+    }
+
+    public List<string> GetActiveModuleNames()
+    {
+        List<string> str = new List<string>();
+        foreach (var item in _coreModules)
+        {
+            if (item.Value.Loader.IsStarted)
+            {
+                str.Add(item.Key);
+            }
+
+        }
+
+        return str;
     }
 
     public bool SaveModuleInformation(string ModuleName, string saveFileName, object objectToSave)

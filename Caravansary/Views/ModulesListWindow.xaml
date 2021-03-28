@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Caravansary.Views"
         xmlns:c="clr-namespace:Caravansary"
         mc:Ignorable="d"
-        Title="ModulesListWindow" Height="450" Width="800" Background="{DynamicResource DefaultBgDark}"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Modules list" Height="450" Width="800" Background="{DynamicResource DefaultBgDark}"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
     <Window.Resources>
         <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
@@ -40,9 +40,32 @@
         </Style>
     </Window.Resources>
 
-
     <Grid>
-        <ListView  ItemsSource="{Binding ModuleListItems,Mode=TwoWay}"  >
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0"  Grid.Row="0" Margin="0 5 0 5">
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="50" />
+                <RowDefinition  Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="Auto" />
+                <ColumnDefinition  Width="100" />
+                <ColumnDefinition  Width="600" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="List of modules" Background="{x:Null}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 5 0"/>
+            <Button Command="{Binding RemoveModuleButton}" Grid.Row="0" Grid.Column="1" Content="Open folder" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 5 0 5"  HorizontalAlignment="Stretch" Fill="{DynamicResource DefaultForeground}" Height="1" />
+        </Grid>
+
+        <ListView  ItemsSource="{Binding ModuleListItems,Mode=TwoWay}"  Grid.Row="1">
 
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -53,7 +76,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
 
-                        <Button Content="{Binding Path=ModuleButtonActionText}"  Margin="0,0,5,0"
+                        <Button Content="{Binding Path=ModuleButtonActionText}"  Margin="5,0,5,0"
                                 IsEnabled="{Binding ModuleButtonActionEnabled}"
                                 Command="{Binding  Path=DataContext.ModuleButtonClicked, RelativeSource={RelativeSource AncestorType=ListView}}" 
                                 CommandParameter="{Binding}" 
@@ -68,4 +91,5 @@
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+
 </Window>
