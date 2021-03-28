@@ -16,6 +16,9 @@ public interface ICoreModule
 
     void Stop();
 
+    void OnInteractableEntered();
+    void OnInteractableExited();
+
     void OnMinViewEntered();
     void OnFullViewEntered();
 

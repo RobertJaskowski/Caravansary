@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
@@ -18,6 +19,8 @@ public class KeyboardListener
             return _instance;
         }
     }
+
+    private static List<Key> AllKeyPressed;
 
 
     private const int WH_KEYBOARD_LL = 13;
@@ -41,6 +44,7 @@ public class KeyboardListener
 
     public KeyboardListener()
     {
+        AllKeyPressed = new List<Key>();
 
         _proc = HookCallback;
 
@@ -77,17 +81,32 @@ public class KeyboardListener
         if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN || wParam == (IntPtr)WM_SYSKEYDOWN)
         {
             int vkCode = Marshal.ReadInt32(lParam);
+            Key keyPressed = KeyInterop.KeyFromVirtualKey(vkCode);
+            if (!AllKeyPressed.Contains(keyPressed))
+                AllKeyPressed.Add(keyPressed);
 
-            if (OnKeyPressed != null) { OnKeyPressed.Invoke(new KeyPressedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
+            if (OnKeyPressed != null) { OnKeyPressed.Invoke(new KeyPressedArgs(keyPressed)); }
         }
 
         if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
         {
             int vkCode = Marshal.ReadInt32(lParam);
+            Key keyPressed = KeyInterop.KeyFromVirtualKey(vkCode);
+            if (AllKeyPressed.Contains(keyPressed))
+                AllKeyPressed.Remove(keyPressed);
 
-            if (OnKeyReleased != null) { OnKeyReleased.Invoke(new KeyReleasedArgs(KeyInterop.KeyFromVirtualKey(vkCode))); }
+            if (OnKeyReleased != null) { OnKeyReleased.Invoke(new KeyReleasedArgs(keyPressed)); }
         }
 
         return WinApi.CallNextHookEx(_hookID, nCode, wParam, lParam);
+    }
+
+    public bool IsKeyPressed(Key keyToCheck)
+    {
+        if (AllKeyPressed.Contains(keyToCheck))
+            return true;
+
+        return false;
+
     }
 }

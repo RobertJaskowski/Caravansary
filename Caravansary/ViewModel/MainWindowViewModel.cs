@@ -61,6 +61,11 @@ public class MainWindowViewModel : BaseViewModel
         {
             _fullView = value;
             OnPropertyChanged(nameof(FullView));
+            if (value)
+                ModuleController.Instance.OnFullViewEntered();
+            else
+                ModuleController.Instance.OnMinViewEntered();
+
         }
 
     }
@@ -149,13 +154,9 @@ public class MainWindowViewModel : BaseViewModel
     }
 
 
-
-
-
-
     #endregion
 
-    #region events
+    #region Events
     internal void MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Pressed)
@@ -196,11 +197,22 @@ public class MainWindowViewModel : BaseViewModel
     {
         if (obj.KeyPressed == Key.LeftCtrl)
         {
+
             Debug.WriteLine("interactible key pressed");
             if (!Interactable)
             {
+                currentSecInteractible = 0;
+
                 MakeWindowNonClickThrough();
                 Interactable = true;
+            }
+        }
+
+        if (obj.KeyPressed == Key.Space)
+        {
+            if (KeyboardListener.Instance.IsKeyPressed(Key.LeftCtrl))
+            {
+                FullView = !FullView;
             }
         }
     }
@@ -503,18 +515,19 @@ public class MainWindowViewModel : BaseViewModel
 
 
         Interactable = true;
+        FullView = false;
 
         DispatcherTimer interactibleTimer = new DispatcherTimer();
         interactibleTimer.Tick += InteractableTick;
         interactibleTimer.Interval = TimeSpan.FromSeconds(1);
         interactibleTimer.Start();
 
-
+        ModuleController.Instance.OnMinViewEntered();
     }
 
     private void InteractableTick(object sender, EventArgs e)
     {
-        if (MouseOnWindow)
+        if (MouseOnWindow || FullView)
         {
             currentSecInteractible = 0;
             return;
@@ -554,6 +567,8 @@ public class MainWindowViewModel : BaseViewModel
     public void InitModuleController()
     {
         ModuleController.Instance.LoadSavedActiveModules();
+
+       
 
 
         HandleGetModulesButtonVisibility();
@@ -617,6 +632,8 @@ public class MainWindowViewModel : BaseViewModel
                 AddViewToViewCollection(BotModules, mod);
                 break;
         }
+
+        InitViewModeMinFull(mod);
     }
 
     private void AddViewToViewCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)
@@ -655,7 +672,19 @@ public class MainWindowViewModel : BaseViewModel
 
                     break;
             }
+            InitViewModeMinFull(mod);
+
         }
+    }
+
+    private void InitViewModeMinFull(ModuleInfo mod)
+    {
+
+        if (!FullView)
+            mod.Loader.OnMinViewEntered();
+        else
+            mod.Loader.OnFullViewEntered();
+
     }
 
     private void HandleGetModulesButtonVisibility()

@@ -524,6 +524,40 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
         }
     }
+    void OnInteractableEntered()
+    {
+        foreach (var item in CoreModuleValues)
+        {
+            if (item.Loader.IsStarted)
+                item.Loader.OnInteractableEntered();
+        }
+    }
+    void OnInteractableExited()
+    {
+        foreach (var item in CoreModuleValues)
+        {
+            if (item.Loader.IsStarted)
+                item.Loader.OnInteractableExited();
+        }
+    }
+
+    public void OnMinViewEntered()
+    {
+        foreach (var item in CoreModuleValues)
+        {
+            if (item.Loader.IsStarted)
+                item.Loader.OnMinViewEntered();
+        }
+    }
+
+    public void OnFullViewEntered()
+    {
+        foreach (var item in CoreModuleValues)
+        {
+            if (item.Loader.IsStarted)
+                item.Loader.OnFullViewEntered();
+        }
+    }
 
     public List<string> GetActiveModuleNames()
     {

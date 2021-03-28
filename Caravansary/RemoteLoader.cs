@@ -119,5 +119,23 @@ public class RemoteLoader : MarshalByRefObject
         _pluginAssembly = null;
     }
 
+    public void OnInteractableEntered()
+    {
+        _instance.OnInteractableEntered();
+    }
+    public void OnInteractableExited()
+    {
+        _instance.OnInteractableExited();
+    }
+
+    public void OnMinViewEntered()
+    {
+        _instance.OnMinViewEntered();
+    }
+    public void OnFullViewEntered()
+    {
+        _instance.OnFullViewEntered();
+
+    }
 
 }
