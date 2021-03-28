@@ -78,16 +78,6 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Fonts\Lato-Black.ttf" />
-    <Content Include="Fonts\Lato-Thin.ttf" />
-    <Content Include="Fonts\FredokaOne-Regular.ttf" />
-    <Content Include="Fonts\FontAwesome.otf" />
-    <Content Include="Fonts\fontawesome-webfont.ttf" />
-    <Content Include="Fonts\fontawesome-webfont.eot" />
-    <Content Include="Fonts\fontawesome-webfont.woff" />
-    <Content Include="Fonts\fontawesome-webfont.woff2" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -113,7 +103,6 @@
   <ItemGroup>
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Fonts\fontawesome-webfont.svg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />

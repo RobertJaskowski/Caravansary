@@ -584,8 +584,4 @@ public class ModuleController : MarshalByRefObject, IModuleController
         return Saves.Load<T>(ModuleName, saveFileName);
     }
 
-    public void InjectView(UserControl userControlView)
-    {
-
-    }
 }

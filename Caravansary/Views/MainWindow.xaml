@@ -65,7 +65,7 @@
             <MenuItem Header="Settings" Icon="{x:Null}" Command="{Binding ShowSettings}"/>
             <MenuItem Header="Modules" Command="{Binding GetModulesClick}"/>
             <MenuItem Header="Exit" Command="{Binding QuitApp}"/>
-            <MenuItem Header="Rem" Command="{Binding RemoveDir}"/>
+            <!--<MenuItem Header="Rem" Command="{Binding RemoveDir}"/>-->
             
         </ContextMenu>
     </Window.ContextMenu>

@@ -18,7 +18,8 @@ public interface IModuleController
 
     T LoadModuleInformation<T>(string ModuleName, string saveFileName);
 
-    void InjectView(UserControl userControlView);
+
+    
 
     #region events
     public void HookWindowSwitchEvent(Action<WindowSwitchedArgs> method);
