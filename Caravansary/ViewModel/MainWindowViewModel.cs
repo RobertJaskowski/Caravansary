@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Threading;
 
@@ -16,6 +18,37 @@ public class MainWindowViewModel : BaseViewModel
 {
 
     #region Properties
+
+    private bool _interactable;
+    public bool Interactable
+    {
+        get
+        {
+            return _interactable;
+        }
+        set
+        {
+            _interactable = value;
+            OnPropertyChanged(nameof(Interactable));
+            OnPropertyChanged(nameof(BackgroundTransparency));
+
+        }
+
+    }
+
+    private bool _mouseOnWindow;
+
+    public bool MouseOnWindow
+    {
+        get { return _mouseOnWindow; }
+        set
+        {
+            _mouseOnWindow = value;
+            OnPropertyChanged(nameof(MouseOnWindow));
+        }
+    }
+
+
 
     private bool _fullView;
     public bool FullView
@@ -27,6 +60,7 @@ public class MainWindowViewModel : BaseViewModel
         set
         {
             _fullView = value;
+            OnPropertyChanged(nameof(FullView));
         }
 
     }
@@ -47,11 +81,16 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
+
+
     public double BackgroundTransparency
     {
         get
         {
-            return Data.MainWindowSettingsSave.BackgroundTransparency;
+            if (Interactable)
+                return 1;
+            else
+                return Data.MainWindowSettingsSave.BackgroundTransparency;
         }
         set
         {
@@ -136,6 +175,18 @@ public class MainWindowViewModel : BaseViewModel
         KeyboardListener.Instance.OnKeyReleased += OnKeyReleased;
     }
 
+    internal void MouseEnter(object sender, MouseEventArgs e)
+    {
+        Debug.WriteLine("mouse enter");
+        MouseOnWindow = true;
+    }
+
+    internal void MouseLeave(object sender, MouseEventArgs e)
+    {
+        Debug.WriteLine("mouse leave");
+        MouseOnWindow = false;
+    }
+
     private void OnKeyReleased(KeyReleasedArgs obj)
     {
 
@@ -143,7 +194,15 @@ public class MainWindowViewModel : BaseViewModel
 
     private void OnKeyPressed(KeyPressedArgs obj)
     {
-
+        if (obj.KeyPressed == Key.LeftCtrl)
+        {
+            Debug.WriteLine("interactible key pressed");
+            if (!Interactable)
+            {
+                MakeWindowNonClickThrough();
+                Interactable = true;
+            }
+        }
     }
 
     internal void OnWindowClosing(object sender, CancelEventArgs e)
@@ -199,7 +258,7 @@ public class MainWindowViewModel : BaseViewModel
                    (object o) =>
                    {
                        ShowWindow();
-                       
+
 
                    },
                    (object o) =>
@@ -277,7 +336,8 @@ public class MainWindowViewModel : BaseViewModel
 
     public IWindow CurrentWindow;
     TrayIcon trayIcon;
-
+    public int secInteractibleAfk = 3;
+    public int currentSecInteractible = 0;
 
 
     #region mods
@@ -442,13 +502,51 @@ public class MainWindowViewModel : BaseViewModel
         LoadWindowSettings();
 
 
+        Interactable = true;
+
+        DispatcherTimer interactibleTimer = new DispatcherTimer();
+        interactibleTimer.Tick += InteractableTick;
+        interactibleTimer.Interval = TimeSpan.FromSeconds(1);
+        interactibleTimer.Start();
 
 
-        //LoadDailyGoal();
+    }
+
+    private void InteractableTick(object sender, EventArgs e)
+    {
+        if (MouseOnWindow)
+        {
+            currentSecInteractible = 0;
+            return;
+        }
+        currentSecInteractible++;
+
+        if (currentSecInteractible < secInteractibleAfk)
+            return;
 
 
+        if (Interactable)
+        {
+            MakeWindowClickThrough();
+            Interactable = false;
+        }
+    }
 
+    private void MakeWindowNonClickThrough()
+    {
 
+        //var buttonHwndSource = (HwndSource)HwndSource.FromVisual(btn);
+        //var buttonHwnd = buttonHwndSource.Handle;
+        var windowHwnd = new WindowInteropHelper(CurrentWindow.GetAssociatedWindow).Handle;
+        WinApi.SetWindowExNotTransparent(windowHwnd);
+    }
+
+    private void MakeWindowClickThrough()
+    {
+
+        var windowHwnd = new WindowInteropHelper(CurrentWindow.GetAssociatedWindow).Handle;
+
+        WinApi.SetWindowExTransparent(windowHwnd);
 
 
     }
@@ -541,7 +639,7 @@ public class MainWindowViewModel : BaseViewModel
             switch (mod.Loader.Instance.GetModulePosition())
             {
                 case ModulePosition.TOP:
-                AddViewToViewCollection(TopModules, mod);
+                    AddViewToViewCollection(TopModules, mod);
                     //TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
 
                     break;

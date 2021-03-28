@@ -47,7 +47,7 @@ namespace Caravansary
         {
             mainWindow.ShowInTaskbar = !mainWindow.ShowInTaskbar;
 
-            _mainWindowSettings.ShowInTaskbar = mainWindow.ShowInTaskbar; //todo test
+            _mainWindowSettings.ShowInTaskbar = mainWindow.ShowInTaskbar; 
         }
 
         private void TrayStayOnTopClicked(object sender, EventArgs e)

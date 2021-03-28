@@ -33,6 +33,8 @@ namespace Caravansary
             wnd.Closing += vm.OnWindowClosing;
             wnd.MouseUp += vm.MouseUp;
             wnd.MouseDown += vm.MouseDown;
+            wnd.MouseEnter += vm.MouseEnter;
+            wnd.MouseLeave += vm.MouseLeave;
             wnd.Show();
 
 
