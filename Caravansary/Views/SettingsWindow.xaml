@@ -6,10 +6,34 @@
         xmlns:local="clr-namespace:Caravansary"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="400" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" >
+        Title="Settings" Height="450" Width="400" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="WidthAndHeight" >
 
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
+            <Setter Property="Background" Value="{x:Null}"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+
+
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+            </Style.Resources>
+        </Style>
     </Window.Resources>
 
     <Window.Foreground>
@@ -25,23 +49,15 @@
     <!--<i:Interaction.Behaviors>
         <local:CloseWindowOnKey Key="Esc"/>
     </i:Interaction.Behaviors>-->
+
+
+
     <StackPanel>
+
         <Grid >
             <TextBlock Text="{Binding AppVersion, FallbackValue=Version}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        
-        <StackPanel Visibility="Collapsed">
-            <CheckBox Foreground="{DynamicResource DefaultForeground}" IsChecked="{Binding CheckboxBottomBar, Mode=TwoWay}"  x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30"  >
-                <CheckBox.BorderBrush>
-                    <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
-                </CheckBox.BorderBrush>
-                <CheckBox.Background>
-                    <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
-                </CheckBox.Background>
-            </CheckBox>
-        </StackPanel>
-        
-        
+
         <StackPanel Orientation="Horizontal">
             <Label Width="180"  Margin="5" Content="Transparency" HorizontalContentAlignment="Center">
                 <Label.Foreground>
@@ -55,71 +71,39 @@
             </Slider>
         </StackPanel>
 
+        <ListView  ItemsSource="{Binding ModuleSettingsControls,Mode=TwoWay}"  >
 
-        <StackPanel>
-            <StackPanel.Background>
-                <!--<SolidColorBrush Color="{StaticResource DefaultBgLighterDarkColor}"/>-->
-                <SolidColorBrush Color="{DynamicResource DefaultBgLighterDarkColor}" />
-            </StackPanel.Background>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <GroupBox  Header="{Binding Path=Tag.ModuleName,ElementName=moduleItem }" BorderThickness=".5" BorderBrush="{DynamicResource DefaultForeground}">
+                        <UserControl x:Name="moduleItem" Tag="{Binding}" Content="{Binding View}" >
+                        </UserControl>
+                    </GroupBox>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition  Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="300" />
-                    <ColumnDefinition Width="100"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Row="0" Grid.Column="0" ToolTip="Blacklists timer runnning when user on specific windows processes name or browser address ex. &quot;chrome:url&quot;"  Text="Blacklist active" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <CheckBox Grid.Row="0" Grid.Column="1" x:Name="BlacklistEnableCheckbox"  IsChecked="{Binding CheckBoxBlacklistEnabled, Mode=TwoWay}" Margin="0,5"  />
-                <Button Content="&#xf067;" FontFamily="{StaticResource FontAwesome}" Width="25" Grid.Row="0" Grid.Column="1" Command="{Binding CreateNewBlacklistItem}" FontWeight="Normal" Margin="0,5"  >
-                    <Button.BorderBrush>
-                        <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
-                    </Button.BorderBrush>
-                    <Button.Background>
-                        <SolidColorBrush Color="{DynamicResource DefaultBgLighterDarkColor}"/>
-                    </Button.Background>
-                </Button>
-
-            </Grid>
-
-            <ListView Name="Blacklist" ItemsSource="{Binding BlacklistItems,Mode=TwoWay}" Background="{x:Null}" Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}">
-                <ListView.BorderBrush>
+        <!--<StackPanel Visibility="Collapsed">
+            <CheckBox Foreground="{DynamicResource DefaultForeground}" IsChecked="{Binding CheckboxBottomBar, Mode=TwoWay}"  x:Name="checkbox_bottombar" Content="Bottom bar" HorizontalAlignment="Center"  VerticalAlignment="Top" FontSize="15" VerticalContentAlignment="Center" Padding="4,-1,0,0" Height="30"  >
+                <CheckBox.BorderBrush>
                     <SolidColorBrush Color="{DynamicResource DefaultForegroundColor}"/>
-                </ListView.BorderBrush>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Text="{Binding Rule, FallbackValue=empty}" Background="{x:Null}"/>
-                            <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-
-            <!--<ItemsControl >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>-->
-
-            <!--<StackPanel Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked}"  Style="{StaticResource SettingsList}" Orientation="Horizontal">
-
-                <TextBlock   Text="safd"/>
-                <CheckBox  HorizontalAlignment="Center"/>
-            </StackPanel>-->
+                </CheckBox.BorderBrush>
+                <CheckBox.Background>
+                    <SolidColorBrush Color="{DynamicResource DefaultBgDarkColor}"/>
+                </CheckBox.Background>
+            </CheckBox>
+        </StackPanel>-->
 
 
-        </StackPanel>
+
+
+
+
 
     </StackPanel>
 </Window>

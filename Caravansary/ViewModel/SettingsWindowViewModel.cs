@@ -1,168 +1,117 @@
-﻿using Caravansary.Properties;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
 
-namespace Caravansary
+class SettingsWindowViewModel : BaseViewModel
 {
-    class SettingsWindowViewModel : BaseViewModel
+
+    #region Properties
+    public string _appVersion;
+    public string AppVersion
     {
-
-        #region Properties
-        public string _appVersion;
-        public string AppVersion
+        get => string.IsNullOrEmpty(_appVersion) ? Data.Version.ToString() : _appVersion;
+        set
         {
-            get => string.IsNullOrEmpty(_appVersion) ? GlobalSettings.Version.ToString() : _appVersion;
-            set
-            {
-                _appVersion = value;
-                OnPropertyChanged(nameof(AppVersion));
-            }
+            _appVersion = value;
+            OnPropertyChanged(nameof(AppVersion));
         }
-
-        public bool RoadmapEnabled
+    }
+    public double BackgroundTransparency
+    {
+        get => Data.MainWindowSettingsSave.BackgroundTransparency;
+        set
         {
-            get => Settings.Default.RoadmapEnabled;
-            set
-            {
-                Settings.Default.RoadmapEnabled = value;
-                Settings.Default.Save();
+            ((MainWindowViewModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;//use  ioc di todo
 
-                OnPropertyChanged(nameof(RoadmapEnabled));
-
-            }
+            Data.MainWindowSettingsSave.BackgroundTransparency = value;
+            Data.SaveWindowSettings();
+            OnPropertyChanged(nameof(BackgroundTransparency));
         }
+    }
 
-        public bool CheckboxBottomBar
+
+    private ObservableCollection<ViewModuleSettings> _settingsControls;
+    public ObservableCollection<ViewModuleSettings> ModuleSettingsControls
+    {
+        get
         {
-            get => Settings.Default.CheckBoxBottomBar;
-            set
+            if (_settingsControls == null)
             {
-                Settings.Default.CheckBoxBottomBar = value;
-                Settings.Default.Save();
-                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).BotBarEnabled = value;
-
-                OnPropertyChanged(nameof(CheckboxBottomBar));
-            }
-        }
-
-        public bool CheckBoxBlacklistEnabled
-        {
-            get => Settings.Default.CheckBoxBlacklistEnabled;
-            set
-            {
-                Settings.Default.CheckBoxBlacklistEnabled = value;
-                Settings.Default.Save();
 
 
-                OnPropertyChanged(nameof(CheckBoxBlacklistEnabled));
-            }
-        }
+                _settingsControls = new ObservableCollection<ViewModuleSettings>();
 
-        public double _backgroundTransparency => Settings.Default.BackgroundTransparency;
-        public double BackgroundTransparency
-        {
-            get => Settings.Default.BackgroundTransparency;
-            set
-            {
-                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;
-
-                Settings.Default.BackgroundTransparency = value;
-                Settings.Default.Save();
-                OnPropertyChanged(nameof(BackgroundTransparency));
-            }
-        }
-
-
-
-
-
-        private ObservableCollection<BlacklistItem> _blacklistItems;
-        public ObservableCollection<BlacklistItem> BlacklistItems
-        {
-            get
-            {
-                if (_blacklistItems == null)
+                foreach (var item in ModuleController.Instance.CoreModuleValues)
                 {
-                    _blacklistItems = new ObservableCollection<BlacklistItem>(Settings.Default.BlacklistItems);
 
+                    var v = item.Loader.Instance.GetSettingsUserControlView();
+                    if (v != null)
+                    {
+
+                        _settingsControls.Add(new ViewModuleSettings
+                        {
+                            ModuleName = item.Loader.Instance.GetModuleName(),
+                            View = item.Loader.Instance.GetSettingsUserControlView()
+                        });
+                    }
                 }
 
-                return _blacklistItems;
             }
-            set
-            {
-                _blacklistItems = value;
 
-                OnPropertyChanged(nameof(BlacklistItems));
-            }
+            return _settingsControls;
         }
-
-
-        #endregion
-
-        #region Commands
-
-        private ICommand _createNewBlacklistItem;
-        public ICommand CreateNewBlacklistItem
+        set
         {
-            get
-            {
-                if (_createNewBlacklistItem == null)
-                    _createNewBlacklistItem = new RelayCommand(
-                       (object o) =>
-                       {
-                           var k = new BlacklistItem("empty");
-                           _blacklistItems.Add(k);
+            _settingsControls = value;
 
-                           GlobalSettings.SettingsBlackListItems.Add(k);
-                           Settings.Default.Save();
-
-                       },
-                       (object o) =>
-                       {
-                           return true;
-
-                       });
-
-                return _createNewBlacklistItem;
-
-            }
+            OnPropertyChanged(nameof(ModuleSettingsControls));
         }
+    }
+
+    public class ViewModuleSettings
+    {
+        public UserControl View { get; set; }
+        public string ModuleName { get; set; }
+    }
+
+    //private ObservableCollection<UserControl> _settingsControls;
+    //public ObservableCollection<UserControl> ModuleSettingsControls
+    //{
+    //    get
+    //    {
+    //        if (_settingsControls == null)
+    //        {
+    //            _settingsControls = new ObservableCollection<UserControl>();
+    //            var ret = ModuleController.Instance.GetSettingsViews();
+    //            if (ret != null)
+    //                _settingsControls = ret;
+
+    //        }
+
+    //        return _settingsControls;
+    //    }
+    //    set
+    //    {
+    //        _settingsControls = value;
+
+    //        OnPropertyChanged(nameof(ModuleSettingsControls));
+    //    }
+    //}
 
 
-        private RelayCommand _removeBlacklistItem;
-        public RelayCommand RemoveBlacklistItem
-        {
-            get
-            {
-                if (_removeBlacklistItem == null)
-                    _removeBlacklistItem = new RelayCommand(
-                       (object o) =>
-                       {
-                           if (o is BlacklistItem)
-                           {
-                               BlacklistItems.Remove(o as BlacklistItem);
 
-                               GlobalSettings.SettingsBlackListItems.Remove(o as BlacklistItem);
-                               Settings.Default.Save();
 
-                           }
+    #endregion
 
-                       },
-                       (object o) =>
-                       {
-                           return true;
 
-                       });
 
-                return _removeBlacklistItem;
+    public SettingsWindowViewModel()
+    {
+        InjectSettingsFromModules();
+    }
 
-            }
-        }
-
-        #endregion
-
+    private void InjectSettingsFromModules()
+    {
 
     }
 }
