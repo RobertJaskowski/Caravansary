@@ -4,6 +4,11 @@
 			"Name": "ActiveTimer",
 			"Description": "Keeps it rolling when you are active!",
 			"DownloadLink": "https://github.com/RobertJaskowski/ActiveTimer/releases/latest/download/ActiveTimer.zip"
+		},
+		{
+			"Name": "MainBar",
+			"Description": "Progress bar with colors",
+			"DownloadLink": "https://github.com/RobertJaskowski/MainBar/releases/latest/download/MainBar.zip"
 		}
 	]
 }
