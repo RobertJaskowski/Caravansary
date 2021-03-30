@@ -15,7 +15,7 @@ public class Update
     public static UpdateStatus Status;
     public static void Init()
     {
-        HandleUpdates();
+        Task.Run(() => HandleUpdates());
 
     }
 
@@ -24,25 +24,24 @@ public class Update
     {
         if (!InternetAvailability.IsInternetAvailable()) return;
 
-        if (IsMainAppUpdateAvailable())
+        if (await IsMainAppUpdateAvailable())
         {
             Status = UpdateStatus.UPDATEAVAILABLE;
             await HandleLauncherUpdate();
         }
 
-        HandleMainAppUpdate();
 
 
     }
 
-    private static bool IsMainAppUpdateAvailable()
+    private static async Task<bool> IsMainAppUpdateAvailable()
     {
 
         try
         {
             using (WebClient client = new WebClient())
             {
-                var success = Version.TryParse(client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt"), out Version result);
+                var success = Version.TryParse(await Task.Run(()=> client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt")), out Version result);
                 if (!success)
                     return false;
 
@@ -92,8 +91,7 @@ public class Update
             if (existingLauncherVersion == null)
                 existingLauncherVersion = new Version(0, 0, 0);
 
-            //var ver = new Version(client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/LauncherCaravansary/master/version.txt"));
-
+            
             using (WebClient client = new WebClient())
             {
                 var success = Version.TryParse(await Task.Run(() => client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/LauncherCaravansary/master/version.txt")), out Version onlineLauncherVersion);
@@ -139,11 +137,6 @@ public class Update
         {
             return false;
         }
-    }
-
-    private static async Task HandleMainAppUpdate()
-    {
-
     }
 
 

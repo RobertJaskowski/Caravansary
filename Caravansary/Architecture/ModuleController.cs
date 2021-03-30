@@ -301,6 +301,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
         if (IsModulesDirectory(path))
         {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             var tempDir = Directory.GetDirectories(path).ToList();
 
             foreach (var td in tempDir)
