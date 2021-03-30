@@ -45,12 +45,12 @@ public class ModulesListViewModel : BaseViewModel
                 _removeModuleButton = new RelayCommand(
                    (object o) =>
                    {
-                       Process.Start("explorer.exe", DesktopHelper.moduleFolder);
+                       Process.Start("explorer.exe", Paths.MODULE_DIRECTORY);
 
                    },
                    (object o) =>
                    {
-                       return Directory.Exists(DesktopHelper.moduleFolder);
+                       return Directory.Exists(Paths.MODULE_DIRECTORY);
                    });
 
             return _removeModuleButton;
@@ -160,7 +160,7 @@ public class ModulesListViewModel : BaseViewModel
 
         if (res)
         {
-            ModuleController.Instance.ScanDirectory(DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + vmli.Name);
+            ModuleController.Instance.ScanDirectory(Paths.MODULE_DIRECTORY + Path.DirectorySeparatorChar + vmli.Name);
         }
 
 

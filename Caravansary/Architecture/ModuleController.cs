@@ -73,7 +73,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
                 var cd = new ContentDisposition(webClient.ResponseHeaders["Content-Disposition"]);
                 fileName = cd.FileName;
-                filePath = DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + cd.FileName;
+                filePath = Paths.APPDATA_C_DIRECTORY + Path.DirectorySeparatorChar + cd.FileName;
 
 
                 // await Task.Run(() => webClient.DownloadFileAsync(new Uri(onlineModuleListItem.DownloadLink), filePath));
@@ -111,7 +111,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
                 }
 
 
-                zip.ExtractToDirectory(DesktopHelper.moduleFolder);
+                zip.ExtractToDirectory(Paths.MODULE_DIRECTORY);
 
             }
 
@@ -169,7 +169,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         try
         {
 
-            string pathToMod = DesktopHelper.moduleFolder + Path.DirectorySeparatorChar + name;
+            string pathToMod = Paths.MODULE_DIRECTORY + Path.DirectorySeparatorChar + name;
             string pathTOModDir = pathToMod + Path.DirectorySeparatorChar + "ActiveTimer.dll";
             if (Directory.Exists(pathToMod))
             {
@@ -226,7 +226,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
         else
         {
-            file.CopyTo(DesktopHelper.moduleFolder);
+            file.CopyTo(Paths.MODULE_DIRECTORY);
         }
     }
 
@@ -427,9 +427,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
     }
     internal void LoadSavedActiveModules()
     {
-        ModuleController.Instance.ScanDirectory(DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Modules");
+        ModuleController.Instance.ScanDirectory(Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Modules");
 
-        var load = Saves.Load<SavedActiveModules>(DesktopHelper.APP_NAME, "SavedActiveModules");
+        var load = Saves.Load<SavedActiveModules>(Paths.APP_NAME, "SavedActiveModules");
 
         if (load == null)
             return;
@@ -472,7 +472,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
             sam.list.Add(item);
         }
 
-        Saves.Save(DesktopHelper.APP_NAME, "SavedActiveModules", sam);
+        Saves.Save(Paths.APP_NAME, "SavedActiveModules", sam);
     }
 
     public void StartCoreModule(string name)

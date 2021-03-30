@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 
 public static class Data
@@ -10,8 +11,7 @@ public static class Data
         {
             if (_version == null)
             {
-                var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                _version = new Version(v);
+                _version = Assembly.GetExecutingAssembly().GetName().Version;
 
             }
 
@@ -60,7 +60,7 @@ public static class Data
     {
         if (_mainWindowSettingsSave != null)
         {
-            bool ret = Saves.Save(DesktopHelper.APP_NAME, "MainWindowSettings", _mainWindowSettingsSave);//todo make async
+            bool ret = Saves.Save(Paths.APP_NAME, "MainWindowSettings", _mainWindowSettingsSave);//todo make async
         }
     }
 }

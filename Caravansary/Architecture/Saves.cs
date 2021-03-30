@@ -7,9 +7,9 @@ public static class Saves
 {
 
     public static string savesDirectoryLocation =
-        !DesktopHelper.IsApplicationPortable() ?
-        DesktopHelper.appdataCFOLDER_PATH + Path.DirectorySeparatorChar + "Saves" :
-        DesktopHelper.mainApplicationDirectoryPath + Path.DirectorySeparatorChar + "Saves";
+        !Paths.IsApplicationPortable() ?
+        Paths.APPDATA_C_DIRECTORY + Path.DirectorySeparatorChar + "Saves" :
+        Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Saves";
 
 
     public static string GetModuleSaveDirectory(string moduleName)

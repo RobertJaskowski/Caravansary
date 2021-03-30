@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -13,10 +18,8 @@ namespace Caravansary
     public partial class App : Application
     {
         private IntPtr CurrentHandleWindow { get; set; }
-        static string appdataAPPDATA_PATH = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        static string appdataCFOLDER_PATH = Path.Combine(appdataAPPDATA_PATH, "Caravansary");
-        static string dumpFileLocation = Path.Combine(appdataCFOLDER_PATH, "dump.txt");
-
+        
+        public bool UpdateAwaitingToDownload = false;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -40,31 +43,26 @@ namespace Caravansary
 
             vm.InitModuleController();
 
-            return;
 
-            WebClient webClient = new WebClient();
+            Update.Init();
 
-            try
-            {
-                var ver = new Version(webClient.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt"));
-                if (Data.Version.IsLower(ver))
-                {
-                    string handlestr = CurrentHandleWindow.ToString();
-                    File.WriteAllText(dumpFileLocation, handlestr);
-
-                    Process.Start("LauncherCaravansary.exe");
-
-
-
-                    Application.Current.MainWindow.Close();
-                }
-
-            }
-            catch
-            {
-
-            }
+            
         }
 
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            if (Update.Status == UpdateStatus.UPDATEAVAILABLE)
+            {
+                List<string> args = new List<string>()
+                {
+                    "RequstedUpdate",
+                    Paths.APP_DIRECTORY
+                };
+
+                Process.Start(Paths.APPDATA_LAUNCHER_EXE, args);
+                Application.Current.MainWindow?.Close();
+                Application.Current?.Shutdown();
+            }
+        }
     }
 }
