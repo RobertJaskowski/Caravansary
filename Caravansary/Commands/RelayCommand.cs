@@ -1,7 +1,8 @@
-﻿using System;
+﻿
+using System;
 using System.Windows.Input;
 
-class RelayCommand : ICommand
+public class RelayCommand : ICommand
 {
     private Action<object> execute;
     private Func<object, bool> canExecute;

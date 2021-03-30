@@ -44,27 +44,12 @@
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
-    <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}"/>
     <Style  TargetType="{x:Type CheckBox}" BasedOn="{StaticResource BaseStyle}">
         <Setter Property="Background" Value="{StaticResource DefaultBgDark}"/>
         <Setter Property="BorderBrush" Value="{StaticResource DefaultForeground}"/>
     </Style>
 
-   
-
-    <Style x:Key="SettingsList" TargetType="StackPanel">
-        <Style.Resources>
-            
-            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource BaseTextBlockStyle}">
-                <Setter Property="Width" Value="300"/>
-                <Setter Property="TextAlignment" Value="Center"/>
-            </Style>
-            <Style TargetType="{x:Type CheckBox}" >
-                <Setter Property="Width" Value="100"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-            </Style>
-        </Style.Resources>
-    </Style>
+    
 
     <ContextMenu x:Key="ContextMenuStyle">
         <ContextMenu.Resources>

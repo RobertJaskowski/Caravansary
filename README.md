@@ -6,9 +6,20 @@
 
 ## **Caravansary** is productivity tools always visible on desktop. There is no need for window switching or managing multiple processes for different tasks.
 
+### Features 
+- Click through by deault
+- [Timer that is active when working with process blacklist](https://github.com/RobertJaskowski/ActiveTimer)
 
-### Roadmap:
-- [x] Activity timer that stops on blacklisted processes. It counts you work time excluding afk time and social apps time.
-- [x] Daily goal always present on the screen
-- [x] Ctrl Z counter ( can be used for artists as requested)
-- [ ] Task roadmap leading to goal always on screen
+
+### Contribute
+1. Star this repo
+2. Suggest features, modules 
+3. or help developing it
+   - Clone this repo
+   - Create wpf class library project
+   - Reference Caravansary.SDK
+   - Implement ICoreModule
+   - Modules in folder 'Modules' will be automatically detected and run in the app
+   - Pack dll and extra files to .zip
+   - Create a task or edit OnlineModuleList, so your module can be visible in the application module list.
+4. Thank you <3

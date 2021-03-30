@@ -7,7 +7,7 @@ namespace Caravansary
     {
         public static double DefaultWindowX(Window Window)
         {
-          return  ((SystemParameters.WorkArea.Width / 2) - (Window.Width / 2));
+            return ((SystemParameters.WorkArea.Width / 2) - (Window.Width / 2));
         }
         // Screen.FromControl(this).WorkingArea.Width / 2;
 

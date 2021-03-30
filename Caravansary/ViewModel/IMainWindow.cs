@@ -7,15 +7,15 @@ namespace Caravansary
         TimeSpan GetActivatedTime();
 
 
-        ArtistState GetArtistState();
-        void SetArtistState(ArtistState value);
+        //ArtistState GetArtistState();
+        //void SetArtistState(ArtistState value);
 
 
         bool GetArtistActive();
         void SetArtistActive(bool value);
 
-        public void ShowNotification(Notification notification);
+        //public void ShowNotification(Notification notification);
         public void SetMidLable(string text);
-        
+
     }
 }

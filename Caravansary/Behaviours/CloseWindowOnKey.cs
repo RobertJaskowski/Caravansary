@@ -1,12 +1,9 @@
-﻿
-//using Microsoft.Xaml.Behaviors;
-using System.Windows;
-using System.Windows.Input;
+﻿//using Microsoft.Xaml.Behaviors;
 
 namespace Caravansary
 {
-    class CloseWindowOnKey 
-        //: Behavior<Window>
+    class CloseWindowOnKey
+    //: Behavior<Window>
     {
         //public Key Key { get; set; }
 
