@@ -38,6 +38,8 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     private Dictionary<string, ModuleInfo> _coreModules = new Dictionary<string, ModuleInfo>();
 
+    private Dictionary<string, Dictionary<string, Action<object>>> _events = new Dictionary<string, Dictionary<string, Action<object>>>();
+
     public Action<ModuleInfo> OnModulesChanged;
     public Action<ModuleInfo> OnModuleStarted;
     public Action<ModuleInfo> OnModuleStopped;
@@ -625,6 +627,74 @@ public class ModuleController : MarshalByRefObject, IModuleController
     public T LoadModuleInformation<T>(string ModuleName, string saveFileName)
     {
         return Saves.Load<T>(ModuleName, saveFileName);
+    }
+
+    public void SubscribeToEvent(string ModuleName, string eventName, Action<object> action)
+    {
+        var suc = _events.TryGetValue(ModuleName, out Dictionary<string, Action<object>> result);
+        if (!suc)
+        {
+            var nd = new Dictionary<string, Action<object>>();
+            nd.Add(eventName, action);
+            _events.Add(ModuleName, nd);
+            return;
+        }
+
+
+        var eventSuc = result.TryGetValue(eventName, out Action<object> actions);
+        if (!eventSuc)
+        {
+            var nd = new Dictionary<string, Action<object>>();
+            nd.Add(eventName, action);
+            result = nd;
+            return;
+        }
+
+        actions += action;
+
+    }
+
+    public void UnsubscribeToEvent(string ModuleName, string eventName, Action<object> action)
+    {
+        var suc = _events.TryGetValue(ModuleName, out Dictionary<string, Action<object>> result);
+        if (!suc)
+        {
+            return;
+        }
+
+
+        var eventSuc = result.TryGetValue(eventName, out Action<object> actions);
+        if (!eventSuc)
+        {
+            _events.Remove(ModuleName);
+            return;
+        }
+
+        if(actions == null)
+        {
+            result.Remove(eventName);
+        }
+
+        actions -= action;
+    }
+
+
+
+    public void OnEventTriggered(string ModuleName, string eventName,object data)
+    {
+        var suc = _events.TryGetValue(ModuleName, out Dictionary<string, Action<object>> result);
+        if (!suc) return;
+
+        for (int i = 0; i < result.Keys.Count; i++)
+        {
+            var eventSuc = result.TryGetValue(eventName, out Action<object> actions);
+            if (!eventSuc)
+                return;
+
+            actions?.Invoke(data);
+
+
+        }
     }
 
 }

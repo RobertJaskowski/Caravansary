@@ -18,8 +18,9 @@ public interface IModuleController
 
     T LoadModuleInformation<T>(string ModuleName, string saveFileName);
 
-
-    
+    void SubscribeToEvent(string ModuleName, string eventName, Action<object> action);
+    void UnsubscribeToEvent(string ModuleName, string eventName, Action<object> action);
+    void OnEventTriggered(string ModuleName, string eventName, object data);
 
     #region events
     public void HookWindowSwitchEvent(Action<WindowSwitchedArgs> method);
