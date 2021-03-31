@@ -1,7 +1,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/robertjaskowski/Caravansary?color=%23&style=for-the-badge)
 ![GitHub Release Date](https://img.shields.io/github/release-date/robertjaskowski/caravansary?style=for-the-badge)
-<br>s
+<br>
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=rjjaskowski)
 
 ## **Caravansary** is productivity tools always visible on desktop. There is no need for window switching or managing multiple processes for different tasks.
