@@ -120,6 +120,21 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <ListView Name="BotModules" ItemsSource="{Binding BotModules,Mode=TwoWay}"  >
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <UserControl Content="{Binding UserControlView}" >
+                    </UserControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
         <StackPanel Orientation="Horizontal" Visibility="{Binding GetModulesButtonVisibility}">
             <TextBlock Text="You have currently no modules."/>
             <Button Content="Get modules" Command="{Binding GetModulesClick}"/>

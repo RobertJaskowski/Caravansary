@@ -284,14 +284,14 @@ public class ModuleController : MarshalByRefObject, IModuleController
         KeyboardListener.Instance.OnKeyPressed -= method;
     }
 
-    public void HookKeyboardReleaseEvent(Action<KeyPressedArgs> method)
+    public void HookKeyboardReleaseEvent(Action<KeyReleasedArgs> method)
     {
-        KeyboardListener.Instance.OnKeyPressed += method;
+        KeyboardListener.Instance.OnKeyReleased += method;
     }
 
-    public void UnHookKeyboardReleasedEvent(Action<KeyPressedArgs> method)
+    public void UnHookKeyboardReleasedEvent(Action<KeyReleasedArgs> method)
     {
-        KeyboardListener.Instance.OnKeyPressed -= method;
+        KeyboardListener.Instance.OnKeyReleased -= method;
     }
 
     #endregion

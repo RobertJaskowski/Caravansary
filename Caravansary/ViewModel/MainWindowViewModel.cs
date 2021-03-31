@@ -651,7 +651,7 @@ public class MainWindowViewModel : BaseViewModel
     {
         foreach (var mod in coreModuleValues)
         {
-            mod.Loader.Start();
+
 
             switch (mod.Loader.Instance.GetModulePosition())
             {

@@ -31,9 +31,9 @@ public interface IModuleController
 
     public void UnHookKeyboardPressedEvent(Action<KeyPressedArgs> method);
 
-    public void HookKeyboardReleaseEvent(Action<KeyPressedArgs> method);
+    public void HookKeyboardReleaseEvent(Action<KeyReleasedArgs> method);
 
-    public void UnHookKeyboardReleasedEvent(Action<KeyPressedArgs> method);
+    public void UnHookKeyboardReleasedEvent(Action<KeyReleasedArgs> method);
 
     #endregion
 }
