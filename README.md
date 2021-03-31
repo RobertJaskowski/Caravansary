@@ -9,6 +9,7 @@
 ### Features 
 - Click through by default (always stays on top of windows and is not clickable until Ctrl is pressed)
 - Plugable architecture ( Develop easily new modules and inject them into the app )
+- Get available modules from internet from application itself
 - [Timer that is active when working with process blacklist](https://github.com/RobertJaskowski/ActiveTimer)
 - [Colored bar state (used with other plugins)](https://github.com/RobertJaskowski/MainBar)
 - [Daily goal tracker](https://github.com/RobertJaskowski/DailyGoal)
