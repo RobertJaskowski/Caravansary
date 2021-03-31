@@ -9,6 +9,21 @@
 			"Name": "MainBar",
 			"Description": "Progress bar with colors",
 			"DownloadLink": "https://github.com/RobertJaskowski/MainBar/releases/latest/download/MainBar.zip"
+		},
+		{
+			"Name": "DailyGoal",
+			"Description": "Track your daily goal! Main bar support.",
+			"DownloadLink": "https://github.com/RobertJaskowski/DailyGoal/releases/latest/download/DailyGoal.zip"
+		},
+		{
+			"Name": "KeyCounter",
+			"Description": "Key counter",
+			"DownloadLink": "https://github.com/RobertJaskowski/KeyCounter/releases/latest/download/KeyCounter.zip"
+		},
+		{
+			"Name": "RoadMap",
+			"Description": "Road map to do items",
+			"DownloadLink": "https://github.com/RobertJaskowski/RoadMap/releases/latest/download/RoadMap.zip"
 		}
 	]
 }
