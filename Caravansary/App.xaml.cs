@@ -56,7 +56,7 @@ namespace Caravansary
                 List<string> args = new List<string>()
                 {
                     "RequstedUpdate",
-                    Paths.APP_DIRECTORY
+                    Paths.APP_EXE
                 };
 
                 Process.Start(Paths.APPDATA_LAUNCHER_EXE, args);
