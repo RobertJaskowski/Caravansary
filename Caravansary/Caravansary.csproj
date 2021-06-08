@@ -119,6 +119,15 @@
 		<PackageReference Include="FontAwesome" Version="4.7.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="SocketIO4Net.Client" Version="0.6.26" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="Porter.Core">
+	    <HintPath>..\..\Porter\Porter.Core\bin\Debug\net5.0\Porter.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="SimpleHTTP">
+	    <HintPath>..\..\Porter\Porter.Core\bin\Debug\net5.0\SimpleHTTP.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
 </Project>

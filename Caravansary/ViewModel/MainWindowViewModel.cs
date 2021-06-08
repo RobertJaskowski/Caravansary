@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -16,10 +17,10 @@ using System.Windows.Threading;
 
 public class MainWindowViewModel : BaseViewModel
 {
-
     #region Properties
 
     private bool _interactable;
+
     public bool Interactable
     {
         get
@@ -31,9 +32,7 @@ public class MainWindowViewModel : BaseViewModel
             _interactable = value;
             OnPropertyChanged(nameof(Interactable));
             OnPropertyChanged(nameof(BackgroundTransparency));
-
         }
-
     }
 
     private bool _mouseOnWindow;
@@ -48,9 +47,8 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-
-
     private bool _fullView;
+
     public bool FullView
     {
         get
@@ -65,9 +63,7 @@ public class MainWindowViewModel : BaseViewModel
                 ModuleController.Instance.OnFullViewEntered();
             else
                 ModuleController.Instance.OnMinViewEntered();
-
         }
-
     }
 
     public bool ShowInTaskbar
@@ -82,11 +78,8 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged(nameof(ShowInTaskbar));
             OnPropertyChanged(nameof(Data.MainWindowSettingsSave));
             Data.SaveWindowSettings();
-
         }
     }
-
-
 
     public double BackgroundTransparency
     {
@@ -103,7 +96,6 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged(nameof(BackgroundTransparency));
             OnPropertyChanged(nameof(Data.MainWindowSettingsSave));
             Data.SaveWindowSettings();
-
         }
     }
 
@@ -119,7 +111,6 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged(nameof(MainWindowPositionX));
             OnPropertyChanged(nameof(Data.MainWindowSettingsSave));
             Data.SaveWindowSettings();
-
         }
     }
 
@@ -134,12 +125,11 @@ public class MainWindowViewModel : BaseViewModel
             Data.MainWindowSettingsSave.MainWindowPositionY = value;
             OnPropertyChanged(nameof(MainWindowPositionY));
             Data.SaveWindowSettings();
-
         }
     }
 
-
     private Visibility _visibility = Visibility.Collapsed;
+
     public Visibility GetModulesButtonVisibility
     {
         get
@@ -153,10 +143,10 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-
-    #endregion
+    #endregion Properties
 
     #region Events
+
     internal void MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Pressed)
@@ -171,7 +161,6 @@ public class MainWindowViewModel : BaseViewModel
 
     internal void OnWindowLoaded(object sender, RoutedEventArgs e)
     {
-
         KeyboardListener.Instance.OnKeyPressed += OnKeyPressed;
         KeyboardListener.Instance.OnKeyReleased += OnKeyReleased;
     }
@@ -190,14 +179,12 @@ public class MainWindowViewModel : BaseViewModel
 
     private void OnKeyReleased(KeyReleasedArgs obj)
     {
-
     }
 
     private void OnKeyPressed(KeyPressedArgs obj)
     {
         if (obj.KeyPressed == Key.LeftCtrl)
         {
-
             Debug.WriteLine("interactible key pressed");
             if (!Interactable)
             {
@@ -219,27 +206,21 @@ public class MainWindowViewModel : BaseViewModel
 
     internal void OnWindowClosing(object sender, CancelEventArgs e)
     {
-
         ModuleController.Instance.StopAllModules();
         KeyboardListener.Instance.UnHookKeyboard();
-
-
-
     }
-
 
     private static void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         System.Windows.MessageBox.Show("Unhandled exception occurred: \n" + e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
     }
 
-    #endregion
-
+    #endregion Events
 
     #region Commands
 
     private ICommand _remDir;
+
     public ICommand RemoveDir
     {
         get
@@ -249,8 +230,6 @@ public class MainWindowViewModel : BaseViewModel
                    (object o) =>
                    {
                        ModuleController.Instance.RemoveModuleCatalog("ActiveTimer");
-
-
                    },
                    (object o) =>
                    {
@@ -260,7 +239,9 @@ public class MainWindowViewModel : BaseViewModel
             return _remDir;
         }
     }
+
     private ICommand _getModulesClick;
+
     public ICommand GetModulesClick
     {
         get
@@ -270,8 +251,6 @@ public class MainWindowViewModel : BaseViewModel
                    (object o) =>
                    {
                        ShowWindow();
-
-
                    },
                    (object o) =>
                    {
@@ -291,6 +270,7 @@ public class MainWindowViewModel : BaseViewModel
     }
 
     private ICommand _showSettings;
+
     public ICommand ShowSettings
     {
         get
@@ -299,12 +279,10 @@ public class MainWindowViewModel : BaseViewModel
                 _showSettings = new RelayCommand(
                    (object o) =>
                    {
-
                        SettingsWindow dialog = new SettingsWindow();
                        dialog.DataContext = new SettingsWindowViewModel();
 
                        bool? result = dialog.ShowDialog();
-
                    },
                    (object o) =>
                    {
@@ -316,6 +294,7 @@ public class MainWindowViewModel : BaseViewModel
     }
 
     private ICommand _quitApp;
+
     public ICommand QuitApp
     {
         get
@@ -325,8 +304,6 @@ public class MainWindowViewModel : BaseViewModel
                    (object o) =>
                        {
                            Application.Current.Shutdown();
-
-
                        },
                    (object o) =>
                    {
@@ -337,23 +314,19 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-
-    #endregion
-
+    #endregion Commands
 
     private IntPtr CurrentHandleWindow { get; set; }
 
-
-
-
     public IWindow CurrentWindow;
-    TrayIcon trayIcon;
+    private TrayIcon trayIcon;
     public int secInteractibleAfk = 3;
     public int currentSecInteractible = 0;
 
-
     #region mods
+
     private ObservableCollection<ViewModule> _topModules;
+
     public ObservableCollection<ViewModule> TopModules
     {
         get
@@ -361,7 +334,6 @@ public class MainWindowViewModel : BaseViewModel
             if (_topModules == null)
             {
                 _topModules = new ObservableCollection<ViewModule>();
-
             }
 
             return _topModules;
@@ -374,8 +346,8 @@ public class MainWindowViewModel : BaseViewModel
         }
     }
 
-
     private ObservableCollection<ViewModule> _viewCoreModules;
+
     public ObservableCollection<ViewModule> ViewCoreModules
     {
         get
@@ -383,7 +355,6 @@ public class MainWindowViewModel : BaseViewModel
             if (_viewCoreModules == null)
             {
                 _viewCoreModules = new ObservableCollection<ViewModule>();
-
             }
 
             return _viewCoreModules;
@@ -397,6 +368,7 @@ public class MainWindowViewModel : BaseViewModel
     }
 
     private ObservableCollection<ViewModule> _botModules;
+
     public ObservableCollection<ViewModule> BotModules
     {
         get
@@ -404,7 +376,6 @@ public class MainWindowViewModel : BaseViewModel
             if (_botModules == null)
             {
                 _botModules = new ObservableCollection<ViewModule>();
-
             }
 
             return _botModules;
@@ -416,6 +387,7 @@ public class MainWindowViewModel : BaseViewModel
             OnPropertyChanged(nameof(BotModules));
         }
     }
+
     //private ObservableCollection<UserControl> _topModules;
     //public ObservableCollection<UserControl> TopModules
     //{
@@ -436,7 +408,6 @@ public class MainWindowViewModel : BaseViewModel
     //        OnPropertyChanged(nameof(TopModules));
     //    }
     //}
-
 
     //private ObservableCollection<UserControl> _viewCoreModules;
     //public ObservableCollection<UserControl> ViewCoreModules
@@ -483,6 +454,7 @@ public class MainWindowViewModel : BaseViewModel
     public class ViewModule : ObservableObject
     {
         private string _name;
+
         public string Name
         {
             get { return _name; }
@@ -490,29 +462,28 @@ public class MainWindowViewModel : BaseViewModel
         }
 
         private UserControl _userControlView;
+
         public UserControl UserControlView
         {
             get { return _userControlView; }
             set { _userControlView = value; OnPropertyChanged(nameof(UserControlView)); }
         }
-
     }
 
-    #endregion
-
+    #endregion mods
 
     public MainWindowViewModel(IntPtr handle, IWindow window)
     {
-
         Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         this.CurrentWindow = window;
         CurrentHandleWindow = handle;
         trayIcon = new TrayIcon(Data.MainWindowSettingsSave);
 
+        Share.Start();
 
+        Debug.WriteLine("finished setting server");
 
         LoadWindowSettings();
-
 
         Interactable = true;
         FullView = false;
@@ -537,7 +508,6 @@ public class MainWindowViewModel : BaseViewModel
         if (currentSecInteractible < secInteractibleAfk)
             return;
 
-
         if (Interactable)
         {
             MakeWindowClickThrough();
@@ -547,7 +517,6 @@ public class MainWindowViewModel : BaseViewModel
 
     private void MakeWindowNonClickThrough()
     {
-
         //var buttonHwndSource = (HwndSource)HwndSource.FromVisual(btn);
         //var buttonHwnd = buttonHwndSource.Handle;
         var windowHwnd = new WindowInteropHelper(CurrentWindow.GetAssociatedWindow).Handle;
@@ -556,20 +525,14 @@ public class MainWindowViewModel : BaseViewModel
 
     private void MakeWindowClickThrough()
     {
-
         var windowHwnd = new WindowInteropHelper(CurrentWindow.GetAssociatedWindow).Handle;
 
         WinApi.SetWindowExTransparent(windowHwnd);
-
-
     }
 
     public void InitModuleController()
     {
         ModuleController.Instance.LoadSavedActiveModules();
-
-       
-
 
         HandleGetModulesButtonVisibility();
 
@@ -577,7 +540,6 @@ public class MainWindowViewModel : BaseViewModel
 
         ModuleController.Instance.OnModuleStarted += OnModAdded;
         ModuleController.Instance.OnModuleStopped += OnModuleRemoved;
-
     }
 
     private void OnModuleRemoved(ModuleInfo mod)
@@ -585,7 +547,6 @@ public class MainWindowViewModel : BaseViewModel
         RemoveViewModFromCollection(TopModules, mod);
         RemoveViewModFromCollection(ViewCoreModules, mod);
         RemoveViewModFromCollection(BotModules, mod);
-
     }
 
     private void RemoveViewModFromCollection(ObservableCollection<ViewModule> collection, ModuleInfo mod)
@@ -604,16 +565,13 @@ public class MainWindowViewModel : BaseViewModel
             {
                 collection.Remove(toRemove[i]);
             }
-
     }
-
 
     private void OnModAdded(ModuleInfo mod)
     {
         InjectModule(mod);
 
         HandleGetModulesButtonVisibility();
-
     }
 
     private void InjectModule(ModuleInfo mod)
@@ -625,9 +583,11 @@ public class MainWindowViewModel : BaseViewModel
             case ModulePosition.TOP:
                 AddViewToViewCollection(TopModules, mod);
                 break;
+
             case ModulePosition.MID:
                 AddViewToViewCollection(ViewCoreModules, mod);
                 break;
+
             case ModulePosition.BOT:
                 AddViewToViewCollection(BotModules, mod);
                 break;
@@ -651,8 +611,6 @@ public class MainWindowViewModel : BaseViewModel
     {
         foreach (var mod in coreModuleValues)
         {
-
-
             switch (mod.Loader.Instance.GetModulePosition())
             {
                 case ModulePosition.TOP:
@@ -660,12 +618,14 @@ public class MainWindowViewModel : BaseViewModel
                     //TopModules.Add(mod.Loader.Instance.GetModuleUserControlView());
 
                     break;
+
                 case ModulePosition.MID:
                     //ViewCoreModules.Add(mod.Loader.Instance.GetModuleUserControlView());
 
                     AddViewToViewCollection(ViewCoreModules, mod);
 
                     break;
+
                 case ModulePosition.BOT:
                     //BotModules.Add(mod.Loader.Instance.GetModuleUserControlView());
                     AddViewToViewCollection(BotModules, mod);
@@ -673,28 +633,23 @@ public class MainWindowViewModel : BaseViewModel
                     break;
             }
             InitViewModeMinFull(mod);
-
         }
     }
 
     private void InitViewModeMinFull(ModuleInfo mod)
     {
-
         if (!FullView)
             mod.Loader.OnMinViewEntered();
         else
             mod.Loader.OnFullViewEntered();
-
     }
 
     private void HandleGetModulesButtonVisibility()
     {
-
         GetModulesButtonVisibility = ModuleController.Instance.CoreModulesKeys.Count() < 1 ? Visibility.Visible : Visibility.Collapsed;
-
     }
 
-    DataTemplate CreateTemplate(Type viewModelType, Type viewType)
+    private DataTemplate CreateTemplate(Type viewModelType, Type viewType)
     {
         const string xamlTemplate = "<DataTemplate DataType=\"{{x:Type vm:{0}}}\"><v:{1} /></DataTemplate>";
         var xaml = String.Format(xamlTemplate, viewModelType.Name, viewType.Name, viewModelType.Namespace, viewType.Namespace);
@@ -713,55 +668,36 @@ public class MainWindowViewModel : BaseViewModel
         var template = (DataTemplate)XamlReader.Parse(xaml, context);
         return template;
     }
+
     private void LoadWindowSettings()
     {
-
-
-
         Application.Current.MainWindow.ShowInTaskbar = ShowInTaskbar;
-
-
 
         CurrentWindow.GetAssociatedWindow.WindowStartupLocation = WindowStartupLocation.Manual;
         double posX = MainWindowPositionX;
         double posY = MainWindowPositionY;
 
-
         if (posX != 0 || posY != 0)
         {
-
             WindowHelper.SetWindowPosition(CurrentWindow.GetAssociatedWindow, posX, posY);
-
         }
         else
         {
             WindowHelper.ResetWindowPosition(CurrentWindow.GetAssociatedWindow);
         }
-
-
     }
-
-
-
 
     private void SaveWindowPosition()
     {
-
         int x = (int)CurrentWindow.GetAssociatedWindow.Left;
         int y = (int)CurrentWindow.GetAssociatedWindow.Top;
         MainWindowPositionX = x;
         MainWindowPositionY = y;
-
     }
-
-
-
 
     //private void StartAnimatingBottomBar()
     //{
-
     //    var procentFilledAlready = Utils.ToProcentage(progressBarBottomMost.Value, progressBarBottomMost.Minimum, progressBarBottomMost.Maximum);
-
 
     //    var valueOfTimeFilled = Utils.ProcentToValue(procentFilledAlready, timeSecToFillBotBar);
 
@@ -772,11 +708,4 @@ public class MainWindowViewModel : BaseViewModel
 
     //    progressBarBottomMost.BeginAnimation(ProgressBar.ValueProperty, animation);
     //}
-
-
-
-
-
-
 }
-
