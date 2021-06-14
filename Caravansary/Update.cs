@@ -44,7 +44,7 @@ public class Update
                 var success = Version.TryParse(await Task.Run(()=> client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt")), out Version result);
                 if (!success)
                     return false;
-
+                
                 if (Data.Version < result)
                 {
 
@@ -123,6 +123,8 @@ public class Update
             if (File.Exists(Paths.APPDATA_LAUNCHER_EXE))
                 File.Delete(Paths.APPDATA_LAUNCHER_EXE);
 
+            if (!Directory.Exists(Paths.APPDATA_C_DIRECTORY))
+                Directory.CreateDirectory(Paths.APPDATA_C_DIRECTORY);
 
             using (WebClient client = new WebClient())
             {

@@ -162,7 +162,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         catch (UnauthorizedAccessException e) { }
     }
 
-    internal bool IsModulePresent(string name)
+    public bool IsModulePresent(string name)
     {
         foreach (var item in CoreModulesKeys)
         {
@@ -172,7 +172,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         return false;
     }
 
-    internal bool IsModuleActive(string name)
+    public bool IsModuleActive(string name)
     {
         foreach (var item in CoreModulesKeys)
         {
@@ -403,7 +403,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
-    internal ModuleInfo[] GetActiveModules()
+    public ModuleInfo[] GetActiveModules()
     {
         return CoreModuleValues.Where(e => e.Loader.IsStarted).ToArray();
 
@@ -416,7 +416,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         //return ret.ToArray();
     }
 
-    internal void SaveActiveModulesNames()
+    public void SaveActiveModulesNames()
     {
         var sam = new SavedActiveModules();
         sam.activatedList = new List<string>();

@@ -106,20 +106,15 @@
 		</BootstrapperPackage>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="Content\font-awesome.css" />
-		<Content Include="Content\font-awesome.min.css" />
-	</ItemGroup>
-	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Caravansary.Core\Caravansary.Core.csproj" />
 		<ProjectReference Include="..\Caravansary.SDK\Caravansary.SDK.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FontAwesome" Version="4.7.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="SocketIO4Net.Client" Version="0.6.26" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
 	<ItemGroup>
