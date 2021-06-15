@@ -61,9 +61,9 @@ public class MainWindowPageModel : PageModelBase
             _fullView = value;
             OnPropertyChanged(nameof(FullView));
             if (value)
-                ModuleController.Instance.OnFullViewEntered();
+                moduleController.OnFullViewEntered();
             else
-                ModuleController.Instance.OnMinViewEntered();
+                moduleController.OnMinViewEntered();
         }
     }
 
@@ -168,7 +168,7 @@ public class MainWindowPageModel : PageModelBase
                 _remDir = new RelayCommand(
                    (object o) =>
                    {
-                       ModuleController.Instance.RemoveModuleCatalog("ActiveTimer");
+                       moduleController.RemoveModuleCatalog("ActiveTimer");
                    },
                    (object o) =>
                    {
@@ -304,6 +304,7 @@ public class MainWindowPageModel : PageModelBase
     private ObservableCollection<ViewModule> _botModules;
     private readonly INavigation navigation;
     private readonly MainWindow mainWindow;
+    private readonly ModuleController moduleController;
 
     public ObservableCollection<ViewModule> BotModules
     {
@@ -323,69 +324,6 @@ public class MainWindowPageModel : PageModelBase
             OnPropertyChanged(nameof(BotModules));
         }
     }
-
-    //private ObservableCollection<UserControl> _topModules;
-    //public ObservableCollection<UserControl> TopModules
-    //{
-    //    get
-    //    {
-    //        if (_topModules == null)
-    //        {
-    //            _topModules = new ObservableCollection<UserControl>();
-
-    //        }
-
-    //        return _topModules;
-    //    }
-    //    set
-    //    {
-    //        _topModules = value;
-
-    //        OnPropertyChanged(nameof(TopModules));
-    //    }
-    //}
-
-    //private ObservableCollection<UserControl> _viewCoreModules;
-    //public ObservableCollection<UserControl> ViewCoreModules
-    //{
-    //    get
-    //    {
-    //        if (_viewCoreModules == null)
-    //        {
-    //            _viewCoreModules = new ObservableCollection<UserControl>();
-
-    //        }
-
-    //        return _viewCoreModules;
-    //    }
-    //    set
-    //    {
-    //        _viewCoreModules = value;
-
-    //        OnPropertyChanged(nameof(ViewCoreModules));
-    //    }
-    //}
-
-    //private ObservableCollection<UserControl> _botModules;
-    //public ObservableCollection<UserControl> BotModules
-    //{
-    //    get
-    //    {
-    //        if (_botModules == null)
-    //        {
-    //            _botModules = new ObservableCollection<UserControl>();
-
-    //        }
-
-    //        return _botModules;
-    //    }
-    //    set
-    //    {
-    //        _botModules = value;
-
-    //        OnPropertyChanged(nameof(BotModules));
-    //    }
-    //}
 
     public class ViewModule : ObservableObject
     {
@@ -408,16 +346,13 @@ public class MainWindowPageModel : PageModelBase
 
     #endregion mods
 
-    public MainWindowPageModel(/*IntPtr handle, IWindow window*/ INavigation navigation, MainWindow mainWindow)
+    public MainWindowPageModel(/*IntPtr handle, IWindow window*/ INavigation navigation, MainWindow mainWindow, ModuleController moduleController)
     {
         Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
         this.navigation = navigation;
         this.mainWindow = mainWindow;
-
-
-
-
+        this.moduleController = moduleController;
         Share.Start();
 
         Debug.WriteLine("finished setting server");
@@ -431,7 +366,7 @@ public class MainWindowPageModel : PageModelBase
         interactibleTimer.Interval = TimeSpan.FromSeconds(1);
         interactibleTimer.Start();
 
-        ModuleController.Instance.OnMinViewEntered();
+        moduleController.OnMinViewEntered();
 
 
         mainWindow.OnMouseWindowEnter += () => { MouseOnWindow = true; };
@@ -465,14 +400,14 @@ public class MainWindowPageModel : PageModelBase
 
     public void InitModuleController()
     {
-        ModuleController.Instance.LoadSavedActiveModules();
+        moduleController.LoadSavedActiveModules();
 
         HandleGetModulesButtonVisibility();
 
-        InjectModule(ModuleController.Instance.GetActiveModules());
+        InjectModule(moduleController.GetActiveModules());
 
-        ModuleController.Instance.OnModuleStarted += OnModAdded;
-        ModuleController.Instance.OnModuleStopped += OnModuleRemoved;
+        moduleController.OnModuleStarted += OnModAdded;
+        moduleController.OnModuleStopped += OnModuleRemoved;
     }
 
     private void OnModuleRemoved(ModuleInfo mod)
@@ -579,7 +514,7 @@ public class MainWindowPageModel : PageModelBase
 
     private void HandleGetModulesButtonVisibility()
     {
-        GetModulesButtonVisibility = ModuleController.Instance.CoreModulesKeys.Count() < 1 ? Visibility.Visible : Visibility.Collapsed;
+        GetModulesButtonVisibility = moduleController.CoreModulesKeys.Count() < 1 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private DataTemplate CreateTemplate(Type viewModelType, Type viewType)

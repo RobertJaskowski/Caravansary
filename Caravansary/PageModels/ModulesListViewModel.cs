@@ -59,6 +59,8 @@ public class ModulesListViewModel : BasePupupWindowPageModel
     }
 
     private ICommand _moduleButtonClicked;
+    private readonly ModuleController moduleController;
+
     public ICommand ModuleButtonClicked
     {
         get
@@ -105,8 +107,8 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         vmli.ModuleButtonActionText = "Activating... ";
         vmli.ModuleButtonActionEnabled = false;
 
-        ModuleController.Instance.StartCoreModule(vmli.Name);
-        ModuleController.Instance.SaveActiveModulesNames();
+        moduleController.StartCoreModule(vmli.Name);
+        moduleController.SaveActiveModulesNames();
 
 
         vmli.ModuleButtonActionText = "Deactivate";
@@ -119,8 +121,8 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         vmli.ModuleButtonActionEnabled = false;
 
 
-        ModuleController.Instance.StopCoreModule(vmli.Name);
-        ModuleController.Instance.SaveActiveModulesNames();
+        moduleController.StopCoreModule(vmli.Name);
+        moduleController.SaveActiveModulesNames();
 
 
         vmli.ModuleButtonActionText = "Activate";
@@ -131,10 +133,10 @@ public class ModulesListViewModel : BasePupupWindowPageModel
 
     #endregion
 
-    public ModulesListViewModel()
+    public ModulesListViewModel(ModuleController moduleController)
     {
         ShowListOfModules();
-
+        this.moduleController = moduleController;
     }
 
 
@@ -143,7 +145,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         vmli.ModuleButtonActionText = "Removing... ";
         vmli.ModuleButtonActionEnabled = false;
 
-        ModuleController.Instance.RemoveModule(vmli.Name);
+        moduleController.RemoveModule(vmli.Name);
 
 
     }
@@ -152,7 +154,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
     {
         vmli.ModuleButtonActionText = "Downloading... ";
         vmli.ModuleButtonActionEnabled = false;
-        var res = await ModuleController.Instance.DownloadModule(new OnlineModuleListItem()
+        var res = await moduleController.DownloadModule(new OnlineModuleListItem()
         {
             Name = vmli.Name,
             Description = vmli.Description,
@@ -161,7 +163,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
 
         if (res)
         {
-            ModuleController.Instance.ScanDirectory(Paths.MODULE_DIRECTORY + Path.DirectorySeparatorChar + vmli.Name);
+            moduleController.ScanDirectory(Paths.MODULE_DIRECTORY + Path.DirectorySeparatorChar + vmli.Name);
         }
 
 
@@ -190,12 +192,12 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                 Description = item.Description,
                 DownloadLink = item.DownloadLink,
                 ModuleButtonActionEnabled = true,
-                ModuleButtonActionText = ModuleController.Instance.IsModulePresent(item.Name) ? (ModuleController.Instance.IsModuleActive(item.Name) ? "Deactivate" : "Activate") : "Get"
+                ModuleButtonActionText = moduleController.IsModulePresent(item.Name) ? (moduleController.IsModuleActive(item.Name) ? "Deactivate" : "Activate") : "Get"
             });
 
         }
 
-        foreach (var item in ModuleController.Instance.CoreModuleValues)
+        foreach (var item in moduleController.CoreModuleValues)
         {
             bool found = false;
             for (int i = 0; i < showedModules.Count; i++)
@@ -216,7 +218,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                     Description = "No description",
                     DownloadLink = "",
                     ModuleButtonActionEnabled = true,
-                    ModuleButtonActionText = (ModuleController.Instance.IsModuleActive(item.Loader.Name) ? "Deactivate" : "Activate")
+                    ModuleButtonActionText = (moduleController.IsModuleActive(item.Loader.Name) ? "Deactivate" : "Activate")
                 });
             }
         } 

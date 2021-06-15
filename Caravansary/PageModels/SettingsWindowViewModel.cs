@@ -1,6 +1,8 @@
 ﻿using Caravansary;
+using Caravansary.Core;
 using Caravansary.SDK;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -34,27 +36,26 @@ class SettingsWindowViewModel : BasePupupWindowPageModel
     }
 
 
-    private ObservableCollection<ViewModuleSettings> _settingsControls;
+    private TrulyObservableCollection<ViewModuleSettings> _moduleSettingsControls;
     private readonly MainWindow mainWindow;
+    private readonly ModuleController moduleController;
 
-    public ObservableCollection<ViewModuleSettings> ModuleSettingsControls
+    public TrulyObservableCollection<ViewModuleSettings> ModuleSettingsControls
     {
         get
         {
-            if (_settingsControls == null)
+            if (_moduleSettingsControls == null)
             {
+                _moduleSettingsControls = new TrulyObservableCollection<ViewModuleSettings>();
 
-
-                _settingsControls = new ObservableCollection<ViewModuleSettings>();
-
-                foreach (var item in ModuleController.Instance.CoreModuleValues)
+                foreach (var item in moduleController.CoreModuleValues)
                 {
 
                     var v = item.Loader.Instance.GetSettingsUserControlView();
                     if (v != null)
                     {
 
-                        _settingsControls.Add(new ViewModuleSettings
+                        _moduleSettingsControls.Add(new ViewModuleSettings
                         {
                             ModuleName = item.Loader.Instance.GetModuleName(),
                             View = item.Loader.Instance.GetSettingsUserControlView()
@@ -64,45 +65,41 @@ class SettingsWindowViewModel : BasePupupWindowPageModel
 
             }
 
-            return _settingsControls;
+            return _moduleSettingsControls;
         }
         set
         {
-            _settingsControls = value;
+            _moduleSettingsControls = value;
 
             OnPropertyChanged(nameof(ModuleSettingsControls));
         }
     }
 
-    public class ViewModuleSettings
+    public class ViewModuleSettings : ObservableObject
     {
-        public UserControl View { get; set; }
-        public string ModuleName { get; set; }
+        private UserControl _view;
+        public UserControl View
+        {
+            get { return _view; }
+            set
+            {
+                _view = value;
+                OnPropertyChanged(nameof(View));
+            }
+        }
+
+        private string _moduleName;
+        public string ModuleName
+        {
+            get { return _moduleName; }
+            set
+            {
+                _moduleName = value;
+                OnPropertyChanged(nameof(ModuleName));
+            }
+            
+        }
     }
-
-    //private ObservableCollection<UserControl> _settingsControls;
-    //public ObservableCollection<UserControl> ModuleSettingsControls
-    //{
-    //    get
-    //    {
-    //        if (_settingsControls == null)
-    //        {
-    //            _settingsControls = new ObservableCollection<UserControl>();
-    //            var ret = ModuleController.Instance.GetSettingsViews();
-    //            if (ret != null)
-    //                _settingsControls = ret;
-
-    //        }
-
-    //        return _settingsControls;
-    //    }
-    //    set
-    //    {
-    //        _settingsControls = value;
-
-    //        OnPropertyChanged(nameof(ModuleSettingsControls));
-    //    }
-    //}
 
 
 
@@ -111,14 +108,36 @@ class SettingsWindowViewModel : BasePupupWindowPageModel
 
 
 
-    public SettingsWindowViewModel(MainWindow mainWindow)
+    public SettingsWindowViewModel(MainWindow mainWindow, ModuleController moduleController)
     {
         this.mainWindow = mainWindow;
-        InjectSettingsFromModules();
+        this.moduleController = moduleController;
     }
 
     private void InjectSettingsFromModules()
     {
+        _moduleSettingsControls = new TrulyObservableCollection<ViewModuleSettings>();
 
+        foreach (var item in moduleController.CoreModuleValues)
+        {
+
+            var v = item.Loader.Instance.GetSettingsUserControlView();
+            if (v != null)
+            {
+
+                _moduleSettingsControls.Add(new ViewModuleSettings
+                {
+                    ModuleName = item.Loader.Instance.GetModuleName(),
+                    View = item.Loader.Instance.GetSettingsUserControlView()
+                });
+            }
+        }
+    }
+
+    public override Task<bool> InitializeAsync(object navigationdata = null)
+    {
+        InjectSettingsFromModules();
+
+        return base.InitializeAsync(navigationdata);
     }
 }

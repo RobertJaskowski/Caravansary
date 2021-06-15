@@ -44,8 +44,9 @@ namespace Caravansary
 
         public Action OnMouseWindowEnter;
         public Action OnMouseWindowLeave;
+        private readonly ModuleController moduleController;
 
-        public MainWindow()
+        public MainWindow(ModuleController moduleController)
         {
 
             LoadWindowSettings();
@@ -53,8 +54,7 @@ namespace Caravansary
 
 
             Loaded += OnWindowLoaded;
-
-
+            this.moduleController = moduleController;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -62,7 +62,7 @@ namespace Caravansary
             base.OnClosing(e);
 
 
-            ModuleController.Instance.StopAllModules();
+            moduleController.StopAllModules();
             KeyboardListener.Instance.UnHookKeyboard();
         }
 

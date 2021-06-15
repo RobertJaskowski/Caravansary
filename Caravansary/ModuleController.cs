@@ -18,17 +18,17 @@ using System.Windows.Threading;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
-    private static ModuleController _instance;
+    //private static ModuleController _instance;
 
-    public static ModuleController Instance
-    {
-        get
-        {
-            if (_instance == null) _instance = new ModuleController();
+    //public static ModuleController Instance
+    //{
+    //    get
+    //    {
+    //        if (_instance == null) _instance = new ModuleController();
 
-            return _instance;
-        }
-    }
+    //        return _instance;
+    //    }
+    //}
 
     public ModuleController()
     {
@@ -375,7 +375,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     internal void LoadSavedActiveModules()
     {
-        ModuleController.Instance.ScanDirectory(Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Modules");
+        ScanDirectory(Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Modules");
 
         var load = Saves.Load<SavedActiveModules>(Paths.APP_NAME, "SavedActiveModules");
 

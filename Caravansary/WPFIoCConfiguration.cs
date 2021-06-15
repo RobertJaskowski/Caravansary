@@ -17,6 +17,7 @@ namespace Caravansary
             IoC.RegisterSelfSingleton<SettingsWindowViewModel, SettingsWindow>();
             IoC.RegisterSelfSingleton<ModulesListViewModel, ModulesListWindow>();
 
+            Bind<ModuleController>().ToSelf().InSingletonScope();
 
             //Bind<MainWindow>().ToSelf().InSingletonScope();
             //Bind<MainWindowPageModel>().ToSelf().InSingletonScope();
