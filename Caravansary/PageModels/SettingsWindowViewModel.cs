@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Caravansary;
+using Caravansary.SDK;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
-class SettingsWindowViewModel : BaseViewModel
+class SettingsWindowViewModel : BasePupupWindowPageModel
 {
 
     #region Properties
@@ -21,7 +23,9 @@ class SettingsWindowViewModel : BaseViewModel
         get => Data.MainWindowSettingsSave.BackgroundTransparency;
         set
         {
-            ((MainWindowViewModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;//use  ioc di todo
+            //((MainWindowPageModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;//use  ioc di todo
+
+            mainWindow.Background.Opacity = value;
 
             Data.MainWindowSettingsSave.BackgroundTransparency = value;
             Data.SaveWindowSettings();
@@ -31,6 +35,8 @@ class SettingsWindowViewModel : BaseViewModel
 
 
     private ObservableCollection<ViewModuleSettings> _settingsControls;
+    private readonly MainWindow mainWindow;
+
     public ObservableCollection<ViewModuleSettings> ModuleSettingsControls
     {
         get
@@ -105,8 +111,9 @@ class SettingsWindowViewModel : BaseViewModel
 
 
 
-    public SettingsWindowViewModel()
+    public SettingsWindowViewModel(MainWindow mainWindow)
     {
+        this.mainWindow = mainWindow;
         InjectSettingsFromModules();
     }
 

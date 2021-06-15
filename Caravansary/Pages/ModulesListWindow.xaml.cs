@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Caravansary.Core;
+using System.Windows;
 
 namespace Caravansary.Views
 {
@@ -10,6 +11,8 @@ namespace Caravansary.Views
         public ModulesListWindow()
         {
             InitializeComponent();
+
+            DataContext = IoC.Get<ModulesListViewModel>();
         }
     }
 }

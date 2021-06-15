@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Caravansary.SDK;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ using System.Net;
 using System.Windows.Input;
 using System.Xml.Serialization;
 
-public class ModulesListViewModel : BaseViewModel
+public class ModulesListViewModel : BasePupupWindowPageModel
 {
     #region Properties
 

@@ -18,6 +18,10 @@ public static class Data
 
             return _version;
         }
+        set
+        {
+            _version = value;
+        }
 
     }
 
