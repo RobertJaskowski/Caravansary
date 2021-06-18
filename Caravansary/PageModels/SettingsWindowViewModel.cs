@@ -20,13 +20,12 @@ class SettingsWindowViewModel : BasePupupWindowPageModel
             OnPropertyChanged(nameof(AppVersion));
         }
     }
+
     public double BackgroundTransparency
     {
         get => Data.MainWindowSettingsSave.BackgroundTransparency;
         set
         {
-            //((MainWindowPageModel)Application.Current.MainWindow.DataContext).CurrentWindow.GetAssociatedWindow.Background.Opacity = value;//use  ioc di todo
-
             mainWindow.Background.Opacity = value;
 
             Data.MainWindowSettingsSave.BackgroundTransparency = value;

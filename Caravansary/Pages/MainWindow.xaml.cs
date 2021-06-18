@@ -11,7 +11,7 @@ namespace Caravansary
 
     public partial class MainWindow : Window, IWindow
     {
-        
+
 
 
         public double MainWindowPositionX
@@ -80,18 +80,35 @@ namespace Caravansary
 
         }
 
+        private bool startedDrag = false;
+        private int startedX, startedY;
+
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             base.OnMouseDown(e);
             if (e.LeftButton == MouseButtonState.Pressed && e.RightButton == MouseButtonState.Pressed)
+            {
+                if (!startedDrag)
+                {
+                    startedDrag = true;
+                    startedX = (int)Left;
+                    startedY = (int)Top;
+                }//tod check it working
                 DragMove();
+            }
         }
 
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
             if (e.LeftButton == MouseButtonState.Released && e.RightButton == MouseButtonState.Released)
-                SaveWindowPosition();
+            {
+                if (startedDrag)
+                {
+                    startedDrag = false;
+                    SaveWindowPosition();
+                }
+            }
         }
 
         internal void OnWindowLoaded(object sender, RoutedEventArgs e)
@@ -100,13 +117,13 @@ namespace Caravansary
 
 
 
-        
+
 
         private void LoadWindowSettings()
         {
             Application.Current.MainWindow.ShowInTaskbar = ShowInTaskbar;
 
-           WindowStartupLocation = WindowStartupLocation.Manual;
+            WindowStartupLocation = WindowStartupLocation.Manual;
             double posX = MainWindowPositionX;
             double posY = MainWindowPositionY;
 
