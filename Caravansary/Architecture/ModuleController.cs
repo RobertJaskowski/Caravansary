@@ -450,6 +450,13 @@ public class ModuleController : MarshalByRefObject, IModuleController
     public void SendMessage(string ModuleName, string message)
     {
         Debug.WriteLine(ModuleName + " " + message);
+        SendMessageToModule(ModuleName, message);
+
+        SendGlobalMessage(ModuleName + ":" + message);
+    }
+
+    private void SendMessageToModule(string ModuleName, string message)
+    {
         if (_coreModules.ContainsKey(ModuleName))
         {
             var p = _coreModules[ModuleName].Loader;
@@ -458,8 +465,6 @@ public class ModuleController : MarshalByRefObject, IModuleController
                 p.ReceiveMessage(message);
             }
         }
-
-        SendGlobalMessage(ModuleName + ":" + message);
     }
 
     public void SendGlobalMessage(string msg)

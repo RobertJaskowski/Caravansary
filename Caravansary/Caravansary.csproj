@@ -117,14 +117,26 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FontAwesome" Version="4.7.0" />
+		<PackageReference Include="MediatR" Version="9.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="SocketIO4Net.Client" Version="0.6.26" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Reference Include="Porter.API">
+	    <HintPath>..\..\Porter\ServerStarter\bin\Debug\net5.0\Porter.API.dll</HintPath>
+	  </Reference>
 	  <Reference Include="Porter.Core">
-	    <HintPath>..\..\Porter\Porter.Core\bin\Debug\net5.0\Porter.Core.dll</HintPath>
+	    <HintPath>..\..\Porter\ServerStarter\bin\Debug\net5.0\Porter.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Porter.WinConsole">
+	    <HintPath>..\..\Porter\ServerStarter\bin\Debug\net5.0\Porter.WinConsole.dll</HintPath>
+	  </Reference>
+	  <Reference Include="ServerStarter">
+	    <HintPath>..\..\Porter\ServerStarter\bin\Debug\net5.0\ServerStarter.dll</HintPath>
 	  </Reference>
 	  <Reference Include="SimpleHTTP">
 	    <HintPath>..\..\Porter\Porter.Core\bin\Debug\net5.0\SimpleHTTP.dll</HintPath>
