@@ -53,19 +53,29 @@ namespace Caravansary
         {
             ws = new SocketIO(address.ToString());
             ws.OnConnected += OnConnected;
-
-            connected = true;
+            ws.On("test", (e) => Debug.WriteLine(e.ToString()));
+            ws.OnDisconnected += onDisc;
 
             await ws.ConnectAsync();
-
-            Console.WriteLine("on after connect await");
+            //while (true)
+            //{
+            //    Thread.Sleep(500);
+            //}
+            Debug.WriteLine("on after connect await");
             //wsClient = new WsClient();
             //await wsClient.ConnectAsync(address.ToString());
         }
 
+        private static void onDisc(object sender, string e)
+        {
+            Debug.WriteLine("disconnected socket");
+        }
+
         private static void OnConnected(object sender, EventArgs e)
         {
-            Console.WriteLine(sender.ToString() + " " + e.ToString());
+            connected = true;
+
+            Debug.WriteLine(sender.ToString() + " " + e.ToString());
             ws.EmitAsync("testEvent");
         }
 
@@ -91,22 +101,22 @@ namespace Caravansary
             //if (!wsClient.connected) return;
             if (!connected) return;
 
-            using (var c = new WebClient())
-            {
-                c.Headers.Add("Content-Type", "text/json");
+            //using (var c = new WebClient())
+            //{
+            //    c.Headers.Add("Content-Type", "text/json");
 
-                //processedMessage = messageQueue.Dequeue();
-                processedMessage = message;
+            //    //processedMessage = messageQueue.Dequeue();
+            //    processedMessage = message;
 
-                var m = processedMessage.Split(":");
-                if (m.Length < 2) return;
+            //    var m = processedMessage.Split(":");
+            //    if (m.Length < 2) return;
 
-                SendMsgAssync(message);
+            SendMsgAssync(message);
 
-                // wsClient.SendMessageAsync(message);
+            // wsClient.SendMessageAsync(message);
 
-                //c.UploadStringAsync(CreateValueEndpointAddress(m[0]), "POST", "\"" + m[1] + "\"");
-            }
+            //c.UploadStringAsync(CreateValueEndpointAddress(m[0]), "POST", "\"" + m[1] + "\"");
+            //}
 
             //if (!clientInProgress)
             //    RunClient();
