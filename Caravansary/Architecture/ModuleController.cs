@@ -449,7 +449,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     public void SendMessage(string ModuleName, string message)
     {
-        Debug.WriteLine(ModuleName + " " + message);
+        //Debug.WriteLine(ModuleName + " " + message);
         SendMessageToModule(ModuleName, message);
 
         SendGlobalMessage(ModuleName + ":" + message);

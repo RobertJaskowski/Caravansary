@@ -1,5 +1,4 @@
-﻿using SocketIOClient.Messages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,10 +6,10 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using SocketIOClient;
+
 using Newtonsoft.Json;
 using System.Threading;
-using System.IO;
+using System.Net.Sockets;
 
 namespace Caravansary
 {
@@ -22,7 +21,7 @@ namespace Caravansary
         private static readonly string port = "6091";
 
         //private static readonly Uri address = new Uri("http://localhost:" + port);
-        private static readonly Uri address = new Uri("ws://localhost:" + port);
+        private static readonly Uri address = new Uri("ws://localhost:" + port + "/ws");
 
         private static bool active = false;
 
@@ -31,6 +30,7 @@ namespace Caravansary
 
         private static bool clientInProgress = false;
         private static bool connected = false;
+        private static Socket socket;
 
         public static async void Start()
         {
@@ -47,41 +47,81 @@ namespace Caravansary
             //await t;
         }
 
-        private static SocketIO ws = null;
-
-        private static async void ConnectSocket()
+        private static void ConnectSocket()
         {
-            ws = new SocketIO(address.ToString());
-            ws.OnConnected += OnConnected;
-            ws.On("test", (e) => Debug.WriteLine(e.ToString()));
-            ws.OnDisconnected += onDisc;
-
-            await ws.ConnectAsync();
-            //while (true)
-            //{
-            //    Thread.Sleep(500);
-            //}
-            Debug.WriteLine("on after connect await");
-            //wsClient = new WsClient();
-            //await wsClient.ConnectAsync(address.ToString());
         }
 
-        private static void onDisc(object sender, string e)
+        private static Socket ConnectSocket(string server, int port)
         {
-            Debug.WriteLine("disconnected socket");
+            Socket s = null;
+            IPHostEntry hostEntry = null;
+
+            // Get host related information.
+            hostEntry = Dns.GetHostEntry(server);
+
+            // Loop through the AddressList to obtain the supported AddressFamily. This is to avoid
+            // an exception that occurs when the host IP Address is not compatible with the address family
+            // (typical in the IPv6 case).
+            foreach (IPAddress address in hostEntry.AddressList)
+            {
+                IPEndPoint ipe = new IPEndPoint(address, port);
+                Socket tempSocket =
+                    new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                tempSocket.Connect(ipe);
+
+                if (tempSocket.Connected)
+                {
+                    s = tempSocket;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return s;
         }
 
-        private static void OnConnected(object sender, EventArgs e)
+        private static string SocketSendReceive(string server)
         {
-            connected = true;
+            int portA = int.Parse(port);
 
-            Debug.WriteLine(sender.ToString() + " " + e.ToString());
-            ws.EmitAsync("testEvent");
+            string request = "GET / HTTP/1.1\r\nHost: " + server +
+                "\r\nConnection: Close\r\n\r\n";
+            Byte[] bytesSent = Encoding.ASCII.GetBytes(request);
+            Byte[] bytesReceived = new Byte[256];
+            string page = "";
+
+            // Create a socket connection with the specified server and port.
+            using (Socket s = ConnectSocket(server, portA))
+            {
+                if (s == null)
+                    return ("Connection failed");
+
+                // Send request to the server.
+                s.Send(bytesSent, bytesSent.Length, 0);
+
+                // Receive the server home page content.
+                int bytes = 0;
+                page = "Default HTML page on " + server + ":\r\n";
+
+                // The following will block until the page is transmitted.
+                do
+                {
+                    bytes = s.Receive(bytesReceived, bytesReceived.Length, 0);
+                    page = page + Encoding.ASCII.GetString(bytesReceived, 0, bytes);
+                }
+                while (bytes > 0);
+            }
+
+            return page;
         }
 
-        private static void SendMsgAssync(string msg)
+        private static void SendMsgAssync(string message)
         {
-            ws.EmitAsync("testEvent", msg);
+            var re = SocketSendReceive(address + "/ws");
+            Debug.WriteLine("server " + re);
         }
 
         private static Uri CreateValueEndpointAddress(string endpoint)
@@ -99,7 +139,7 @@ namespace Caravansary
             //messageQueue.Enqueue(message);
 
             //if (!wsClient.connected) return;
-            if (!connected) return;
+            // if (!connected) return;
 
             //using (var c = new WebClient())
             //{
