@@ -1,5 +1,4 @@
-﻿
-namespace Caravansary
+﻿namespace Caravansary
 {
     using System.Windows;
 
@@ -8,11 +7,6 @@ namespace Caravansary
     /// </summary>
     public partial class MainWindow : Window, IWindow
     {
-
-
-        public Window GetAssociatedWindow => window;
+        public Window GetAssociatedWindow => this;
     }
-
-
-
 }

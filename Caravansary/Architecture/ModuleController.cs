@@ -1,4 +1,5 @@
 ﻿using Caravansary;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -452,7 +453,30 @@ public class ModuleController : MarshalByRefObject, IModuleController
         //Debug.WriteLine(ModuleName + " " + message);
         SendMessageToModule(ModuleName, message);
 
-        SendGlobalMessage(ModuleName + ":" + message);
+        SendGlobalMessage(new GlobalEventRequest()
+        {
+            type = "event",
+            name = ModuleName,
+            source = ModuleName,
+            data = message
+        });
+    }
+
+    public void SendEvent(string source, string eventName, string data)
+    {
+        foreach (var mod in _coreModules)
+        {
+            if (mod.Value.Loader.IsStarted)
+                mod.Value.Loader.ReceiveMessage(data);
+        }
+
+        SendGlobalMessage(new GlobalEventRequest()
+        {
+            type = "event",
+            name = eventName,
+            source = source,
+            data = data
+        });
     }
 
     private void SendMessageToModule(string ModuleName, string message)
@@ -467,9 +491,9 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
-    public void SendGlobalMessage(string msg)
+    public void SendGlobalMessage<T>(T objectToSend) where T : GlobalEventRequest
     {//todo refactor for messages/ listeners instead of simple values
-        Share.SetValue(msg);
+        Share.SendEvent(JsonConvert.SerializeObject(objectToSend));
     }
 
     public void StopCoreModule(string name)
@@ -566,6 +590,29 @@ public class ModuleController : MarshalByRefObject, IModuleController
     public T LoadModuleInformation<T>(string ModuleName, string saveFileName)
     {
         return Saves.Load<T>(ModuleName, saveFileName);
+    }
+
+    public void SubscribeToEvent(string eventName, Action<object> action)
+    {
+        var suc = _events.TryGetValue(eventName, out Dictionary<string, Action<object>> result);
+        if (!suc)
+        {
+            var nd = new Dictionary<string, Action<object>>();
+            nd.Add(eventName, action);
+            _events.Add(eventName, nd);
+            return;
+        }
+
+        var eventSuc = result.TryGetValue(eventName, out Action<object> actions);
+        if (!eventSuc)
+        {
+            var nd = new Dictionary<string, Action<object>>();
+            nd.Add(eventName, action);
+            result = nd;
+            return;
+        }
+
+        actions += action;
     }
 
     public void SubscribeToEvent(string ModuleName, string eventName, Action<object> action)

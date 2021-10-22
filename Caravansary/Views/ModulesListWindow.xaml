@@ -1,95 +1,118 @@
-﻿<Window x:Class="Caravansary.Views.ModulesListWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Caravansary.Views"
-        xmlns:c="clr-namespace:Caravansary"
-        mc:Ignorable="d"
-        Title="Modules list" Height="450" Width="800" Background="{DynamicResource DefaultBgDark}"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" >
+﻿<Window
+    x:Class="Caravansary.Views.ModulesListWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:Caravansary"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Caravansary.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Modules list"
+    Width="800"
+    Height="450"
+    Background="{DynamicResource DefaultBgDark}"
+    ResizeMode="NoResize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Window.Resources>
-        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <c:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
-        <Style TargetType="{x:Type ListView}" BasedOn="{StaticResource BaseStyle}">
-            <Setter Property="Background" Value="{x:Null}"/>
-            <Setter Property="BorderBrush" Value="{x:Null}"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
-
-
+        <Style BasedOn="{StaticResource BaseStyle}" TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
         </Style>
 
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Background" Value="{x:Null}" />
             <Setter Property="BorderBrush" Value="{x:Null}" />
             <Setter Property="Focusable" Value="False" />
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderThickness" Value="0" />
             <Style.Resources>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
             </Style.Resources>
         </Style>
 
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="{DynamicResource DefaultBgDark}"/>
+            <Setter Property="Background" Value="{DynamicResource DefaultBgDark}" />
         </Style>
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition  Width="Auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"  Grid.Row="0" Margin="0 5 0 5">
+        <Grid
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,5,0,5">
             <Grid.RowDefinitions>
-                <RowDefinition  Height="50" />
-                <RowDefinition  Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition  Width="Auto" />
-                <ColumnDefinition  Width="100" />
-                <ColumnDefinition  Width="600" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="600" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="List of modules" Background="{x:Null}"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5 0 5 0"/>
-            <Button Command="{Binding RemoveModuleButton}" Grid.Row="0" Grid.Column="1" Content="Open folder" />
-            <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 5 0 5"  HorizontalAlignment="Stretch" Fill="{DynamicResource DefaultForeground}" Height="1" />
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{x:Null}"
+                Text="List of modules" />
+            <Button
+                Grid.Row="0"
+                Grid.Column="1"
+                Command="{Binding RemoveModuleButton}"
+                Content="Open folder" />
+            <Rectangle
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Height="1"
+                Margin="0,5,0,5"
+                HorizontalAlignment="Stretch"
+                Fill="{DynamicResource DefaultForeground}" />
         </Grid>
 
-        <ListView  ItemsSource="{Binding ModuleListItems,Mode=TwoWay}"  Grid.Row="1">
+        <ListView Grid.Row="1" ItemsSource="{Binding ModuleListItems, Mode=TwoWay}">
 
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"></StackPanel>
+                    <StackPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
 
-                        <Button Content="{Binding Path=ModuleButtonActionText}"  Margin="5,0,5,0"
-                                IsEnabled="{Binding ModuleButtonActionEnabled}"
-                                Command="{Binding  Path=DataContext.ModuleButtonClicked, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                                CommandParameter="{Binding}" 
-                                />
+                        <Button
+                            Margin="5,0,5,0"
+                            Command="{Binding Path=DataContext.ModuleButtonClicked, RelativeSource={RelativeSource AncestorType=ListView}}"
+                            CommandParameter="{Binding}"
+                            Content="{Binding Path=ModuleButtonActionText}"
+                            IsEnabled="{Binding ModuleButtonActionEnabled}" />
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Name}"/>
-                            <TextBlock Text="{Binding Description}"/>
+                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="{Binding Description}" />
                         </StackPanel>
                     </StackPanel>
-
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
-
 </Window>
