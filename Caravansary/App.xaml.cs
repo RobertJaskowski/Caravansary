@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Caravansary.Core;
+using Ninject;
+using Ninject.Modules;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,47 +15,60 @@ using System.Windows.Interop;
 
 namespace Caravansary
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+
+
+
     public partial class App : Application
     {
         private IntPtr CurrentHandleWindow { get; set; }
-        
+
         public bool UpdateAwaitingToDownload = false;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            MainWindow wnd = new MainWindow();
+
+            Data.Version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            IoC.Setup();
+            IoC._kernel.Load(new WPFIoCConfiguration());
+
+
+
+            var wnd = IoC.Get<MainWindow>();
+
+
+            var pm = IoC.Get<MainWindowPageModel>();
+
+
             wnd.InitializeComponent();
-            Application.Current.MainWindow = wnd;
-            CurrentHandleWindow = new WindowInteropHelper(wnd).Handle;
-            var vm = new MainWindowViewModel(CurrentHandleWindow, wnd);
+            //Application.Current.MainWindow = wnd;
+            //CurrentHandleWindow = new WindowInteropHelper(wnd).Handle;
 
-            wnd.DataContext = vm;
 
-            wnd.Loaded += vm.OnWindowLoaded;
-            wnd.Closing += vm.OnWindowClosing;
-            wnd.MouseUp += vm.MouseUp;
-            wnd.MouseDown += vm.MouseDown;
-            wnd.MouseEnter += vm.MouseEnter;
-            wnd.MouseLeave += vm.MouseLeave;
+
+            wnd.DataContext = pm;
+
             wnd.Show();
 
 
-            vm.InitModuleController();
+            //pm.InitModuleController();
 
 
-            Update.Init();
+            Update.CheckForUpdates();
 
-            
+
         }
+
+
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             if (Update.Status == UpdateStatus.UPDATEAVAILABLE)
             {
+
+
+
                 List<string> args = new List<string>()
                 {
                     "RequstedUpdate",

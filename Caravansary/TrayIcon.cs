@@ -1,4 +1,5 @@
-﻿using Caravansary.Properties;
+﻿using Caravansary.Core.Services;
+using Caravansary.Properties;
 using System;
 using System.Windows;
 
@@ -11,10 +12,11 @@ namespace Caravansary
         private Window mainWindow;
 
         private MainWindowSettings _mainWindowSettings;
-        public TrayIcon(MainWindowSettings mainWindowSettings)
-        {
-            _mainWindowSettings = mainWindowSettings;
+        private readonly INavigation navigation;
 
+        public TrayIcon(INavigation navigation)
+        {
+            this.navigation = navigation;
             CreateTrayMenu();
         }
         public void CreateTrayMenu()
@@ -60,11 +62,10 @@ namespace Caravansary
 
         private void TraySettingsClicked(object sender, EventArgs e)
         {
-            SettingsWindow dialog = new SettingsWindow();
-            dialog.DataContext = new SettingsWindowViewModel();
+            navigation.NavigateToAsync<SettingsWindowViewModel>();
+            
 
-            bool? result = dialog.ShowDialog();
-            // if (result == true)
+
 
         }
 

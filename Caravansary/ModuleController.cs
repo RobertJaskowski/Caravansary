@@ -19,17 +19,17 @@ using System.Windows.Threading;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
-    private static ModuleController _instance;
+    //private static ModuleController _instance;
 
-    public static ModuleController Instance
-    {
-        get
-        {
-            if (_instance == null) _instance = new ModuleController();
+    //public static ModuleController Instance
+    //{
+    //    get
+    //    {
+    //        if (_instance == null) _instance = new ModuleController();
 
-            return _instance;
-        }
-    }
+    //        return _instance;
+    //    }
+    //}
 
     public ModuleController()
     {
@@ -163,7 +163,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         catch (UnauthorizedAccessException e) { }
     }
 
-    internal bool IsModulePresent(string name)
+    public bool IsModulePresent(string name)
     {
         foreach (var item in CoreModulesKeys)
         {
@@ -173,7 +173,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         return false;
     }
 
-    internal bool IsModuleActive(string name)
+    public bool IsModuleActive(string name)
     {
         foreach (var item in CoreModulesKeys)
         {
@@ -376,7 +376,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
 
     internal void LoadSavedActiveModules()
     {
-        ModuleController.Instance.ScanDirectory(Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Modules");
+        ScanDirectory(Paths.APP_DIRECTORY + Path.DirectorySeparatorChar + "Modules");
 
         var load = Saves.Load<SavedActiveModules>(Paths.APP_NAME, "SavedActiveModules");
 
@@ -404,7 +404,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         }
     }
 
-    internal ModuleInfo[] GetActiveModules()
+    public ModuleInfo[] GetActiveModules()
     {
         return CoreModuleValues.Where(e => e.Loader.IsStarted).ToArray();
 
@@ -417,7 +417,7 @@ public class ModuleController : MarshalByRefObject, IModuleController
         //return ret.ToArray();
     }
 
-    internal void SaveActiveModulesNames()
+    public void SaveActiveModulesNames()
     {
         var sam = new SavedActiveModules();
         sam.activatedList = new List<string>();

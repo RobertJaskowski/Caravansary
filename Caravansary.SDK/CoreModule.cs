@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 
 
-public abstract class CoreModule : BaseViewModel
+public abstract class CoreModule : PageModelBase
 {
     
 }

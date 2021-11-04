@@ -18,6 +18,10 @@ public static class Data
 
             return _version;
         }
+        set
+        {
+            _version = value;
+        }
 
     }
 
@@ -56,7 +60,7 @@ public static class Data
     }
 
 
-    internal static void SaveWindowSettings()
+    public static void SaveWindowSettings()
     {
         if (_mainWindowSettingsSave != null)
         {

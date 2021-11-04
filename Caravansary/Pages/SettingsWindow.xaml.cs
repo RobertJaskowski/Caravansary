@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Caravansary.Core;
+using System.Windows;
 
 namespace Caravansary
 {
@@ -11,6 +12,8 @@ namespace Caravansary
         public SettingsWindow()
         {
             InitializeComponent();
+            
+            DataContext = IoC.Get<SettingsWindowViewModel>();
         }
 
     }

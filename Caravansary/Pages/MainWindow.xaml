@@ -91,8 +91,12 @@
 
     <StackPanel x:Name="stackParent" VerticalAlignment="Top">
 
+<<<<<<< HEAD:Caravansary/Views/MainWindow.xaml
         <!--  MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"  -->
         <ListView Name="TopModules" ItemsSource="{Binding TopModules, Mode=TwoWay}">
+=======
+        <ListView Name="TopModules" ItemsSource="{Binding TopModules,Mode=TwoWay}"  >
+>>>>>>> 1.4.5:Caravansary/Pages/MainWindow.xaml
 
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -106,9 +110,16 @@
             </ListView.ItemTemplate>
         </ListView>
 
+<<<<<<< HEAD:Caravansary/Views/MainWindow.xaml
         <!--  MinHeight="20" MinWidth="1000" MaxHeight="20" Height="20"  -->
         <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules, Mode=TwoWay}">
             <!--  Visibility="{Binding ElementName=BlacklistEnableCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}"  -->
+=======
+
+
+
+        <ListView Name="CoreModules" ItemsSource="{Binding ViewCoreModules,Mode=TwoWay}" >
+>>>>>>> 1.4.5:Caravansary/Pages/MainWindow.xaml
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal" />
@@ -116,9 +127,13 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
+<<<<<<< HEAD:Caravansary/Views/MainWindow.xaml
                     <UserControl Content="{Binding UserControlView}">
                         <!--<TextBox Text="{Binding View, FallbackValue=empty}" Background="{x:Null}" />
                             <Button Content="&#xf068;" Command="{Binding  Path=DataContext.RemoveBlacklistItem, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding }" />-->
+=======
+                    <UserControl Content="{Binding UserControlView}" >
+>>>>>>> 1.4.5:Caravansary/Pages/MainWindow.xaml
                     </UserControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -143,6 +158,7 @@
             <Button Command="{Binding GetModulesClick}" Content="Get modules" />
         </StackPanel>
 
+<<<<<<< HEAD:Caravansary/Views/MainWindow.xaml
         <!--<Label Name="label1" Content="{Binding CtrlZCounter ,Mode=OneWay, FallbackValue='CTRL + Z'}"  FontWeight="Bold" MinWidth="200" FontSize="13" Margin="0,1,0,0" MinHeight="20" MaxHeight="20" Padding="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center">
                 <Label.InputBindings>
                     <MouseBinding Command="{Binding CtrlZClicked}" MouseAction="LeftClick" />
@@ -174,5 +190,7 @@
                    HorizontalContentAlignment="Center" FontSize="20" VerticalContentAlignment="Center">
             </Label>
         </StackPanel>-->
+=======
+>>>>>>> 1.4.5:Caravansary/Pages/MainWindow.xaml
     </StackPanel>
 </Window>

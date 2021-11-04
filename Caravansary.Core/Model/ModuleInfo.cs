@@ -1,5 +1,4 @@
-﻿using Caravansary;
-using System;
+﻿using System;
 
 public class ModuleInfo
 {

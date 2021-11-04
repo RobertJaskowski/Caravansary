@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 public class Update
 {
     public static UpdateStatus Status;
-    public static void Init()
+    public static void CheckForUpdates()
     {
         Task.Run(() => HandleUpdates());
 
@@ -41,7 +41,7 @@ public class Update
         {
             using (WebClient client = new WebClient())
             {
-                var success = Version.TryParse(await Task.Run(()=> client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt")), out Version result);
+                var success = Version.TryParse(await Task.Run(() => client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/Caravansary/master/version.txt")), out Version result);
                 if (!success)
                     return false;
 
@@ -61,7 +61,7 @@ public class Update
 
     }
 
-    private static async Task HandleLauncherUpdate()
+    public static async Task HandleLauncherUpdate()
     {
 
         if (await IsLauncherUpdateAvailable())
@@ -91,7 +91,7 @@ public class Update
             if (existingLauncherVersion == null)
                 existingLauncherVersion = new Version(0, 0, 0);
 
-            
+
             using (WebClient client = new WebClient())
             {
                 var success = Version.TryParse(await Task.Run(() => client.DownloadString("https://raw.githubusercontent.com/RobertJaskowski/LauncherCaravansary/master/version.txt")), out Version onlineLauncherVersion);
@@ -123,6 +123,8 @@ public class Update
             if (File.Exists(Paths.APPDATA_LAUNCHER_EXE))
                 File.Delete(Paths.APPDATA_LAUNCHER_EXE);
 
+            if (!Directory.Exists(Paths.APPDATA_C_DIRECTORY))
+                Directory.CreateDirectory(Paths.APPDATA_C_DIRECTORY);
 
             using (WebClient client = new WebClient())
             {
