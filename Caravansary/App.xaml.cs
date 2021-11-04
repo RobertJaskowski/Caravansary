@@ -15,9 +15,6 @@ using System.Windows.Interop;
 
 namespace Caravansary
 {
-
-
-
     public partial class App : Application
     {
         private IntPtr CurrentHandleWindow { get; set; }
@@ -31,44 +28,25 @@ namespace Caravansary
             Data.Version = Assembly.GetExecutingAssembly().GetName().Version;
 
             IoC.Setup();
-            IoC._kernel.Load(new WPFIoCConfiguration());
+            IoC.Get<INavigation>().NavigateToAsync<MainWindowPageModel>();
+            //var wnd = IoC.Get<MainWindow>();
 
+            //var pm = IoC.Get<MainWindowPageModel>();
 
-
-            var wnd = IoC.Get<MainWindow>();
-
-
-            var pm = IoC.Get<MainWindowPageModel>();
-
-
-            wnd.InitializeComponent();
             //Application.Current.MainWindow = wnd;
             //CurrentHandleWindow = new WindowInteropHelper(wnd).Handle;
 
+            //wnd.DataContext = pm;
 
-
-            wnd.DataContext = pm;
-
-            wnd.Show();
-
-
-            //pm.InitModuleController();
-
+            //wnd.Show();
 
             Update.CheckForUpdates();
-
-
         }
-
-
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             if (Update.Status == UpdateStatus.UPDATEAVAILABLE)
             {
-
-
-
                 List<string> args = new List<string>()
                 {
                     "RequstedUpdate",

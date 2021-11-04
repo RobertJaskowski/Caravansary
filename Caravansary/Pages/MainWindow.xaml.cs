@@ -1,7 +1,7 @@
-﻿
-namespace Caravansary
+﻿namespace Caravansary
 {
     using Caravansary.Core;
+    using Caravansary.SDK;
     using System;
     using System.ComponentModel;
     using System.Diagnostics;
@@ -11,9 +11,6 @@ namespace Caravansary
 
     public partial class MainWindow : Window, IWindow
     {
-
-
-
         public double MainWindowPositionX
         {
             get
@@ -44,23 +41,21 @@ namespace Caravansary
 
         public Action OnMouseWindowEnter;
         public Action OnMouseWindowLeave;
-        private readonly ModuleController moduleController;
 
-        public MainWindow(ModuleController moduleController)
+        private ModuleController moduleController;
+
+        public MainWindow()
         {
-
+            InitializeComponent();
             LoadWindowSettings();
 
-
-
             Loaded += OnWindowLoaded;
-            this.moduleController = moduleController;
+            this.moduleController = (ModuleController)IoC.Get<IModuleController>();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-
 
             moduleController.StopAllModules();
             KeyboardListener.Instance.UnHookKeyboard();
@@ -70,14 +65,12 @@ namespace Caravansary
         {
             base.OnMouseEnter(e);
             OnMouseWindowEnter?.Invoke();
-
         }
 
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             base.OnMouseLeave(e);
             OnMouseWindowLeave?.Invoke();
-
         }
 
         private bool startedDrag = false;
@@ -115,10 +108,6 @@ namespace Caravansary
         {
         }
 
-
-
-
-
         private void LoadWindowSettings()
         {
             Application.Current.MainWindow.ShowInTaskbar = ShowInTaskbar;
@@ -145,8 +134,6 @@ namespace Caravansary
             MainWindowPositionY = y;
         }
 
-
-
         public void MakeWindowNonClickThrough()
         {
             //var buttonHwndSource = (HwndSource)HwndSource.FromVisual(btn);
@@ -162,7 +149,4 @@ namespace Caravansary
             WinApi.SetWindowExTransparent(windowHwnd);
         }
     }
-
-
-
 }

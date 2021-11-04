@@ -1,15 +1,14 @@
 ﻿using System;
 
-
-
-public class WindowSwitchedArgs : EventArgs
+namespace Caravansary.SDK
 {
-    public string Title { get; private set; }
-
-    public WindowSwitchedArgs(string title)
+    public class WindowSwitchedArgs : EventArgs
     {
-        Title = title;
+        public string Title { get; private set; }
+
+        public WindowSwitchedArgs(string title)
+        {
+            Title = title;
+        }
     }
-
 }
-

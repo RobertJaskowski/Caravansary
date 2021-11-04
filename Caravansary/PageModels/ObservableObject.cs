@@ -6,11 +6,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-
 public abstract class ObservableObject : INotifyPropertyChanged
 {
-
     #region INotifyPropertyChanged Members;
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected void OnPropertyChanged(string propertyName)
@@ -23,6 +22,5 @@ public abstract class ObservableObject : INotifyPropertyChanged
         }
     }
 
-    #endregion
-
+    #endregion INotifyPropertyChanged Members;
 }

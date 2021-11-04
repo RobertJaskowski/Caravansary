@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caravansary.SDK;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,11 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
-
 public class WindowsWindowApi
 {
-
     private static WindowsWindowApi _instance;
+
     public static WindowsWindowApi Instance
     {
         get
@@ -23,37 +23,31 @@ public class WindowsWindowApi
         }
     }
 
-    static WinEventDelegate dele = null;
-    delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+    private static WinEventDelegate dele = null;
+
+    private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
     [DllImport("user32.dll")]
-    static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+    private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
 
     private const uint WINEVENT_OUTOFCONTEXT = 0;
     private const uint EVENT_SYSTEM_FOREGROUND = 3;
 
     [DllImport("user32.dll")]
-    static extern IntPtr GetForegroundWindow();
+    private static extern IntPtr GetForegroundWindow();
 
     [DllImport("user32.dll")]
-    static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-
+    private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
     public event Action<WindowSwitchedArgs> OnWindowSwitched;
-    private static IntPtr _hookID = IntPtr.Zero;
 
+    private static IntPtr _hookID = IntPtr.Zero;
 
     public WindowsWindowApi()
     {
-
         dele = new WinEventDelegate(WinEventProc);
         IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
-
     }
-
-
-
 
     private static string GetActiveWindowTitle()
     {
@@ -71,22 +65,17 @@ public class WindowsWindowApi
 
     public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
     {
-
-
-
         var windowTitle = GetActiveWindowTitle();
         if (windowTitle == null) return;
 
         windowTitle = windowTitle.ToLower().Trim();
 
-
         if (OnWindowSwitched != null)
         {
             OnWindowSwitched.Invoke(new WindowSwitchedArgs(windowTitle));
         }
-
-
     }
+
     public static string GetChromeActiveTabUrl()
     {
         Process[] procsChrome = Process.GetProcessesByName("chrome");
@@ -96,11 +85,11 @@ public class WindowsWindowApi
 
         foreach (Process proc in procsChrome)
         {
-            // the chrome process must have a window 
+            // the chrome process must have a window
             if (proc.MainWindowHandle == IntPtr.Zero)
                 continue;
 
-            // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+            // to find the tabs we first need to locate something reliable - the 'New Tab' button
 
             try
             {
@@ -114,12 +103,10 @@ public class WindowsWindowApi
             {
                 Debug.WriteLine("exception chrome tab");
             }
-
         }
 
         return null;
     }
-
 
     public static async Task<string> AsyncGetChromeActiveTabUrl()
     {
@@ -130,11 +117,11 @@ public class WindowsWindowApi
 
         foreach (Process proc in procsChrome)
         {
-            // the chrome process must have a window 
+            // the chrome process must have a window
             if (proc.MainWindowHandle == IntPtr.Zero)
                 continue;
 
-            // to find the tabs we first need to locate something reliable - the 'New Tab' button 
+            // to find the tabs we first need to locate something reliable - the 'New Tab' button
             AutomationElement root = AutomationElement.FromHandle(proc.MainWindowHandle);
             var SearchBar =
                 await Task.Run(() => root.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.NameProperty, "Address and search bar")));
@@ -144,6 +131,7 @@ public class WindowsWindowApi
 
         return null;
     }
+
     public static bool IsChrome(string title)
     {
         return title.Contains("chrome");
@@ -156,12 +144,11 @@ public class WindowsWindowApi
         SplitProcessAndParameter(title, out string process, out string param);
         return !string.IsNullOrEmpty(param);
     }
+
     public static void SplitProcessAndParameter(string stringToSplit, out string process, out string parameter)
     {
         if (stringToSplit.Contains(':'))
         {
-
-
             List<string> spl = stringToSplit.Split(':').ToList<string>();
             if (spl[1].Length > 0)
             {
@@ -173,17 +160,13 @@ public class WindowsWindowApi
                 process = spl[0];
                 parameter = "";
             }
-
         }
         else
         {
             process = stringToSplit;
             parameter = "";
         }
-
-
     }
-
 
     public static bool IsChromeTab(string title, out string url)
     {
@@ -195,5 +178,4 @@ public class WindowsWindowApi
         SplitProcessAndParameter(title, out string process, out url);
         return !string.IsNullOrEmpty(url);
     }
-
 }

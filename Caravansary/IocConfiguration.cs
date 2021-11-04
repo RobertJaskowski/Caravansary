@@ -1,4 +1,4 @@
-﻿using Caravansary.Core;
+﻿using Caravansary.SDK;
 using Caravansary.Views;
 using Ninject.Modules;
 using System;
@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Caravansary
 {
-    public class WPFIoCConfiguration : NinjectModule
+    public class IocConfiguration : NinjectModule
     {
         public override void Load()
         {
+            Bind<INavigation>().To<NavigationService>().InSingletonScope();
+
             IoC.RegisterSelfSingleton<MainWindowPageModel, MainWindow>();
             IoC.RegisterSelfSingleton<SettingsWindowViewModel, SettingsWindow>();
             IoC.RegisterSelfSingleton<ModulesListViewModel, ModulesListWindow>();
-
-            Bind<ModuleController>().ToSelf().InSingletonScope();
+            Bind<IModuleController>().To<ModuleController>().InSingletonScope();
 
             //Bind<MainWindow>().ToSelf().InSingletonScope();
             //Bind<MainWindowPageModel>().ToSelf().InSingletonScope();

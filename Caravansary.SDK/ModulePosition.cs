@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-public enum ModulePosition
+namespace Caravansary.SDK
 {
-    TOP,
-    MID,
-    BOT
+    public enum ModulePosition
+    {
+        TOP,
+        MID,
+        BOT
+    }
 }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Windows.Input;
 
-public class KeyReleasedArgs : EventArgs
+namespace Caravansary.SDK
 {
-    public Key KeyReleased { get; private set; }
-
-    public KeyReleasedArgs(Key key)
+    public class KeyReleasedArgs : EventArgs
     {
-        KeyReleased = key;
+        public Key KeyReleased { get; private set; }
+
+        public KeyReleasedArgs(Key key)
+        {
+            KeyReleased = key;
+        }
     }
 }

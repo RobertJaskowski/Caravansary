@@ -9,76 +9,53 @@
     <!--
         xmlns:mbV="clr-namespace:Caravansary.CoreModules.MainBar.View"
         xmlns:mbVM="clr-namespace:Caravansary.CoreModules.MainBar.ViewModel"
-        
-        
+
         xmlns:kcV="clr-namespace:Caravansary.CoreModules.KeyCounter.View"
         xmlns:kcVM="clr-namespace:Caravansary.CoreModules.KeyCounter.ViewModel"
-        
+
         xmlns:atV="clr-namespace:Caravansary.CoreModules.ActiveTimer.View"
         xmlns:atVM="clr-namespace:Caravansary.CoreModules.ActiveTimer.ViewModel"
-        
+
         xmlns:dgV="clr-namespace:Caravansary.CoreModules.DailyGoal.View"
         xmlns:dgVM="clr-namespace:Caravansary.CoreModules.DailyGoal.ViewModel"
-        
-        
-        
+
         xmlns:fV="clr-namespace:Caravansary.CoreModules.Filler.View"
         xmlns:fVM="clr-namespace:Caravansary.CoreModules.Filler.ViewModel"
-        
-        
-        
+
         xmlns:rV="clr-namespace:Caravansary.CoreModules.Roadmap.View"
-        xmlns:rVM="clr-namespace:Caravansary.CoreModules.Roadmap.ViewModel"
-        
-        >
+        xmlns:rVM="clr-namespace:Caravansary.CoreModules.Roadmap.ViewModel">
     -->
     <Application.Resources>
 
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-<<<<<<< HEAD
                 <ResourceDictionary Source="Themes/Colors.xaml" />
-                <ResourceDictionary Source="Themes/Texts.xaml" />
                 <ResourceDictionary Source="Themes/Fonts.xaml" />
-                <ResourceDictionary Source="Themes/Buttons.xaml" />
-                <ResourceDictionary Source="Themes/Windows.xaml" />
-=======
-                <ResourceDictionary Source="Themes/Colors.xaml"/>
-                <ResourceDictionary Source="Themes/Fonts.xaml"/>
->>>>>>> 1.4.5
-
-
-
             </ResourceDictionary.MergedDictionaries>
 
             <!--<DataTemplate DataType="{x:Type mbVM:MainBarViewModel}">
-                <mbV:MainBarView/>
+                <mbV:MainBarView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type kcVM:KeyCounterViewModel}">
-                <kcV:KeyCounterView/>
+                <kcV:KeyCounterView />
             </DataTemplate>
 
-
             <DataTemplate DataType="{x:Type atVM:ActiveTimerViewModel}">
-                <atV:ActiveTimerView/>
+                <atV:ActiveTimerView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type dgVM:DailyGoalViewModel}">
-                <dgV:DailyGoalView/>
+                <dgV:DailyGoalView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type fVM:FillerViewModel}">
-                <fV:FillerView/>
+                <fV:FillerView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type rVM:RoadmapViewModel}">
-                <rV:RoadmapView/>
+                <rV:RoadmapView />
             </DataTemplate>-->
-
         </ResourceDictionary>
-
-
-
     </Application.Resources>
 </Application>

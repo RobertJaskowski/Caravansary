@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Caravansary.SDK;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 
-
 public class KeyboardListener
 {
-
     private static KeyboardListener _instance;
+
     public static KeyboardListener Instance
     {
         get
@@ -22,21 +22,19 @@ public class KeyboardListener
 
     private static List<Key> AllKeyPressed;
 
-
     private const int WH_KEYBOARD_LL = 13;
     private const int WM_KEYDOWN = 0x0100;
     private const int WM_SYSKEYDOWN = 0x0104;
     private const int WM_KEYUP = 0x0101;
     private const int WM_SYSKEYUP = 0x0105;
 
-
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-
 
     public delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
     public event Action<KeyPressedArgs> OnKeyPressed;
+
     public event Action<KeyReleasedArgs> OnKeyReleased;
 
     private LowLevelKeyboardProc _proc;
@@ -51,13 +49,10 @@ public class KeyboardListener
         HookKeyboard();
     }
 
-
-
     public void HookKeyboard()
     {
         _hookID = SetHook(_proc);
         //Debug.WriteLine("Last error kb " + Marshal.GetLastWin32Error());
-
     }
 
     public void UnHookKeyboard()
@@ -107,6 +102,5 @@ public class KeyboardListener
             return true;
 
         return false;
-
     }
 }

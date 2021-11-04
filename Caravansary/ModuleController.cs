@@ -1,4 +1,5 @@
 ﻿using Caravansary;
+using Caravansary.SDK;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,6 @@ using System.Windows.Threading;
 
 public class ModuleController : MarshalByRefObject, IModuleController
 {
-    //private static ModuleController _instance;
-
-    //public static ModuleController Instance
-    //{
-    //    get
-    //    {
-    //        if (_instance == null) _instance = new ModuleController();
-
-    //        return _instance;
-    //    }
-    //}
-
     public ModuleController()
     {
     }

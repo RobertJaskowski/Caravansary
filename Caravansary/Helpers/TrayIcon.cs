@@ -1,11 +1,10 @@
-﻿using Caravansary.Core.Services;
-using Caravansary.Properties;
+﻿using Caravansary.Properties;
 using System;
 using System.Windows;
 
 namespace Caravansary
 {
-    class TrayIcon
+    internal class TrayIcon
     {
         private System.Windows.Forms.NotifyIcon trayIcon;
 
@@ -19,13 +18,13 @@ namespace Caravansary
             this.navigation = navigation;
             CreateTrayMenu();
         }
+
         public void CreateTrayMenu()
         {
             mainWindow = Application.Current.MainWindow;
             trayIcon = new System.Windows.Forms.NotifyIcon();
             //    var iconHandle  = Caravansary.Properties.Resources.MyImage.GetHicon();
             var bm = new System.Drawing.Bitmap(Resources.logo);
-
 
             trayIcon.Icon = System.Drawing.Icon.FromHandle(bm.GetHicon());
 
@@ -49,7 +48,7 @@ namespace Caravansary
         {
             mainWindow.ShowInTaskbar = !mainWindow.ShowInTaskbar;
 
-            _mainWindowSettings.ShowInTaskbar = mainWindow.ShowInTaskbar; 
+            _mainWindowSettings.ShowInTaskbar = mainWindow.ShowInTaskbar;
         }
 
         private void TrayStayOnTopClicked(object sender, EventArgs e)
@@ -63,10 +62,6 @@ namespace Caravansary
         private void TraySettingsClicked(object sender, EventArgs e)
         {
             navigation.NavigateToAsync<SettingsWindowViewModel>();
-            
-
-
-
         }
 
         private void TrayResetPositionClicked(object sender, EventArgs e)
@@ -81,10 +76,8 @@ namespace Caravansary
 
         private void TrayIconMouseClicked(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
-
                 if (mainWindow.Visibility == Visibility.Collapsed)
                 {
                     mainWindow.Visibility = Visibility.Visible;
@@ -93,9 +86,6 @@ namespace Caravansary
                 {
                     mainWindow.Visibility = Visibility.Collapsed;
                 }
-
-
-
             }
         }
     }

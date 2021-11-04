@@ -1,24 +1,20 @@
-<<<<<<< HEAD:Caravansary/Share.cs
 ﻿using System;
-=======
-﻿using Porter.Core;
+
 using System;
->>>>>>> 1.4.5:Caravansary.Core/Share.cs
+
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+
 //using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-<<<<<<< HEAD:Caravansary/Share.cs
 
 using Newtonsoft.Json;
 using System.Threading;
 using System.Net.Sockets;
 using System.Net.WebSockets;
-=======
->>>>>>> 1.4.5:Caravansary.Core/Share.cs
 
 namespace Caravansary
 {
