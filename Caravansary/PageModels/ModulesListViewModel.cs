@@ -1,4 +1,5 @@
-﻿using Caravansary.SDK;
+﻿using Caravansary;
+using Caravansary.SDK;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,11 @@ public class ModulesListViewModel : BasePupupWindowPageModel
     #region Properties
 
     private ObservableCollection<ViewModuleListItem> _moduleListItems;
+
     public ObservableCollection<ViewModuleListItem> ModuleListItems
     {
         get
         {
-
-
-
             return _moduleListItems;
         }
         set
@@ -33,11 +32,12 @@ public class ModulesListViewModel : BasePupupWindowPageModel
 
     private OnlineModuleList cachedOnlineModuleList;
 
-    #endregion
+    #endregion Properties
 
     #region Commands
 
     private ICommand _removeModuleButton;
+
     public ICommand RemoveModuleButton
     {
         get
@@ -47,7 +47,6 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                    (object o) =>
                    {
                        Process.Start("explorer.exe", Paths.MODULE_DIRECTORY);
-
                    },
                    (object o) =>
                    {
@@ -69,12 +68,9 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                 _moduleButtonClicked = new RelayCommand(
                    (object o) =>
                    {
-
                        if (o is ViewModuleListItem)
                        {
-
                            var vmli = o as ViewModuleListItem;
-
 
                            if (vmli.ModuleButtonActionText.ToLower().Contains("get"))
                            {
@@ -88,10 +84,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                            {
                                ActivateModule(vmli);
                            }
-
-
                        }
-
                    },
                    (object o) =>
                    {
@@ -110,7 +103,6 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         moduleController.StartCoreModule(vmli.Name);
         moduleController.SaveActiveModulesNames();
 
-
         vmli.ModuleButtonActionText = "Deactivate";
         vmli.ModuleButtonActionEnabled = true;
     }
@@ -120,25 +112,20 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         vmli.ModuleButtonActionText = "Deactivating... ";
         vmli.ModuleButtonActionEnabled = false;
 
-
         moduleController.StopCoreModule(vmli.Name);
         moduleController.SaveActiveModulesNames();
-
 
         vmli.ModuleButtonActionText = "Activate";
         vmli.ModuleButtonActionEnabled = true;
     }
 
+    #endregion Commands
 
-
-    #endregion
-
-    public ModulesListViewModel(ModuleController moduleController)
+    public ModulesListViewModel(IModuleController moduleController)
     {
+        this.moduleController = (ModuleController)moduleController;
         ShowListOfModules();
-        this.moduleController = moduleController;
     }
-
 
     private void RemoveModule(ViewModuleListItem vmli)
     {
@@ -146,8 +133,6 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         vmli.ModuleButtonActionEnabled = false;
 
         moduleController.RemoveModule(vmli.Name);
-
-
     }
 
     private async void GetModule(ViewModuleListItem vmli)
@@ -166,18 +151,12 @@ public class ModulesListViewModel : BasePupupWindowPageModel
             moduleController.ScanDirectory(Paths.MODULE_DIRECTORY + Path.DirectorySeparatorChar + vmli.Name);
         }
 
-
-
-
         vmli.ModuleButtonActionText = "Deactivate";
         vmli.ModuleButtonActionEnabled = true;
     }
 
     private void ShowListOfModules()
     {
-
-
-
         var res = GetOnlineListOfModules();
         if (res != null)
             cachedOnlineModuleList = res;
@@ -194,7 +173,6 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                 ModuleButtonActionEnabled = true,
                 ModuleButtonActionText = moduleController.IsModulePresent(item.Name) ? (moduleController.IsModuleActive(item.Name) ? "Deactivate" : "Activate") : "Get"
             });
-
         }
 
         foreach (var item in moduleController.CoreModuleValues)
@@ -221,14 +199,10 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                     ModuleButtonActionText = (moduleController.IsModuleActive(item.Loader.Name) ? "Deactivate" : "Activate")
                 });
             }
-        } 
-
-
-
+        }
 
         if (showedModules.Count > 0)
             ModuleListItems = showedModules;
-
     }
 
     public OnlineModuleList GetOnlineListOfModules()
@@ -255,7 +229,6 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         {
             webClient.Dispose();
         }
-
     }
 
     public void SerializeModuleList(OnlineModuleList list)
@@ -263,11 +236,10 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         Saves.Save("custom", "OnlineModuleList", list);
     }
 
-
-
     public class ViewModuleListItem : ObservableObject
     {
         private string _moduleName;
+
         public string Name
         {
             get { return _moduleName; }
@@ -277,7 +249,9 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                 OnPropertyChanged(nameof(Name));
             }
         }
+
         private string _description;
+
         public string Description
         {
             get { return _description; }
@@ -287,7 +261,9 @@ public class ModulesListViewModel : BasePupupWindowPageModel
                 OnPropertyChanged(nameof(Description));
             }
         }
+
         private string _downloadLink;
+
         public string DownloadLink
         {
             get { return _downloadLink; }
@@ -299,6 +275,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         }
 
         private string _imageUrl;
+
         public string ImageUrl
         {
             get { return _imageUrl; }
@@ -310,6 +287,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         }
 
         private bool _moduleButtonActionEnabled;
+
         public bool ModuleButtonActionEnabled
         {
             get
@@ -324,6 +302,7 @@ public class ModulesListViewModel : BasePupupWindowPageModel
         }
 
         private string _moduleButtonActionText;
+
         public string ModuleButtonActionText
         {
             get

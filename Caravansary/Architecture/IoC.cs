@@ -57,6 +57,8 @@ namespace Caravansary
         {
             if (_kernel == null)
                 _kernel = new StandardKernel(new IocConfiguration());
+
+            _kernel.Load(new WPFConfiguration());
         }
     }
 }

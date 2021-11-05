@@ -204,6 +204,32 @@ namespace Caravansary
             navigation.NavigateToAsync<ModulesListViewModel>();
         }
 
+        private ICommand _moduleNodesClick;
+
+        public ICommand ModuleNodesClick
+        {
+            get
+            {
+                if (_moduleNodesClick == null)
+                    _moduleNodesClick = new RelayCommand(
+                       (object o) =>
+                       {
+                           ShowModuleNodesWindow();
+                       },
+                       (object o) =>
+                       {
+                           return true;
+                       });
+
+                return _moduleNodesClick;
+            }
+        }
+
+        private void ShowModuleNodesWindow()
+        {
+            navigation.NavigateToAsync<NodePageModel>();
+        }
+
         private ICommand _showSettings;
 
         public ICommand ShowSettings

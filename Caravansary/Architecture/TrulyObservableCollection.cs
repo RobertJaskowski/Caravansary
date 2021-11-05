@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Caravansary.SDK
+namespace Caravansary
 {
     public sealed class TrulyObservableCollection<T> : ObservableCollection<T>
     where T : INotifyPropertyChanged

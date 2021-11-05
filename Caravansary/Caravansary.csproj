@@ -113,6 +113,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Ninject" Version="3.3.4" />
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />

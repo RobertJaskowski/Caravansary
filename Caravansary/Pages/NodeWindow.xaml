@@ -1,0 +1,56 @@
+﻿<Window
+    x:Class="Caravansary.Pages.NodeWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Caravansary"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="NodeWindow"
+    Width="800"
+    Height="450"
+    Topmost="True"
+    mc:Ignorable="d">
+    <Grid>
+        <Label Content="test" />
+        <ItemsControl ItemsSource="{Binding Path=Shapes}">
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type local:Rectangle}">
+                    <Rectangle
+                        Canvas.Left="{Binding Left, Mode=TwoWay}"
+                        Canvas.Top="{Binding Top, Mode=TwoWay}"
+                        Width="{Binding Width}"
+                        Height="{Binding Height}"
+                        Fill="Red">
+                        <i:Interaction.Behaviors>
+                            <local:DragBehavior />
+                        </i:Interaction.Behaviors>
+                    </Rectangle>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:Circle}">
+                    <Ellipse
+                        Canvas.Left="{Binding Left, Mode=TwoWay}"
+                        Canvas.Top="{Binding Top, Mode=TwoWay}"
+                        Width="{Binding Radius}"
+                        Height="{Binding Radius}"
+                        Fill="Blue">
+                        <i:Interaction.Behaviors>
+                            <local:DragBehavior />
+                        </i:Interaction.Behaviors>
+                    </Ellipse>
+                </DataTemplate>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Top, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Left" Value="{Binding Path=Left, Mode=TwoWay}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+    </Grid>
+</Window>

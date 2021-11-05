@@ -74,6 +74,7 @@
                 Header="Settings"
                 Icon="{x:Null}" />
             <MenuItem Command="{Binding GetModulesClick}" Header="Modules" />
+            <MenuItem Command="{Binding ModuleNodesClick}" Header="Module nodes" />
             <MenuItem Command="{Binding QuitApp}" Header="Exit" />
             <!--<MenuItem Header="Rem" Command="{Binding RemoveDir}" />-->
         </ContextMenu>

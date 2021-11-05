@@ -107,10 +107,10 @@ class SettingsWindowViewModel : BasePupupWindowPageModel
 
 
 
-    public SettingsWindowViewModel(MainWindow mainWindow, ModuleController moduleController)
+    public SettingsWindowViewModel(MainWindow mainWindow, IModuleController moduleController)
     {
         this.mainWindow = mainWindow;
-        this.moduleController = moduleController;
+        this.moduleController = (ModuleController)moduleController;
     }
 
     private void InjectSettingsFromModules()
