@@ -7,26 +7,33 @@ using System.Threading.Tasks;
 
 namespace Caravansary
 {
-    public class NodePageModel : PageModelBase
+    public class NodePageModel : PageModelBase, IDropable
     {
-        private TrulyObservableCollection<IShape> _shapes;
+        private TrulyObservableCollection<Node> _nodes;
 
-        public TrulyObservableCollection<IShape> Shapes
+        public TrulyObservableCollection<Node> Nodes
         {
-            get { return _shapes; }
+            get { return _nodes; }
             set
             {
-                _shapes = value;
-                OnPropertyChanged(nameof(Shapes));
+                _nodes = value;
+                OnPropertyChanged(nameof(Nodes));
             }
         }
 
+        public string DataType => "Node";
+
         public NodePageModel()
         {
-            Shapes = new TrulyObservableCollection<IShape>();
+            Nodes = new TrulyObservableCollection<Node>();
 
-            Shapes.Add(new Rectangle { Top = 50, Left = 50, Height = 50, Width = 50 });
-            Shapes.Add(new Circle { Top = 100, Left = 100, Radius = 50 });
+            Nodes.Add(new Node("test1", new Position(50, 50), new Rectangle { Height = 50, Width = 50 }, null, null));
+            Nodes.Add(new Node("test2", new Position(0, 0), new Rectangle { Height = 50, Width = 50 }, null, null));
+            OnPropertyChanged(nameof(Nodes));
+        }
+
+        public void Drop(object data, int index = -1)
+        {
         }
     }
 }

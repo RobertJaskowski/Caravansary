@@ -16,6 +16,7 @@ namespace Caravansary
         {
             Bind<INavigation>().To<NavigationService>().InSingletonScope();
             Bind<IModuleController>().To<ModuleController>().InSingletonScope();
+            Bind<NodeManager>().ToSelf().InSingletonScope();
 
             IoC.RegisterSelfSingleton<MainWindowPageModel, MainWindow>();
             IoC.RegisterSelfSingleton<SettingsWindowViewModel, SettingsWindow>();

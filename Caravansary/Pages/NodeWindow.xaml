@@ -9,33 +9,42 @@
     Title="NodeWindow"
     Width="800"
     Height="450"
+    Background="{StaticResource DefaultBgDark}"
     Topmost="True"
     mc:Ignorable="d">
     <Grid>
-        <Label Content="test" />
-        <ItemsControl ItemsSource="{Binding Path=Shapes}">
+        <i:Interaction.Behaviors>
+            <local:FrameworkElementDropBehavior />
+        </i:Interaction.Behaviors>
+        <ItemsControl ItemsSource="{Binding Path=Nodes}">
             <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type local:Node}">
+                    <Grid Canvas.Left="{Binding Position.X, Mode=TwoWay}" Canvas.Top="{Binding Position.Y, Mode=TwoWay}">
+                        <Rectangle Fill="Black" />
+                        <TextBlock Foreground="{StaticResource DefaultForeground}" Text="{Binding Name}" />
+
+                        <i:Interaction.Behaviors>
+                            <local:FrameworkElementDragBehavior />
+                        </i:Interaction.Behaviors>
+                    </Grid>
+                </DataTemplate>
                 <DataTemplate DataType="{x:Type local:Rectangle}">
                     <Rectangle
-                        Canvas.Left="{Binding Left, Mode=TwoWay}"
-                        Canvas.Top="{Binding Top, Mode=TwoWay}"
                         Width="{Binding Width}"
                         Height="{Binding Height}"
                         Fill="Red">
                         <i:Interaction.Behaviors>
-                            <local:DragBehavior />
+                            <local:FrameworkElementDragBehavior />
                         </i:Interaction.Behaviors>
                     </Rectangle>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type local:Circle}">
                     <Ellipse
-                        Canvas.Left="{Binding Left, Mode=TwoWay}"
-                        Canvas.Top="{Binding Top, Mode=TwoWay}"
                         Width="{Binding Radius}"
                         Height="{Binding Radius}"
                         Fill="Blue">
                         <i:Interaction.Behaviors>
-                            <local:DragBehavior />
+                            <local:FrameworkElementDragBehavior />
                         </i:Interaction.Behaviors>
                     </Ellipse>
                 </DataTemplate>
@@ -47,8 +56,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Top" Value="{Binding Path=Top, Mode=TwoWay}" />
-                    <Setter Property="Canvas.Left" Value="{Binding Path=Left, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Position.Y, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Left" Value="{Binding Path=Position.X, Mode=TwoWay}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>
