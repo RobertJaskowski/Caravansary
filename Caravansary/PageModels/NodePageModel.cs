@@ -27,8 +27,8 @@ namespace Caravansary
         {
             Nodes = new TrulyObservableCollection<Node>();
 
-            Nodes.Add(new Node("test1", new Position(50, 50), new Rectangle { Height = 50, Width = 50 }, null, null));
-            Nodes.Add(new Node("test2", new Position(0, 0), new Rectangle { Height = 50, Width = 50 }, null, null));
+            Nodes.Add(new Node("test1", new Position(50, 50), new Shape { BorderThickness = 0 }, null, null));
+            Nodes.Add(new Node("test2", new Position(0, 0), new Shape { BorderThickness = 5 }, null, null));
             OnPropertyChanged(nameof(Nodes));
         }
 

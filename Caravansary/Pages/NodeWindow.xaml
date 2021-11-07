@@ -9,26 +9,36 @@
     Title="NodeWindow"
     Width="800"
     Height="450"
-    Background="{StaticResource DefaultBgDark}"
-    Topmost="True"
     mc:Ignorable="d">
+    <!--  Background="{StaticResource DefaultBgDark}"  -->
     <Grid>
         <i:Interaction.Behaviors>
             <local:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
+
         <ItemsControl ItemsSource="{Binding Path=Nodes}">
+            <!--<ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>-->
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type local:Node}">
-                    <Grid Canvas.Left="{Binding Position.X, Mode=TwoWay}" Canvas.Top="{Binding Position.Y, Mode=TwoWay}">
-                        <Rectangle Fill="Black" />
-                        <TextBlock Foreground="{StaticResource DefaultForeground}" Text="{Binding Name}" />
+                    <Grid>
 
-                        <i:Interaction.Behaviors>
-                            <local:FrameworkElementDragBehavior />
-                        </i:Interaction.Behaviors>
+                        <Border Background="{StaticResource DefaultBgLighterDark}" CornerRadius="0">
+                            <TextBlock
+                                Padding="4"
+                                Foreground="{StaticResource DefaultForeground}"
+                                Text="{Binding Name}" />
+
+                            <i:Interaction.Behaviors>
+                                <local:FrameworkElementDragBehavior />
+                            </i:Interaction.Behaviors>
+                        </Border>
                     </Grid>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type local:Rectangle}">
+                <!--<DataTemplate DataType="{x:Type local:Rectangle}">
                     <Rectangle
                         Width="{Binding Width}"
                         Height="{Binding Height}"
@@ -47,7 +57,7 @@
                             <local:FrameworkElementDragBehavior />
                         </i:Interaction.Behaviors>
                     </Ellipse>
-                </DataTemplate>
+                </DataTemplate>-->
             </ItemsControl.Resources>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -56,8 +66,8 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Top" Value="{Binding Path=Position.Y, Mode=TwoWay}" />
                     <Setter Property="Canvas.Left" Value="{Binding Path=Position.X, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Position.Y, Mode=TwoWay}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
         </ItemsControl>

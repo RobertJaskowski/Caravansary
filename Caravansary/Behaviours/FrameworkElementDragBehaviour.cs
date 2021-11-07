@@ -38,6 +38,7 @@ namespace Caravansary
         {
             if (isMouseClicked)
             {
+                if (this.AssociatedObject == null) return;
                 //set the item's DataContext as the data to be transferred
                 IDragable dragObject = this.AssociatedObject.DataContext as IDragable;
                 if (dragObject != null)
